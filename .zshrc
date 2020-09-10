@@ -1,5 +1,10 @@
 source $HOME/.zplug/init.zsh
 
+if [ -z "$TMUX" ]
+then
+    tmux attach -t TMUX || tmux new -s TMUX
+fi
+
 ZPLUG_SUDO_PASSWORD=
 ZPLUG_PROTOCOL=ssh
 
@@ -142,5 +147,5 @@ source $ZSH/oh-my-zsh.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias stow='sudo STOW_DIR=/usr/local/stow /usr/bin/stow'
