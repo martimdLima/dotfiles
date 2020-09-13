@@ -140,10 +140,32 @@ source $ZSH/oh-my-zsh.sh
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+
+# Personal Alias
+
+# open ~/.zshrc in using the default editor specified in $EDITOR
+alias ec="nvim $HOME/.zshrc"
+
+# source ~/.zshrc
+alias sc="source $HOME/.zshrc"
+
+# Generate a random password
+alias getpass='openssl rand -base64 20'
+
+# System Update
+alias updt='sudo pacman -Syu'
+
+# Full System Update (includes mirror updates)
+alias updtf='sudo pacman -Syyu'
+
+# List all files grouping directories first
+alias ldir='ls -lFhaSs --group-directories-first'
+
+# MariaDB
+alias mdstatus='systemctl status mariadb' #Status
+alias mdstart='systemctl start mariadb' #Start
+alias mdstop='systemctl stop mariadb' #Stop
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
