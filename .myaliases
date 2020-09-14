@@ -1,46 +1,79 @@
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+
+
+## ZSH
 # open ~/.zshrc in using the default editor specified in $EDITOR
 alias ec="nvim $HOME/.zshrc"
 
 # source ~/.zshrc
 alias sc="source $HOME/.zshrc"
 
-# IP Info
-alias myip='curl https://ipinfo.io/what-is-my-ip; echo'
-
-# Generate a random password
-alias getpass='openssl rand -base64 20'
-
+## System Alias
 # System Update
 alias updt='sudo pacman -Syu'
 
 # Full System Update (includes mirror updates)
 alias updtf='sudo pacman -Syyu'
 
+# IP Info
+alias myip='curl https://ipinfo.io/what-is-my-ip; echo'
+
+# Distro Info
+alias distro='cat /etc/*-release'
+
+# Generate a random password
+alias getpass='openssl rand -base64 20'
+
 # List all files grouping directories first
 alias ldir='ls -lFhaSs --group-directories-first'
-
-# MariaDB
-alias mdstatus='systemctl status mariadb' #Status
-alias mdstart='systemctl start mariadb' #Start
-alias mdstop='systemctl stop mariadb' #Stop
 
 # displays the amount of disk space available on the mounted filesystems
 alias df="pydf"
 
-# Youtube-Viewer
+## MariaDB
+#Status
+alias mdstatus='systemctl status mariadb'
 
-yv() {
-    cat .yt-channels |sed -n $1 | grep -o -i '"........................"' | xargs youtube-viewer -up
+# Start
+alias mdstart='systemctl start mariadb'
+
+# Stop
+alias mdstop='systemctl stop mariadb'
+
+## Youtube-Viewer (needs channelId passed as a param)
+# Channel List
+yvchls() {
+  cat .yt-channels
 }
 
-##
-yvpl() {
-    youtube-viewer -up '$1'
-}
-
-##
+# Channel Seach
 yvch() {
-    youtube-viewer -sc '$1'
+    cat .yt-channels |sed -n $1 | grep -o -i '"........................"' | xargs youtube-viewer -cp
+}
+
+# Playlist Search
+yvpl() {
+    cat .yt-channels |sed -n "${1},${1}p" | grep -o -i '"........................"' | xargs youtube-viewer -up
 }
 
 # yt-download
