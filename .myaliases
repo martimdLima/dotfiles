@@ -1,0 +1,50 @@
+# open ~/.zshrc in using the default editor specified in $EDITOR
+alias ec="nvim $HOME/.zshrc"
+
+# source ~/.zshrc
+alias sc="source $HOME/.zshrc"
+
+# IP Info
+alias myip='curl https://ipinfo.io/what-is-my-ip; echo'
+
+# Generate a random password
+alias getpass='openssl rand -base64 20'
+
+# System Update
+alias updt='sudo pacman -Syu'
+
+# Full System Update (includes mirror updates)
+alias updtf='sudo pacman -Syyu'
+
+# List all files grouping directories first
+alias ldir='ls -lFhaSs --group-directories-first'
+
+# MariaDB
+alias mdstatus='systemctl status mariadb' #Status
+alias mdstart='systemctl start mariadb' #Start
+alias mdstop='systemctl stop mariadb' #Stop
+
+# displays the amount of disk space available on the mounted filesystems
+alias df="pydf"
+
+# Youtube-Viewer
+
+yv() {
+    cat .yt-channels |sed -n $1 | grep -o -i '"........................"' | xargs youtube-viewer -up
+}
+
+##
+yvpl() {
+    youtube-viewer -up '$1'
+}
+
+##
+yvch() {
+    youtube-viewer -sc '$1'
+}
+
+# yt-download
+#function ytvlc() {
+#    URLS=(${(ps:\n:)"$(youtube-dl "$1" --get-url)"})
+#    vlc "${URLS[1]}" --input-slave "${URLS[2]}"
+#}
