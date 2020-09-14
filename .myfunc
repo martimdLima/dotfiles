@@ -1,11 +1,11 @@
-### System Functions
+# +-------------------+
+# | System Functions |
+# +-----------------+
 
 # Measures the speed of openning a new prompt
 #promptspeed() {
 #    for i in $(seq 1 10); do /usr/bin/time zsh -i -c exit; done
 #}
-
-## Generate Keys/SSH
 
 # Generate SSH key
 ssh-create() {
@@ -21,12 +21,15 @@ genpass() {
   openssl rand -base64 20
 }
 
-## History
+# Command History
 historystat() {
     history 0 | awk '{print $2}' | sort | uniq -c | sort -n -r | head
 }
 
-## Networking
+# +-----------+
+# | Networking|
+# +----------+
+
 # Computer's Ip
 mip() {
     curl https://ipinfo.io/what-is-my-ip; echo
@@ -42,15 +45,16 @@ portss() {
   sudo ss -tunlp | grep LISTEN | fzf;
 }
 
+# Listen to ports using lsof
 portls() {
   sudo lsof -nP -iTCP -sTCP:LISTEN
 }
 
-# Listen to ports using lsof
+# +---------+
+# | Display |
+# +--------+
 
-## Display
-
-# Change Screen Res
+# Get Screen Resolution
 screenres() {
     [ ! -z $1 ] && xrandr --current | grep '*' | awk '{print $1}' | line $1
 }
@@ -86,7 +90,7 @@ screenshot () {
     fi
 }
 
-# Screensaver - Matrix
+# Screensaver [Matrix]
 matrix () {
     local lines=$(tput lines)
     cols=$(tput cols)
@@ -120,16 +124,18 @@ while :; do
 done | awk "$awkscript"
 }
 
-## Directory Creation
+# +--------------------+
+# | Directory Creation |
+# +-------------------+
 
-## Makes a directory with the given name and cd's into it
+# Makes a directory with the given name and cd's into it
 mkcd() {
     dir="$*";
     mkdir -p "$dir" && cd "$dir";
 }
 
-## Copies the choosen directory and makes another one with the given name
-## and the same content
+# Copies the choosen directory and makes another one with the given name
+# and the same content
 mkcp() {
     dir="$2"
     tmp="$2"; tmp="${tmp: -1}"
@@ -139,8 +145,8 @@ mkcp() {
     cp -r "$@"
 }
 
-## Moves the current directory and its content and makes
-## another one with the given name
+# Moves the current directory and its content and makes
+# another one with the given name
 mkmv() {
     dir="$2"
     tmp="$2"; tmp="${tmp: -1}"
@@ -150,7 +156,9 @@ mkmv() {
     mv "$@"
 }
 
-## File Extraction/Compression
+# +-----------------------------+
+# | File Extraction/Compression |
+# +----------------------------+
 
 # Extraction
 extract() {
@@ -201,7 +209,9 @@ compress() {
     tar cvzf $1.tar.gz $1
 }
 
-## Image Edition
+# +-----------------------------+
+# | Image Edition |
+# +----------------------------+
 
 # Get the selected img size
 imgsize() {
@@ -301,11 +311,11 @@ imgwebp() {
     for F in *.$IMG_EXT; do cwebp -q 100 $F -o `basename ${F%.$IMG_EXT}`.webp; done
 }
 
-### youtube-viewer
+# +----------------+
+# | youtube-viewer |
+# +---------------+
 
-## Streaming
-
-# Channel Seach
+# Channel Search
 yvch() {
     cat .yt-channels |sed -n "${1},${1}p" | grep -o -i '"........................"' | xargs youtube-viewer -sc
 }
@@ -315,9 +325,7 @@ yvpl() {
     cat .yt-channels |sed -n "${1},${1}p" | grep -o -i '"........................"' | xargs youtube-viewer -up
 }
 
-## Download
-
-# Single video
+# Download single video
 ydl() {
     if [ ! -z $1 ];
     then
@@ -327,7 +335,7 @@ ydl() {
     fi
 }
 
-# Playlist
+# Download playlist
 ydlp() {
     if [ ! -z $1 ];
     then
