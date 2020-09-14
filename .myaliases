@@ -1,26 +1,29 @@
-# User configuration
+# +--------+
+# | System |
+# +--------+
 
-# export MANPATH="/usr/local/man:$MANPATH"
+alias shutdown='sudo shutdown now'
+alias restart='sudo reboot'
+alias suspend='sudo pm-suspend'
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+# display "big" files > 500M
+alias bigf= 'find / -xdev -type f -size +500M'
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+# System Update
+alias updt='sudo pacman -Syu'
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+# Full System Update (includes mirror updates)
+alias updtf='sudo pacman -Syyu'
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
+# Distro Info
+alias distro='cat /etc/*-release'
 
+# displays the amount of disk space available on the mounted filesystems
+alias df="pydf"
 
+# +-----+
+# | Zsh |
+# +-----+
 ## ZSH
 # open ~/.zshrc in using the default editor specified in $EDITOR
 alias ec="nvim $HOME/.zshrc"
@@ -28,29 +31,41 @@ alias ec="nvim $HOME/.zshrc"
 # source ~/.zshrc
 alias sc="source $HOME/.zshrc"
 
-## System Alias
-# System Update
-alias updt='sudo pacman -Syu'
+# +----+
+# | ls |
+# +----+
+alias lsl='ls -l'
+alias ll='ls -lahF --group-directories-first'
+alias lls='ls -lahFtr'
+alias la='ls -A'
+alias l='ls -CF'
 
-# Full System Update (includes mirror updates)
-alias updtf='sudo pacman -Syyu'
+# +----+
+# | cp |
+# +----+
 
-# IP Info
-alias myip='curl https://ipinfo.io/what-is-my-ip; echo'
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias rm='rm -i'
+alias la='ls -alh'
 
-# Distro Info
-alias distro='cat /etc/*-release'
+# +------+
+# | grep |
+# +------+
 
-# Generate a random password
-alias getpass='openssl rand -base64 20'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
 
-# List all files grouping directories first
-alias ldir='ls -lFhaSs --group-directories-first'
+# +------+
+# | ping |
+# +------+
 
-# displays the amount of disk space available on the mounted filesystems
-alias df="pydf"
+alias pg='ping 8.8.8.8'
 
-## MariaDB
+# +----------+
+# | MariaDB |
+# +--------+
 #Status
 alias mdstatus='systemctl status mariadb'
 
@@ -60,24 +75,8 @@ alias mdstart='systemctl start mariadb'
 # Stop
 alias mdstop='systemctl stop mariadb'
 
-## Youtube-Viewer (needs channelId passed as a param)
+# +----------------+
+# | youtube-viewer |
+# +----------------+
 # Channel List
-yvchls() {
-  cat .yt-channels
-}
-
-# Channel Seach
-yvch() {
-    cat .yt-channels |sed -n $1 | grep -o -i '"........................"' | xargs youtube-viewer -cp
-}
-
-# Playlist Search
-yvpl() {
-    cat .yt-channels |sed -n "${1},${1}p" | grep -o -i '"........................"' | xargs youtube-viewer -up
-}
-
-# yt-download
-#function ytvlc() {
-#    URLS=(${(ps:\n:)"$(youtube-dl "$1" --get-url)"})
-#    vlc "${URLS[1]}" --input-slave "${URLS[2]}"
-#}
+alias yvchls="cat .yt-channels"
