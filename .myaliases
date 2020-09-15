@@ -24,12 +24,19 @@ alias df="pydf"
 # +-----+
 # | Zsh |
 # +-----+
-## ZSH
+
 # open ~/.zshrc in using the default editor specified in $EDITOR
 alias ec="nvim $HOME/.zshrc"
 
 # source ~/.zshrc
 alias sc="source $HOME/.zshrc"
+
+# +-------+
+# | Tmux |
+# +-----+
+
+# source ~/.tmux.conf
+alias stc="tmux source ~/.tmux.conf"
 
 # +----+
 # | ls |
