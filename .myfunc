@@ -317,7 +317,7 @@ imgwebp() {
 
 # Channel Search
 yvch() {
-    cat .yt-channels |sed -n "${1},${1}p" | grep -o -i '"........................"' | xargs youtube-viewer -sc
+    cat .yt-channels | sed -n "${1},${1}p" | awk -F- '{print $2}' | xargs youtube-viewer -sc
 }
 
 # Playlist Search
