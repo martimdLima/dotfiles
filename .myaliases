@@ -1,42 +1,90 @@
-# +--------+
-# | System |
-# +--------+
+########################################
+# [System]                             #
+########################################
 
-alias shutdown='sudo shutdown now'
-alias restart='sudo reboot'
-alias suspend='sudo pm-suspend'
+# +--------------------+
+# | Start/Stop/Suspend |
+# +-------------------+
+alias shutdown='sudo shutdown now'    # system shutdown
+alias restart='sudo reboot'   # system reboot
+alias suspend='sudo pm-suspend'   # system suspend
 
-# display "big" files > 500M
-alias bigf= 'find / -xdev -type f -size +500M'
+# +-------------------+
+# | System Info      |
+# +-----------------+
+alias distro='cat /etc/*-release'   # Distro Info
+alias bigf= 'find / -xdev -type f -size +500M'  # display "big" files > 500M
+alias df="pydf"   # displays the amount of disk space available on the mounted filesystems
+#alias df='df -h'                          # human-readable sizes
+alias free='free -m'                      # show sizes in MB
+alias jctl="journalctl -p 3 -xb"      # get error messages from journalctl
 
-# System Update
-alias updt='sudo pacman -Syu'
+# +---------------------+
+# | App Updates        |
+# +-------------------+
+alias updt='sudo pacman -Syu' # System Update
+alias updtf='sudo pacman -Syyu'   # Full System Update (includes mirror updates)
+alias yaysua="yay -Sua --noconfirm"              # update only AUR pkgs
+alias yaysyu="yay -Syu --noconfirm"              # update standard pkgs and AUR pkgs
+alias unlock="sudo rm /var/lib/pacman/db.lck"    # remove pacman lock
+alias cleanup='sudo pacman -Rns $(pacman -Qtdq)' # remove orphaned packages
 
-# Full System Update (includes mirror updates)
-alias updtf='sudo pacman -Syyu'
+# +-----------------+
+# | Mirror Updates |
+# +----------------+
+alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
+alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
+alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
+alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
 
-# Distro Info
-alias distro='cat /etc/*-release'
+# +-------------------+
+# | Managment        |
+# +-----------------+
+## get top process consuming memory
+alias psmem='ps auxf | sort -nr -k 4'
+alias psmem10='ps auxf | sort -nr -k 4 | head -10'
 
-# displays the amount of disk space available on the mounted filesystems
-alias df="pydf"
+## get top process consuming CPU
+alias pscpu='ps auxf | sort -nr -k 3'
+alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
+
+alias pg='ping 8.8.8.8' # ping
+
+
+########################################
+# [Shell/Windows Manager]              #
+########################################
 
 # +-----+
 # | Zsh |
 # +-----+
+alias ec="nvim $HOME/.zshrc"      # open ~/.zshrc in using the default editor specified in $EDITOR
+alias sc="source $HOME/.zshrc"      # source ~/.zshrc
 
-# open ~/.zshrc in using the default editor specified in $EDITOR
-alias ec="nvim $HOME/.zshrc"
+# +------+
+# | Tmux |
+# +------+
+alias stc="tmux source ~/.tmux.conf"      # source ~/.tmux.conf
 
-# source ~/.zshrc
-alias sc="source $HOME/.zshrc"
+########################################
+# [System Managment]                   #
+########################################
+
+# +---------+
+# | Ranger |
+# +-------+
+alias rg="ranger"
 
 # +-------+
-# | Tmux |
+# | Tree |
 # +-----+
+alias tree="colorls -t"
+alias t="tree"
 
-# source ~/.tmux.conf
-alias stc="tmux source ~/.tmux.conf"
+# +----------------+
+# | Silver Surfer |
+# +--------------+
+alias ag="ag --pager less"
 
 # +----+
 # | ls |
@@ -59,31 +107,85 @@ alias la='ls -alh'
 # +------+
 # | grep |
 # +------+
-
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
-# +------+
-# | ping |
-# +------+
+########################################
+# [Security]                           #
+########################################
 
-alias pg='ping 8.8.8.8'
+# +-----------------+
+# | gpg encryption |
+# +---------------+
+alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify"     # verify signature for isos
+alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys"      # receive the key of a developer
+
+########################################
+# [Networking]                         #
+########################################
+
+# +-------------------+
+# | termbin          |
+# +-----------------+
+alias tb="nc termbin.com 9999"
+
+########################################
+# [Databases]                          #
+########################################
 
 # +----------+
 # | MariaDB |
 # +--------+
-#Status
-alias mdstatus='systemctl status mariadb'
+alias mdstatus='systemctl status mariadb'     #Status
+alias mdstart='systemctl start mariadb'     # Start
+alias mdstop='systemctl stop mariadb'     # Stop
 
-# Start
-alias mdstart='systemctl start mariadb'
+########################################
+# [software Development]               #
+########################################
 
-# Stop
-alias mdstop='systemctl stop mariadb'
+# +----------+
+# | Nodejs  |
+# +----------+
+alias nis='npm install --save ' # install as a production dependency
+alias nid='npm install --save-dev '     # install as a production dependency
+
+########################################
+# [Audio/Video]                        #
+########################################
 
 # +----------------+
 # | youtube-viewer |
 # +----------------+
-# Channel List
-alias yvchls="cat .yt-channels"
+alias yv='youtube-viewer'     # start
+alias yvt='killall youtube-viewer'      # youtube-viewer stop
+alias yvchls="tput setaf 1; cat .yt-channels"     # Channel List
+
+# +-------------------+
+# | youtube-download |
+# +-----------------+
+alias yta-aac="youtube-dl --extract-audio --audio-format aac " # Download audio in aac format
+alias yta-best="youtube-dl --extract-audio --audio-format best " # Download audio in the best format available
+alias yta-flac="youtube-dl --extract-audio --audio-format flac " # Download audio in flac format
+alias yta-m4a="youtube-dl --extract-audio --audio-format m4a " # Download audio in mp4 format
+alias yta-mp3="youtube-dl --extract-audio --audio-format mp3 " # Download audio in mp3 format
+alias yta-opus="youtube-dl --extract-audio --audio-format opus " # Download audio in opus format
+alias yta-vorbis="youtube-dl --extract-audio --audio-format vorbis " # Download audio in vorbis format
+alias yta-wav="youtube-dl --extract-audio --audio-format wav " # Download audio in wav format
+
+########################################
+# [Audio/Video]                        #
+########################################
+
+# +-------------------+
+# | dot-files       |
+# +-----------------+
+#alias config="/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME"     # bare git repo alias for dotfiles
+
+########################################
+# [Just for fun]                       #
+########################################
+alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'     # the terminal rickroll
+
+/opt/shell-color-scripts/colorscript.sh random    ### RANDOM COLOR SCRIPT ###

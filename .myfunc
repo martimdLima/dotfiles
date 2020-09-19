@@ -315,6 +315,22 @@ imgwebp() {
 # | youtube-viewer |
 # +---------------+
 
+#TEST
+#yvls(){
+#IFS=$'\n';
+
+#channels=`cat .yt-channels`
+#num=1
+# Read file line by line
+#for line in $channels
+#do
+#  num=$(($num + 1))
+#  echo num "$line"| awk -F- '{print $2}'
+#done
+# Unset field separator
+#unset IFS;
+#}
+
 # Channel Search
 yvch() {
     cat .yt-channels | sed -n "${1},${1}p" | awk -F- '{print $2}' | xargs youtube-viewer -sc
@@ -322,7 +338,13 @@ yvch() {
 
 # Playlist Search
 yvpl() {
-    cat .yt-channels |sed -n "${1},${1}p" | grep -o -i '"........................"' | xargs youtube-viewer -up
+    cat .yt-channels | sed -n "${1},${1}p" | awk -F- '{print $3}' | xargs youtube-viewer -up
+}
+
+# Get the designated number of recent videos from Subscriptions
+# (limited to 50, attention, this operation takes some time)
+yvrc() {
+    youtube-viewer -SV -results=${1}
 }
 
 # Download single video
