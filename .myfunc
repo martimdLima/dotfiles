@@ -16,38 +16,9 @@ then
 fi
 }
 
-# Generate Strong password
-genpass() {
-  openssl rand -base64 20
-}
-
 # Command History
 historystat() {
     history 0 | awk '{print $2}' | sort | uniq -c | sort -n -r | head
-}
-
-# +-----------+
-# | Networking|
-# +----------+
-
-# Computer's Ip
-mip() {
-    curl https://ipinfo.io/what-is-my-ip; echo
-}
-
-# Network devices
-netdev() {
-  sudo lshw -class network -short
-}
-
-# Listen to ports using ss
-portss() {
-  sudo ss -tunlp | grep LISTEN | fzf;
-}
-
-# Listen to ports using lsof
-portls() {
-  sudo lsof -nP -iTCP -sTCP:LISTEN
 }
 
 # +---------+
@@ -315,29 +286,13 @@ imgwebp() {
 # | youtube-viewer |
 # +---------------+
 
-#TEST
-#yvls(){
-#IFS=$'\n';
-
-#channels=`cat .yt-channels`
-#num=1
-# Read file line by line
-#for line in $channels
-#do
-#  num=$(($num + 1))
-#  echo num "$line"| awk -F- '{print $2}'
-#done
-# Unset field separator
-#unset IFS;
-#}
-
 # Channel Search
-yvch() {
+yv-ch() {
     cat .yt-channels | sed -n "${1},${1}p" | awk -F- '{print $2}' | xargs youtube-viewer -sc
 }
 
 # Playlist Search
-yvpl() {
+yv-pl() {
     cat .yt-channels | sed -n "${1},${1}p" | awk -F- '{print $3}' | xargs youtube-viewer -up
 }
 
