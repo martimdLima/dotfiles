@@ -198,10 +198,16 @@ alias mdstop='systemctl stop mariadb'     # Stop
 ########################################
 
 # +----------+
-# | Nodejs  |
+# | Nodejs   |
 # +----------+
 alias nis='npm install --save ' # install as a production dependency
 alias nid='npm install --save-dev '     # install as a production dependency
+
+# +----------+
+# | TomCat   |
+# +----------+
+alias tc-start='/home/mdlima/apache-tomcat-9.0.38/bin/catalina.sh start'
+alias tc-stop='/home/mdlima/apache-tomcat-9.0.38/bin/catalina.sh stop'
 
 ########################################
 # [Audio/Video]                        #

@@ -73,6 +73,11 @@ plugins=(git
 
 source $ZSH/oh-my-zsh.sh
 
+# +---------+
+# | TomCat |
+#-----------+
+export CATALINA_HOME=/home/mdlima/apache-tomcat-9.0.38
+
 # +----------------+
 # | PowerLevel10k |
 #----------------+
