@@ -1,0 +1,242 @@
+########################################
+# [System]                             #
+########################################
+
+# +-------------------+
+# | System Info      |
+# +-----------------+
+alias distro='cat /etc/*-release'   # Distro Info
+alias bigf= 'find / -xdev -type f -size +500M'  # display "big" files > 500M
+alias df="pydf"   # displays the amount of disk space available on the mounted filesystems
+#alias df='df -h'                          # human-readable sizes
+alias free='free -m'                      # show sizes in MB
+alias jctl="journalctl -p 3 -xb"      # get error messages from journalctl
+
+# +---------------------+
+# | App Updates        |
+# +-------------------+
+#alias updt='sudo pacman -Syu' # System Update
+#alias updtf='sudo pacman -Syyu'   # Full System Update (includes mirror updates)
+#alias yaysua="yay -Sua --noconfirm"              # update only AUR pkgs
+#alias yaysyu="yay -Syu --noconfirm"              # update standard pkgs and AUR pkgs
+#alias unlock="sudo rm /var/lib/pacman/db.lck"    # remove pacman lock
+#alias cleanup='sudo pacman -Rns $(pacman -Qtdq)' # remove orphaned packages
+
+# +-----------------+
+# | Mirror Updates |
+# +----------------+
+#alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
+#alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
+#alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
+#alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
+
+# +--------------------------+
+# | Process Managment        |
+# +-------------------------+
+## get top process consuming memory
+alias psmem='ps auxf | sort -nr -k 4'
+alias psmem10='ps auxf | sort -nr -k 4 | head -10'
+
+## get top process consuming CPU
+alias pscpu='ps auxf | sort -nr -k 3'
+alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
+
+
+########################################
+# [Shell/Windows Manager]              #
+########################################
+
+# +-----+
+# | Zsh |
+# +-----+
+alias ec="nvim $XDG_CONFIG_HOME/zsh/.zshrc"      # open ~/.zshrc in using the default editor specified in $EDITOR
+alias sc="source $XDG_CONFIG_HOME/zsh/.zshrc"      # source ~/.zshrc
+
+# +------+
+# | Tmux |
+# +------+
+alias stc="tmux source ~/.tmux.conf"      # source ~/.tmux.conf
+
+########################################
+# [System Managment]                   #
+########################################
+
+# +---------+
+# | Ranger |
+# +-------+
+alias rg="ranger"
+
+# +-------+
+# | Tree |
+# +-----+
+alias tree="colorls -t"
+alias t="tree"
+
+# +----------------+
+# | Silver Surfer |
+# +--------------+
+alias ag="ag --pager less"
+
+# +----+
+# | ls |
+# +----+
+#alias lsl='ls -l'
+#alias ll='ls -lahF --group-directories-first'
+#alias lls='ls -lahFtr'
+#alias la='ls -A'
+#alias l='ls -CF'
+
+# +----+
+# | exa |
+# +----+
+alias exl="exa -hbG --icons --color=automatic"
+alias exll="exa -lahbrG@ --icons --color=automatic"
+alias exls="exa --icons --color=automatic"
+alias exllm="exa -lbGd --sort=modified"
+alias exla="exa -albigmhHS --icons --color=automatic"
+alias exlx="exa -albigmhrHS --icons --color=automatic"
+
+alias lS='exa -1 --icons --color=automatic'
+alias lt='exa --tree --level=2'
+
+# +----+
+# | cp |
+# +----+
+
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias rm='rm -i'
+alias la='ls -alh'
+
+# +------+
+# | grep |
+# +------+
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# +-------+
+# | XClip |
+# +------+
+alias xclip="xclip -selection clipboard"
+
+# +-------+
+# | Chmod |
+# +------+
+alias x="chmod +x"
+alias own='sudo chown -R josh:josh '
+alias exe='sudo chmod +x '
+
+alias font='fc-cache -f -v'
+
+########################################
+# [Security]                           #
+########################################
+
+# +-----------------+
+# |  OpenSSL       |
+# +---------------+
+alias genpass="openssl rand -base64 20";
+
+# +-----------------+
+# | gpg encryption |
+# +---------------+
+alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify"     # verify signature for isos
+alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys"      # receive the key of a developer
+
+########################################
+# [Networking]                         #
+########################################
+
+# +-------------------+
+# | termbin          |
+# +-----------------+
+alias tb="nc termbin.com 9999" # display the terminal output on termbin
+
+alias speed_test='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test10.zip' # measure the internet speed
+
+# +-------------------+
+# | ping             |
+# +-----------------+
+alias pg='ping 8.8.8.8' # ping
+alias pingg="hostname -I && curl ipinfo.io/ip && ping -c 5 -q google.com" # ping google
+
+# +-------------------+
+# | Ip               |
+# +-----------------+
+alias ipc='ifconfig'      #Ip config
+alias ipm="curl https://ipinfo.io/what-is-my-ip; echo"      # My ip
+
+alias netdev="sudo lshw -class network -short"      # List network devices
+
+# +-------------------+
+# | ports            |
+# +-----------------+
+alias portss="sudo ss -tunlp | grep LISTEN | fzf;"
+alias portlsof="sudo lsof -nP -iTCP -sTCP:LISTEN"
+
+########################################
+# [Databases]                          #
+########################################
+
+# +----------+
+# | MariaDB |
+# +--------+
+#alias mdstatus='systemctl status mariadb'     #Status
+#alias mdstart='systemctl start mariadb'     # Start
+#alias mdstop='systemctl stop mariadb'     # Stop
+
+########################################
+# [software Development]               #
+########################################
+
+# +----------+
+# | Nodejs   |
+# +----------+
+alias nis='npm install --save ' # install as a production dependency
+alias nid='npm install --save-dev '     # install as a production dependency
+
+# +----------+
+# | TomCat   |
+# +----------+
+#alias tc-start='/home/mdlima/apache-tomcat-9.0.38/bin/catalina.sh start'
+#alias tc-stop='/home/mdlima/apache-tomcat-9.0.38/bin/catalina.sh stop'
+
+########################################
+# [Audio/Video]                        #
+########################################
+
+# +----------------+
+# | youtube-viewer |
+# +----------------+
+alias yv='youtube-viewer'     # start
+alias yvt='killall youtube-viewer'      # youtube-viewer stop
+alias yvchls="tput setaf 1; cat .yt-channels"     # Channel List
+
+# +-------------------+
+# | youtube-download |
+# +-----------------+
+#alias yta-aac="youtube-dl --extract-audio --audio-format aac " # Download audio in aac format
+#alias yta-best="youtube-dl --extract-audio --audio-format best " # Download audio in the best format available
+#alias yta-flac="youtube-dl --extract-audio --audio-format flac " # Download audio in flac format
+#alias yta-m4a="youtube-dl --extract-audio --audio-format m4a " # Download audio in mp4 format
+#alias yta-mp3="youtube-dl --extract-audio --audio-format mp3 " # Download audio in mp3 format
+#alias yta-opus="youtube-dl --extract-audio --audio-format opus " # Download audio in opus format
+#alias yta-vorbis="youtube-dl --extract-audio --audio-format vorbis " # Download audio in vorbis format
+#alias yta-wav="youtube-dl --extract-audio --audio-format wav " # Download audio in wav format
+
+########################################
+# [Audio/Video]                        #
+########################################
+
+# +-------------------+
+# | dot-files       |
+# +-----------------+
+#alias config="/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME"     # bare git repo alias for dotfiles
+
+########################################
+# [Just for fun]                       #
+########################################
+alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'     # the terminal rickroll
+
+/opt/shell-color-scripts/colorscript.sh random    ### RANDOM COLOR SCRIPT ###
