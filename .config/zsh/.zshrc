@@ -47,4 +47,4 @@ plugins=(git
 alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias stow='sudo STOW_DIR=/usr/local/stow /usr/bin/stow'
 
-source $ZSH/oh-my-zsh.sh
+source /home/mdlima/.config/oh-my-zsh/oh-my-zsh.sh
