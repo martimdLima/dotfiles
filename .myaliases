@@ -2,13 +2,6 @@
 # [System]                             #
 ########################################
 
-# +--------------------+
-# | Start/Stop/Suspend |
-# +-------------------+
-alias shutdown='sudo shutdown now'    # system shutdown
-alias restart='sudo reboot'   # system reboot
-alias suspend='sudo pm-suspend'   # system suspend
-
 # +-------------------+
 # | System Info      |
 # +-----------------+
@@ -22,20 +15,20 @@ alias jctl="journalctl -p 3 -xb"      # get error messages from journalctl
 # +---------------------+
 # | App Updates        |
 # +-------------------+
-alias updt='sudo pacman -Syu' # System Update
-alias updtf='sudo pacman -Syyu'   # Full System Update (includes mirror updates)
-alias yaysua="yay -Sua --noconfirm"              # update only AUR pkgs
-alias yaysyu="yay -Syu --noconfirm"              # update standard pkgs and AUR pkgs
-alias unlock="sudo rm /var/lib/pacman/db.lck"    # remove pacman lock
-alias cleanup='sudo pacman -Rns $(pacman -Qtdq)' # remove orphaned packages
+#alias updt='sudo pacman -Syu' # System Update
+#alias updtf='sudo pacman -Syyu'   # Full System Update (includes mirror updates)
+#alias yaysua="yay -Sua --noconfirm"              # update only AUR pkgs
+#alias yaysyu="yay -Syu --noconfirm"              # update standard pkgs and AUR pkgs
+#alias unlock="sudo rm /var/lib/pacman/db.lck"    # remove pacman lock
+#alias cleanup='sudo pacman -Rns $(pacman -Qtdq)' # remove orphaned packages
 
 # +-----------------+
 # | Mirror Updates |
 # +----------------+
-alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
-alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
-alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
-alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
+#alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
+#alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
+#alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
+#alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
 
 # +--------------------------+
 # | Process Managment        |
@@ -189,9 +182,9 @@ alias portlsof="sudo lsof -nP -iTCP -sTCP:LISTEN"
 # +----------+
 # | MariaDB |
 # +--------+
-alias mdstatus='systemctl status mariadb'     #Status
-alias mdstart='systemctl start mariadb'     # Start
-alias mdstop='systemctl stop mariadb'     # Stop
+#alias mdstatus='systemctl status mariadb'     #Status
+#alias mdstart='systemctl start mariadb'     # Start
+#alias mdstop='systemctl stop mariadb'     # Stop
 
 ########################################
 # [software Development]               #
@@ -206,8 +199,8 @@ alias nid='npm install --save-dev '     # install as a production dependency
 # +----------+
 # | TomCat   |
 # +----------+
-alias tc-start='/home/mdlima/apache-tomcat-9.0.38/bin/catalina.sh start'
-alias tc-stop='/home/mdlima/apache-tomcat-9.0.38/bin/catalina.sh stop'
+#alias tc-start='/home/mdlima/apache-tomcat-9.0.38/bin/catalina.sh start'
+#alias tc-stop='/home/mdlima/apache-tomcat-9.0.38/bin/catalina.sh stop'
 
 ########################################
 # [Audio/Video]                        #
@@ -223,14 +216,14 @@ alias yvchls="tput setaf 1; cat .yt-channels"     # Channel List
 # +-------------------+
 # | youtube-download |
 # +-----------------+
-alias yta-aac="youtube-dl --extract-audio --audio-format aac " # Download audio in aac format
-alias yta-best="youtube-dl --extract-audio --audio-format best " # Download audio in the best format available
-alias yta-flac="youtube-dl --extract-audio --audio-format flac " # Download audio in flac format
-alias yta-m4a="youtube-dl --extract-audio --audio-format m4a " # Download audio in mp4 format
-alias yta-mp3="youtube-dl --extract-audio --audio-format mp3 " # Download audio in mp3 format
-alias yta-opus="youtube-dl --extract-audio --audio-format opus " # Download audio in opus format
-alias yta-vorbis="youtube-dl --extract-audio --audio-format vorbis " # Download audio in vorbis format
-alias yta-wav="youtube-dl --extract-audio --audio-format wav " # Download audio in wav format
+#alias yta-aac="youtube-dl --extract-audio --audio-format aac " # Download audio in aac format
+#alias yta-best="youtube-dl --extract-audio --audio-format best " # Download audio in the best format available
+#alias yta-flac="youtube-dl --extract-audio --audio-format flac " # Download audio in flac format
+#alias yta-m4a="youtube-dl --extract-audio --audio-format m4a " # Download audio in mp4 format
+#alias yta-mp3="youtube-dl --extract-audio --audio-format mp3 " # Download audio in mp3 format
+#alias yta-opus="youtube-dl --extract-audio --audio-format opus " # Download audio in opus format
+#alias yta-vorbis="youtube-dl --extract-audio --audio-format vorbis " # Download audio in vorbis format
+#alias yta-wav="youtube-dl --extract-audio --audio-format wav " # Download audio in wav format
 
 ########################################
 # [Audio/Video]                        #

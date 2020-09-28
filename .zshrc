@@ -2,6 +2,13 @@ source $HOME/.zplug/init.zsh
 source $HOME/.myaliases
 source $HOME/.myfunc
 
+# +------------+
+# | Exports    |
+#--------------+
+export DENO_INSTALL="/home/$USER/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
+export CATALINA_HOME=/home/mdlima/apache-tomcat-9.0.38
+
 # +-------+
 # | Tmux |
 #--------+
@@ -72,11 +79,6 @@ plugins=(git
 )
 
 source $ZSH/oh-my-zsh.sh
-
-# +---------+
-# | TomCat |
-#-----------+
-export CATALINA_HOME=/home/mdlima/apache-tomcat-9.0.38
 
 # +----------------+
 # | PowerLevel10k |

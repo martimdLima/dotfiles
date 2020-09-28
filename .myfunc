@@ -2,6 +2,73 @@
 # | System Functions |
 # +-----------------+
 
+# Menu for shutting down, rebooting or suspending the system
+sys() {
+ERROR=0
+case "$1" in
+    stop)
+        echo $"Shutting Down System"
+        systemctl poweroff
+        ;;
+	reboot)
+    echo $"Rebooting the System"
+        systemctl reboot
+        ;;
+	suspend)
+    echo $"Suspending System"
+        systemctl suspend
+        ;;
+            
+ *)
+    echo $"Usage: $0 {stop|reboot|suspend}"
+ ;;
+esac
+
+if [ $ERROR -gt 1 ]
+then
+    echo $ERROR
+fi
+}
+
+# Menu with various options to update the System
+sysupdt() {
+ERROR=0
+case "$1" in
+    system)
+        sudo pacman -Syu
+        ;;
+    full)
+        sudo pacman -Syyu
+        ;;
+    pkgs)
+        yay -Syu --noconfirm 
+        ;;  
+    aur)
+        yay -Sua --noconfirm
+        ;;  
+    unlock)
+        sudo rm /var/lib/pacman/db.lck
+        ;;  
+    cleanup)
+        sudo pacman -Rns $(pacman -Qtdq)
+        ;;  
+ *)
+    echo $"Usage: $0 {system|full|pkgs|aur|unlock|cleanup}"
+    tput setaf 1; echo $"$0 system: {System Update}"
+    tput setaf 1; echo $"$0 full: {Full System Update (includes mirror updates)}"
+    tput setaf 1; echo $"$0 pkgs:{update standard pkgs and AUR pkgs}"
+    tput setaf 1; echo $"$0 aur: {update only AUR pkgs}"
+    tput setaf 1; echo $"$0 unlock: {remove pacman lock}"
+    tput setaf 1; echo $"$0 cleanup: {remove orphaned packages}"
+ ;;
+esac
+
+if [ $ERROR -gt 1 ]
+then
+    echo $ERROR
+fi
+}
+
 # Measures the speed of openning a new prompt
 #promptspeed() {
 #    for i in $(seq 1 10); do /usr/bin/time zsh -i -c exit; done
@@ -181,8 +248,8 @@ compress() {
 }
 
 # +-----------------------------+
-# | Image Edition |
-# +----------------------------+
+# | Image Edition 		|
+# +-----------------------------+
 
 # Get the selected img size
 imgsize() {
@@ -287,19 +354,58 @@ imgwebp() {
 # +---------------+
 
 # Channel Search
-yv-ch() {
-    cat .yt-channels | sed -n "${1},${1}p" | awk -F- '{print $2}' | xargs youtube-viewer -sc
-}
+#yv-ch() {
+#    cat .yt-channels | sed -n "${1},${1}p" | awk -F- '{print $2}' | xargs youtube-viewer -sc
+#}
 
 # Playlist Search
-yv-pl() {
-    cat .yt-channels | sed -n "${1},${1}p" | awk -F- '{print $3}' | xargs youtube-viewer -up
-}
+#yv-pl() {
+#    cat .yt-channels | sed -n "${1},${1}p" | awk -F- '{print $3}' | xargs youtube-viewer -up
+#}
 
 # Get the designated number of recent videos from Subscriptions
 # (limited to 50, attention, this operation takes some time)
-yvrc() {
-    youtube-viewer -SV -results=${1}
+#yv-rc() {
+#    youtube-viewer -SV -results=${1}
+#}
+
+#yv-chsc() {
+#	grep "${1}" .yt-channels 
+#}
+
+ytv() {
+ERROR=0
+case "$1" in
+    ch)
+        cat .yt-channels | sed -n "${2},${2}p" | awk -F- '{print $2}' | xargs youtube-viewer -sc
+        ;;
+    pl)
+        cat .yt-channels | sed -n "${2},${2}p" | awk -F- '{print $3}' | xargs youtube-viewer -up
+        ;;
+    rc)
+        youtube-viewer -SV -results="${2}"
+        ;;  
+    schls)
+        grep "${2}" .yt-channels 
+        ;;
+    chls)
+       tput setaf 1; cat .yt-channels
+      ;;
+ *)
+    echo $"Usage: $0 {ch|pl|rc|schls|chls}"
+    echo $"Usage: $0 {Provide an int arg to the first three options}"
+    tput setaf 1; echo $ $0 "ch: {Display Videos from the choosen channel}"
+    tput setaf 1; echo $ $0 "pl: {Display playlists from the choosen channel)}"
+    tput setaf 1; echo $ $0 "rc: {Display the choosen amount of recent videos(limit 50!)}"
+    tput setaf 1; echo $ $0 "schls: {Search my youtube video list}"
+    tput setaf 1; echo $ $0 "chls: {display my youtube video list (large list!)}"
+ ;;
+esac
+
+if [ $ERROR -gt 1 ]
+then
+    echo $ERROR
+fi
 }
 
 # Download single video
@@ -322,8 +428,110 @@ ydlp() {
     fi
 }
 
-# yt-download
-#function ytvlc() {
-#    URLS=(${(ps:\n:)"$(youtube-dl "$1" --get-url)"})
-#    vlc "${URLS[1]}" --input-slave "${URLS[2]}"
-#}
+ytaud() {
+ERROR=0
+case "$1" in
+    best)
+        youtube-dl --extract-audio --audio-format aac "$2"
+        ;;
+    aac)
+        youtube-dl --extract-audio --audio-format aac "$2"
+        ;;
+    flac)
+        youtube-dl --extract-audio --audio-format aac "$2"
+        ;;  
+    m4a)
+        youtube-dl --extract-audio --audio-format aac "$2"
+        ;;  
+    mp3)
+        youtube-dl --extract-audio --audio-format aac "$2"
+        ;;  
+    opus)
+        youtube-dl --extract-audio --audio-format aac "$2"
+        ;;  
+    vorbis)
+        youtube-dl --extract-audio --audio-format aac "$2"
+        ;;  
+    wav)
+        youtube-dl --extract-audio --audio-format aac "$2"
+        ;;      
+ *)
+    echo $"youtube-dl: $0 {best|aac|flac|m4a|mp3|opus|vorbis|wav}"
+    echo $"Usage: $0 {Please provide a link after the choosen option}"
+ ;;
+esac
+
+if [ $ERROR -gt 1 ]
+then
+    echo $ERROR
+fi
+}
+
+# +----------------+
+# | MariaDB        |
+# +----------------+
+
+mdb() {
+ERROR=0
+case "$1" in
+    start)
+        echo $"Maria DB service starting"
+        systemctl start mariadb
+        ;;
+	stop)
+        echo $"Maria DB service stoping"
+        systemctl stop mariadb
+        ;;
+	restart)
+    echo $"MariaDB Service restarting"
+    systemctl restart mariadb
+        ;;
+    status)
+    echo $"MariaDB Service Status"
+    systemctl status mariadb
+        ;;
+            
+ *)
+    echo $"MariaDB: $0 {start|stop|restarting|status}"
+ ;;
+esac
+
+if [ $ERROR -gt 1 ]
+then
+    echo $ERROR
+fi
+}
+
+# +----------------+
+# | Tomcat         |
+# +----------------+
+
+tc() {
+ERROR=0
+case "$1" in
+    start)
+        echo $"Starting Tomcat"
+        sudo sh $CATALINA_HOME/bin/startup.sh
+        ;;
+	stop)
+        echo $"Stopping Tomcat"
+        sudo sh $CATALINA_HOME/bin/shutdown.sh
+        ;;
+	restart)
+        sudo sh $CATALINA_HOME/bin/shutdown.sh
+        sudo sh $CATALINA_HOME/bin/startup.sh
+        ;;
+            
+	logs)
+        sudo tail -f $CATALINA_HOME/logs/catalina.out
+        ;;
+ *)
+    echo $"Tomcat: $0 {start|stop|restart|logs}"
+ ;;
+esac
+
+if [ $ERROR -gt 1 ]
+then
+    echo $ERROR
+fi
+}
