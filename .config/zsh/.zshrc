@@ -1,4 +1,3 @@
-<<<<<<< HEAD:.config/zsh/.zshrc
 source $HOME/.zplug/init.zsh
 source $HOME/.config/zsh/.myaliases
 source $HOME/.config/zsh/.myfunc
