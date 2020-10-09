@@ -51,12 +51,8 @@ alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
 # +-----+
 alias ec="nvim $XDG_CONFIG_HOME/zsh/.zshrc"      # open ~/.zshrc in using the default editor specified in $EDITOR
 alias sc="source $XDG_CONFIG_HOME/zsh/.zshrc"      # source ~/.zshrc
-<<<<<<< HEAD:.config/zsh/.myaliases
-alias scenv="source $HOME/.zshenv"      # source ~/.zshenv
+alias scenv="source /home/mdlima/.zshenv"      # source ~/.zshenv
 
-=======
-alias scenv="source $XDG_CONFIG_HOME/zsh/.zshenv"      # source ~/.zshenv
->>>>>>> 6d86e1a3707fe6a8f1f55f553e9caa024052a790:.myaliases
 # +------+
 # | Tmux |
 # +------+
@@ -138,6 +134,9 @@ alias exe='sudo chmod +x '
 
 alias font='fc-cache -f -v'
 
+alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias stow='sudo STOW_DIR=/usr/local/stow /usr/bin/stow'
+
 ########################################
 # [Security]                           #
 ########################################
@@ -215,8 +214,6 @@ alias nid='npm install --save-dev '     # install as a production dependency
 # +----------+
 #alias tc-start='/home/mdlima/apache-tomcat-9.0.38/bin/catalina.sh start'
 #alias tc-stop='/home/mdlima/apache-tomcat-9.0.38/bin/catalina.sh stop'
-<<<<<<< HEAD:.config/zsh/.myaliases
-
 
 # +----------+
 # | Mongo    |
@@ -234,8 +231,6 @@ alias mcl='mongo -u mdlima -p blackjack21 --authenticationDatabase admin'
 alias msvssl='mongod --tlsMode requireTLS --tlsCertificateKeyFile /home/mdlima/.certs/mongodb.pem --dbpath /home/mdlima/'
 
 alias mclssl=mongo --tls --tlsCAFile /home/mdlima/.certs/mongodb.pem --host localhost
-=======
->>>>>>> 6d86e1a3707fe6a8f1f55f553e9caa024052a790:.myaliases
 
 ########################################
 # [Audio/Video]                        #

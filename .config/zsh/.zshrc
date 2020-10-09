@@ -1,6 +1,4 @@
 source $HOME/.zplug/init.zsh
-source $HOME/.config/zsh/.myaliases
-source $HOME/.config/zsh/.myfunc
 
 # +------------+
 # | Exports    |
@@ -34,6 +32,8 @@ fi
 # Set name of the theme to load
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
+
+
 # +---------+
 # | Plugins |
 #-----------+
@@ -53,7 +53,4 @@ source $ZSH/oh-my-zsh.sh
 #----------------+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
-alias stow='sudo STOW_DIR=/usr/local/stow /usr/bin/stow'
 
-source /home/mdlima/.config/oh-my-zsh/oh-my-zsh.sh
