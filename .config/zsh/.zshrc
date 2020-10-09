@@ -6,10 +6,8 @@ source $HOME/.config/zsh/.myfunc
 # +------------+
 # | Exports    |
 #--------------+
-=======
 source $XDG_CONFIG_HOME/zsh/.myaliases
 source $XDG_CONFIG_HOME/zsh/.myfunc
->>>>>>> 6d86e1a3707fe6a8f1f55f553e9caa024052a790:.zshrc
 
 # +-------+
 # | Tmux |
@@ -49,11 +47,8 @@ plugins=(git
 	 zsh-autosuggestions
 )
 
-<<<<<<< HEAD:.config/zsh/.zshrc
 source $ZSH/oh-my-zsh.sh
 
-=======
->>>>>>> 6d86e1a3707fe6a8f1f55f553e9caa024052a790:.zshrc
 # +----------------+
 # | PowerLevel10k |
 #----------------+
