@@ -1,3 +1,4 @@
+<<<<<<< HEAD:.config/zsh/.zshrc
 source $HOME/.zplug/init.zsh
 source $HOME/.config/zsh/.myaliases
 source $HOME/.config/zsh/.myfunc
@@ -5,6 +6,10 @@ source $HOME/.config/zsh/.myfunc
 # +------------+
 # | Exports    |
 #--------------+
+=======
+source $XDG_CONFIG_HOME/zsh/.myaliases
+source $XDG_CONFIG_HOME/zsh/.myfunc
+>>>>>>> 6d86e1a3707fe6a8f1f55f553e9caa024052a790:.zshrc
 
 # +-------+
 # | Tmux |
@@ -14,36 +19,6 @@ if [ -z "$TMUX" ]
 then
     tmux attach -t TMUX || tmux new -s TMUX
 fi
-
-# +-------+
-# | ZPlug |
-#--------+
-
-ZPLUG_SUDO_PASSWORD=
-ZPLUG_PROTOCOL=ssh
-
-zplug "b4b4r07/ultimate", as:theme
-zplug 'b4b4r07/zplug-doctor', lazy:yes
-zplug 'b4b4r07/zplug-cd', lazy:yes
-zplug 'b4b4r07/zplug-rm', lazy:yes
-zplug "b4b4r07/enhancd", use:init.sh
-
-# zplug initialization
-[[ ! -f $ZPLUG_HOME/init.zsh ]] && git clone https://github.com/zplug/zplug $ZPLUG_HOME
-source $ZPLUG_HOME/init.zsh
-
-# do self-manage
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
-    echo
-fi
-
-zplug load
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -57,11 +32,10 @@ fi
 #-------+
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/mdlima/.oh-my-zsh"
+#export ZSH="/home/mdlima/.oh-my-zsh"
 
 # Set name of the theme to load
 ZSH_THEME="powerlevel10k/powerlevel10k"
-
 
 # +---------+
 # | Plugins |
@@ -75,8 +49,11 @@ plugins=(git
 	 zsh-autosuggestions
 )
 
+<<<<<<< HEAD:.config/zsh/.zshrc
 source $ZSH/oh-my-zsh.sh
 
+=======
+>>>>>>> 6d86e1a3707fe6a8f1f55f553e9caa024052a790:.zshrc
 # +----------------+
 # | PowerLevel10k |
 #----------------+
@@ -84,3 +61,5 @@ source $ZSH/oh-my-zsh.sh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias stow='sudo STOW_DIR=/usr/local/stow /usr/bin/stow'
+
+source /home/mdlima/.config/oh-my-zsh/oh-my-zsh.sh

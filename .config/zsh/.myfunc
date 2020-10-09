@@ -263,6 +263,11 @@ function fs() {
 # +-----------------------------+
 # | Image Edition 		|
 # +-----------------------------+
+<<<<<<< HEAD:.config/zsh/.myfunc
+=======
+# | Image Edition 		|
+# +-----------------------------+
+>>>>>>> 6d86e1a3707fe6a8f1f55f553e9caa024052a790:.myfunc
 
 # Get the selected img size
 imgsize() {
@@ -572,4 +577,7 @@ then
     echo $ERROR
 fi
 }
+<<<<<<< HEAD:.config/zsh/.myfunc
 
+=======
+>>>>>>> 6d86e1a3707fe6a8f1f55f553e9caa024052a790:.myfunc
