@@ -46,5 +46,5 @@ export CATALINA_HOME="/home/mdlima/apache-tomcat-9.0.38"
 # +-----------+
 # | Emacs     |
 # +-----------+
-export EMACS="/usr/bin/emacs"
-#export PATH="/usr/bin/emacs"
+export DOOM="/usr/bin/emacs"
+export DOOM_CONFIG="/home/mdlima/.config/doom"

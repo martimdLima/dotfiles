@@ -614,4 +614,48 @@ fi
 # +----------------+
 # | Docker         |
 # +----------------+
+dckr() {
+ERROR=0
+case "$1" in
+    search)
+        docker search ${2}
+        ;;
+    pull)
+        docker pull ${2}
+        ;;
+    images)
+        docker images
+        ;;
+    run)
+        docker run -d ${2}
+        ;;
+    containers)
+       docker ps
+      ;;
+    build)
+        docker build ${2}
+        ;;
+    delete)
+       docker container rm ${2}
+     ;;
+ *)
+    echo $"Usage: $0 {search|pull|images|run|containers|build|delete}"
+    echo $"Usage: $0 {For search|pull|run provide an <image-name>}"
+    echo $"Usage: $0 {For build provide an <dockerfile-location>}"
+    echo $"Usage: $0 {For delete provide an <container-ID>}"
+    tput setaf 1; echo $ $0 "search: {search through the available images at Docker hub}"
+    tput setaf 1; echo $ $0 "pull: {pull an image from the Docker Hub )}"
+    tput setaf 1; echo $ $0 "images: {check the available docker images on your system}"
+    tput setaf 1; echo $ $0 "run: {run an image}"
+    tput setaf 1; echo $ $0 "containers: {list all running containers}"
+    tput setaf 1; echo $ $0 "build: {build a container}"
+    tput setaf 1; echo $ $0 "delete: {delete a container)}"
 
+    ;;
+esac
+
+if [ $ERROR -gt 1 ]
+then
+    echo $ERROR
+fi
+}
