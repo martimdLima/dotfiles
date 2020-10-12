@@ -115,8 +115,7 @@ screenshot () {
     # Screenshot the entire screen
     if [ "$1" = "scr" ]; then import -format png -window root "${NAME}"; fi
 
-    # Screenshot a selected area
-    if [ "$1" = "area" ]; then import -format png "${NAME}"; fi
+    # Screenshot a selected area if [ "$1" = "area" ]; then import -format png "${NAME}"; fi
 
     if [[ $# = 0 ]]; then
         # Display a warning if no area defined
@@ -572,3 +571,47 @@ then
     echo $ERROR
 fi
 }
+
+
+# +----------------+
+# | Doom Emacs     |
+# +----------------+
+
+doom() {
+ERROR=0
+case "$1" in
+    sync)
+        ~/.emacs.d/bin/doom sync
+        ;;
+    upgrade)
+        ~/.emacs.d/bin/doom upgrade
+        ;;
+    doctor)
+        ~/.emacs.d/bin/doom doctor
+        ;;
+    env)
+        ~/.emacs.d/bin/doom env
+        ;;
+    build)
+        ~/.emacs.d/bin/doom build
+        ;;
+ *)
+    echo $"Usage: $0 {sync, upgrade, doctor, env, build}"
+    tput setaf 1; echo $"$0 sync: {synchronize your private config with Doom}"
+    tput setaf 1; echo $"$0 upgrade: {update Doom to the latest release & all installed packages}"
+    tput setaf 1; echo $"$0 doctor:{diagnose common issues with your system and config}"
+    tput setaf 1; echo $"$0 env: {dump a snapshot of your shell environment to a file that Doom will load at startup}"
+    tput setaf 1; echo $"$0 build: {recompile all installed packages}"
+ ;;
+esac
+
+if [ $ERROR -gt 1 ]
+then
+    echo $ERROR
+fi
+}
+
+# +----------------+
+# | Docker         |
+# +----------------+
+

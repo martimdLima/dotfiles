@@ -21,6 +21,7 @@ alias jctl="journalctl -p 3 -xb"      # get error messages from journalctl
 #alias yaysyu="yay -Syu --noconfirm"              # update standard pkgs and AUR pkgs
 #alias unlock="sudo rm /var/lib/pacman/db.lck"    # remove pacman lock
 #alias cleanup='sudo pacman -Rns $(pacman -Qtdq)' # remove orphaned packages
+alias spac='sudo pacman -S'
 
 # +-----------------+
 # | Mirror Updates |
