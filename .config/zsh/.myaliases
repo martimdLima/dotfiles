@@ -233,6 +233,12 @@ alias msvssl='mongod --tlsMode requireTLS --tlsCertificateKeyFile /home/mdlima/.
 
 alias mclssl=mongo --tls --tlsCAFile /home/mdlima/.certs/mongodb.pem --host localhost
 
+# +----------+
+# | React    |
+# +----------+
+# Create React app
+alias cra='create-react-app'
+
 ########################################
 # [Audio/Video]                        #
 ########################################
