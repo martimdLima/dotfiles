@@ -12,6 +12,7 @@ alias df="pydf"   # displays the amount of disk space available on the mounted f
 alias free='free -m'                      # show sizes in MB
 alias jctl="journalctl -p 3 -xb"      # get error messages from journalctl
 
+
 # +---------------------+
 # | App Updates        |
 # +-------------------+
@@ -23,6 +24,7 @@ alias jctl="journalctl -p 3 -xb"      # get error messages from journalctl
 #alias cleanup='sudo pacman -Rns $(pacman -Qtdq)' # remove orphaned packages
 alias spac='sudo pacman -S'
 
+
 # +-----------------+
 # | Mirror Updates |
 # +----------------+
@@ -31,14 +33,15 @@ alias spac='sudo pacman -S'
 #alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
 #alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
 
+
 # +--------------------------+
 # | Process Managment        |
 # +-------------------------+
-## get top process consuming memory
+# get top process consuming memory
 alias psmem='ps auxf | sort -nr -k 4'
 alias psmem10='ps auxf | sort -nr -k 4 | head -10'
 
-## get top process consuming CPU
+# get top process consuming CPU
 alias pscpu='ps auxf | sort -nr -k 3'
 alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
 
@@ -54,6 +57,7 @@ alias ec="nvim $XDG_CONFIG_HOME/zsh/.zshrc"      # open ~/.zshrc in using the de
 alias sc="source $XDG_CONFIG_HOME/zsh/.zshrc"      # source ~/.zshrc
 alias scenv="source /home/mdlima/.zshenv"      # source ~/.zshenv
 
+
 # +------+
 # | Tmux |
 # +------+
@@ -63,25 +67,44 @@ alias tmuxk='tmux kill-session -t'	# kill tmux session
 alias tmuxa='tmux attach -t'		# attach tmux session
 alias tmuxl='tmux list-sessions'	# list tmux sessions
 
+
+# +------+
+# | Vim  |
+# +------+
+alias vim="nvim"
+
+
+# +-----------+
+# | DoomEmacs |
+# +-----------+
+alias doomsync="~/.emacs.d/bin/doom sync"
+alias doomdoctor="~/.emacs.d/bin/doom doctor"
+alias doomupgrade="~/.emacs.d/bin/doom upgrade"
+alias doompurge="~/.emacs.d/bin/doom purge"
+
+
 ########################################
 # [System Managment]                   #
 ########################################
 
 # +---------+
-# | Ranger |
-# +-------+
+# | Ranger  |
+# +---------+
 alias rg="ranger"
 
+
 # +-------+
-# | Tree |
-# +-----+
+# | Tree  |
+# +-------+
 alias tree="colorls -t"
 alias t="tree"
+
 
 # +----------------+
 # | Silver Surfer |
 # +--------------+
 alias ag="ag --pager less"
+
 
 # +----+
 # | ls |
@@ -92,27 +115,41 @@ alias ag="ag --pager less"
 #alias la='ls -A'
 #alias l='ls -CF'
 
+
 # +----+
 # | exa |
 # +----+
-alias exl="exa -hbG --icons --color=automatic"
-alias exll="exa -lahbrG@ --icons --color=automatic"
-alias exls="exa --icons --color=automatic"
-alias exllm="exa -lbGd --sort=modified"
-alias exla="exa -albigmhHS --icons --color=automatic"
-alias exlx="exa -albigmhrHS --icons --color=automatic"
+# list all non-hidden files in a grid
+alias xlg='exa -Glbgh@ --color=automatic --icons --group-directories-first'
 
-alias lS='exa -1 --icons --color=automatic'
-alias lt='exa --tree --level=2'
+# list all non-hidden files in a list
+alias xll='exa -lbgh@ --color=automatic --icons --group-directories-first'
+
+#list all non-hiden files across
+alias xla='exa -xbgh@ --color=automatic --icons --group-directories-first'
+
+
+#list all hiden files
+alias xlh='exa -labgh@ --color=automatic --sort=type --icons --group-directories-first' | egrep "^\."  
+
+# list all files in a grid
+alias xlag='exa -Glabgh@ --color=automatic --sort=type --icons --group-directories-first'
+
+# list all files in a list
+alias xlal='exa -labgh@ --color=automatic --sort=type --icons --group-directories-first'
+
+#list all files across
+alias xlaa='exa -xabgh@ --color=automatic --sort=type --icons --group-directories-first'
+
 
 # +----+
 # | cp |
 # +----+
-
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias rm='rm -i'
 alias la='ls -alh'
+
 
 # +------+
 # | grep |
@@ -121,10 +158,12 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
+
 # +-------+
 # | XClip |
 # +------+
 alias xclip="xclip -selection clipboard"
+
 
 # +-------+
 # | Chmod |
@@ -138,6 +177,7 @@ alias font='fc-cache -f -v'
 alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias stow='sudo STOW_DIR=/usr/local/stow /usr/bin/stow'
 
+
 ########################################
 # [Security]                           #
 ########################################
@@ -147,11 +187,13 @@ alias stow='sudo STOW_DIR=/usr/local/stow /usr/bin/stow'
 # +---------------+
 alias genpass="openssl rand -base64 20";
 
+
 # +-----------------+
 # | gpg encryption |
 # +---------------+
 alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify"     # verify signature for isos
 alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys"      # receive the key of a developer
+
 
 ########################################
 # [Networking]                         #
@@ -164,11 +206,13 @@ alias tb="nc termbin.com 9999" # display the terminal output on termbin
 
 alias speed_test='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test10.zip' # measure the internet speed
 
+
 # +-------------------+
 # | ping             |
 # +-----------------+
 alias pg='ping 8.8.8.8' # ping
 alias pingg="hostname -I && curl ipinfo.io/ip && ping -c 5 -q google.com" # ping google
+
 
 # +-------------------+
 # | Ip               |
@@ -178,43 +222,69 @@ alias ipm="curl https://ipinfo.io/what-is-my-ip; echo"      # My ip
 
 alias netdev="sudo lshw -class network -short"      # List network devices
 
+
 # +-------------------+
 # | ports             |
 # +-------------------+
 alias portss="sudo ss -tunlp | grep LISTEN | fzf;"
 alias portlsof="sudo lsof -nP -iTCP -sTCP:LISTEN"
 
+
 # +-------------------+
 # | wget              |
 # +-------------------+
 alias wget="wget --hsts-file="$XDG_CACHE_HOME/wget-hsts""
+
 
 ########################################
 # [Databases]                          #
 ########################################
 
 # +----------+
-# | MariaDB |
-# +--------+
+# | MariaDB  |
+# +----------+
 #alias mdstatus='systemctl status mariadb'     #Status
 #alias mdstart='systemctl start mariadb'     # Start
 #alias mdstop='systemctl stop mariadb'     # Stop
+
 
 ########################################
 # [software Development]               #
 ########################################
 
 # +----------+
+# | Git      |
+# +----------+
+alias addup='git add -u' # Updates the index
+alias addall='git add .' # Adds all
+alias branch='git branch' # Create a new Branch
+alias checkout='git checkout' # Checkout Branch
+alias clone='git clone' # Clone
+alias commit='git commit -m' # Commit new changes
+alias fetch='git fetch' # Fetch new changes
+alias pullorigin='git pull origin' # Pull changes from Origin 
+alias pushorigin='git push origin' # Push changes to Origin
+alias pull='git pull' # Pull changes to a certain  branch
+alias pushorigin='git push' # Push changes to a certain  branch
+alias stat='git status'  # 'status' is protected name so using 'stat' instead
+alias tag='git tag' # Tag a commit
+alias newtag='git tag -a' # Create a new Tag
+
+
+# +----------+
 # | Nodejs   |
 # +----------+
-alias nis='npm install --save ' # install as a production dependency
-alias nid='npm install --save-dev '     # install as a production dependency
+alias nis='npm install --save ' # install as a local production dependency
+alias nid='npm install --save-dev '     # install as a development dependency
+alias nig='npm install --global' #install as a global dependency
+
 
 # +----------+
 # | TomCat   |
 # +----------+
 #alias tc-start='/home/mdlima/apache-tomcat-9.0.38/bin/catalina.sh start'
 #alias tc-stop='/home/mdlima/apache-tomcat-9.0.38/bin/catalina.sh stop'
+
 
 # +----------+
 # | Mongo    |
@@ -233,6 +303,22 @@ alias msvssl='mongod --tlsMode requireTLS --tlsCertificateKeyFile /home/mdlima/.
 
 alias mclssl=mongo --tls --tlsCAFile /home/mdlima/.certs/mongodb.pem --host localhost
 
+
+# +----------+
+# | React    |
+# +----------+
+# Create React app
+alias cra='create-react-app'
+alias cna='create-next-app --use-npm'
+
+
+# +----------+
+# | Vue      |
+# +----------+
+# Create Vue app
+alias vca="vue create" 
+
+
 ########################################
 # [Audio/Video]                        #
 ########################################
@@ -243,6 +329,7 @@ alias mclssl=mongo --tls --tlsCAFile /home/mdlima/.certs/mongodb.pem --host loca
 alias yv='youtube-viewer'     # start
 alias yvt='killall youtube-viewer'      # youtube-viewer stop
 alias yvchls="tput setaf 1; cat .yt-channels"     # Channel List
+
 
 # +-------------------+
 # | youtube-download |
@@ -256,14 +343,12 @@ alias yvchls="tput setaf 1; cat .yt-channels"     # Channel List
 #alias yta-vorbis="youtube-dl --extract-audio --audio-format vorbis " # Download audio in vorbis format
 #alias yta-wav="youtube-dl --extract-audio --audio-format wav " # Download audio in wav format
 
-########################################
-# [Audio/Video]                        #
-########################################
 
 # +-------------------+
-# | dot-files       |
-# +-----------------+
+# | dot-files         |
+# +-------------------+
 #alias config="/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME"     # bare git repo alias for dotfiles
+
 
 ########################################
 # [Just for fun]                       #

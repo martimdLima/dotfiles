@@ -614,28 +614,43 @@ fi
 # +----------------+
 # | Docker         |
 # +----------------+
-dckr() {
+dkr() {
 ERROR=0
 case "$1" in
+    version)
+        docker version
+        ;;
+    info)
+        docker info
+        ;;
+    logs)
+        docker container logs
+        ;;
+    procs)
+        docker container top ${2}
+        ;;
     search)
         docker search ${2}
         ;;
     pull)
         docker pull ${2}
         ;;
+    list)
+       docker container ls
+      ;;
     images)
         docker images
         ;;
     run)
         docker run -d ${2}
         ;;
-    containers)
-       docker ps
-      ;;
+    stop)
+        docker stop ${2}
+        ;;
     build)
         docker build ${2}
         ;;
-    delete)
+    rmv)
        docker container rm ${2}
      ;;
  *)
@@ -643,6 +658,8 @@ case "$1" in
     echo $"Usage: $0 {For search|pull|run provide an <image-name>}"
     echo $"Usage: $0 {For build provide an <dockerfile-location>}"
     echo $"Usage: $0 {For delete provide an <container-ID>}"
+    tput setaf 1; echo $ $0 "version: {displays the version of both server and client}}"
+    tput setaf 1; echo $ $0 "info: {displays a detailed list of informations about the server and client}"
     tput setaf 1; echo $ $0 "search: {search through the available images at Docker hub}"
     tput setaf 1; echo $ $0 "pull: {pull an image from the Docker Hub )}"
     tput setaf 1; echo $ $0 "images: {check the available docker images on your system}"
@@ -659,3 +676,75 @@ then
     echo $ERROR
 fi
 }
+
+# +----------------+
+# | Network        |
+# +----------------+
+
+# Check ports in use
+
+prts() {
+ERROR=0
+case "$1" in
+    a)
+  	sudo lsof -i -P -n | grep LISTEN
+        ;;
+    p)
+	sudo lsof -i:${2}
+	;;
+    ip)
+    sudo nmap -sTU -O ${2}
+    ;;
+ *)
+    echo $"Usage: $0 {a|p|ip}"
+    tput setaf 1; echo $ $0 "a: {displays all ports that are in use}}"
+    tput setaf 1; echo $ $0 "p: {displays the services that are using the specified port}"
+    tput setaf 1; echo $ $0 "ip: {displays all ports that are in use for the specified ip address}"
+    ;;
+esac
+
+if [ $ERROR -gt 1 ]
+then
+    echo $ERROR
+fi
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
