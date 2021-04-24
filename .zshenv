@@ -20,7 +20,7 @@ export VISUAL="nvim"
 # +----------+
 # | Git      |
 # +----------+
-export GIT_CONFIG="XDG_CONFIG_HOME/git/config"
+export GIT_CONFIG="$XDG_CONFIG_HOME/git/.gitconfig"
 
 # +----------+
 # | Zsh      |
@@ -35,7 +35,7 @@ export SAVEHIST=10000                   # Maximum events in history file
 # +----------+
 # | Deno     |
 # +----------+
-export DENO_INSTALL="/home/$USER/.deno"
+#export DENO_INSTALL="/home/$USER/.deno"
 #export PATH="$DENO_INSTALL/bin:$PATH"
 
 # +----------+
