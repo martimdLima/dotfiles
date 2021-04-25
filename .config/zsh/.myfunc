@@ -1,6 +1,6 @@
 # +-------------------+
-# | System Functions |
-# +-----------------+
+# | System Functions  |
+# +-------------------+
 
 # Menu for shutting down, rebooting or suspending the system
 sys() {
@@ -90,7 +90,7 @@ historystat() {
 
 # +---------+
 # | Display |
-# +--------+
+# +---------+
 
 # Get Screen Resolution
 screenres() {
@@ -163,7 +163,7 @@ done | awk "$awkscript"
 
 # +--------------------+
 # | Directory Creation |
-# +-------------------+
+# +--------------------+
 
 # Makes a directory with the given name and cd's into it
 mkcd() {
@@ -412,24 +412,29 @@ webmify(){
 ytv() {
 ERROR=0
 case "$1" in
+    sh)
+        #cat /home/mdlima/.config/zsh/.yt-channelsv2 | sed -n "${2},${2}p" | awk -F/ '{print $2}' | xargs youtube-viewer -sc
+	youtube-viewer -sc
+        ;;
     ch)
-        cat .yt-channels | sed -n "${2},${2}p" | awk -F- '{print $2}' | xargs youtube-viewer -sc
+        cat /home/mdlima/.config/zsh/.yt-channelsv2 | sed -n "${2},${2}p" | awk -F/ '{print $2}' | xargs youtube-viewer -uv
         ;;
     pl)
-        cat .yt-channels | sed -n "${2},${2}p" | awk -F- '{print $3}' | xargs youtube-viewer -up
+        cat /home/mdlima/.config/zsh/.yt-channelsv2 | sed -n "${2},${2}p" | awk -F/ '{print $3}' | xargs youtube-viewer -up
         ;;
     rc)
         youtube-viewer -SV -results="${2}"
         ;;  
     schls)
-        grep "${2}" .yt-channels 
+        grep "${2}" /home/mdlima/.config/zsh/.yt-channelsv2
         ;;
     chls)
-       tput setaf 1; cat .yt-channels
+       tput setaf 1; cat /home/mdlima/.config/zsh/.yt-channelsv2 | awk -F/ '{print NR " - " $2 " - " $3}'
       ;;
  *)
     echo $"Usage: $0 {ch|pl|rc|schls|chls}"
     echo $"Usage: $0 {Provide an int arg to the first three options}"
+    tput setaf 1; echo $ $0 "sh: {Search channels}"
     tput setaf 1; echo $ $0 "ch: {Display Videos from the choosen channel}"
     tput setaf 1; echo $ $0 "pl: {Display playlists from the choosen channel)}"
     tput setaf 1; echo $ $0 "rc: {Display the choosen amount of recent videos(limit 50!)}"

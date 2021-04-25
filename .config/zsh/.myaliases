@@ -3,8 +3,8 @@
 ########################################
 
 # +-------------------+
-# | System Info      |
-# +-----------------+
+# | System Info       |
+# +-------------------+
 alias distro='cat /etc/*-release'   # Distro Info
 alias bigf= 'find / -xdev -type f -size +500M'  # display "big" files > 500M
 alias df="pydf"   # displays the amount of disk space available on the mounted filesystems
@@ -14,8 +14,8 @@ alias jctl="journalctl -p 3 -xb"      # get error messages from journalctl
 
 
 # +---------------------+
-# | App Updates        |
-# +-------------------+
+# | App Updates         |
+# +---------------------+
 #alias updt='sudo pacman -Syu' # System Update
 #alias updtf='sudo pacman -Syyu'   # Full System Update (includes mirror updates)
 #alias yaysua="yay -Sua --noconfirm"              # update only AUR pkgs
@@ -23,15 +23,6 @@ alias jctl="journalctl -p 3 -xb"      # get error messages from journalctl
 #alias unlock="sudo rm /var/lib/pacman/db.lck"    # remove pacman lock
 #alias cleanup='sudo pacman -Rns $(pacman -Qtdq)' # remove orphaned packages
 alias spac='sudo pacman -S'
-
-
-# +-----------------+
-# | Mirror Updates |
-# +----------------+
-#alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
-#alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
-#alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
-#alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
 
 
 # +--------------------------+
@@ -74,15 +65,6 @@ alias tmuxl='tmux list-sessions'	# list tmux sessions
 alias vim="nvim"
 
 
-# +-----------+
-# | DoomEmacs |
-# +-----------+
-alias doomsync="~/.emacs.d/bin/doom sync"
-alias doomdoctor="~/.emacs.d/bin/doom doctor"
-alias doomupgrade="~/.emacs.d/bin/doom upgrade"
-alias doompurge="~/.emacs.d/bin/doom purge"
-
-
 ########################################
 # [System Managment]                   #
 ########################################
@@ -101,8 +83,8 @@ alias t="tree"
 
 
 # +----------------+
-# | Silver Surfer |
-# +--------------+
+# | Silver Surfer  |
+# +----------------+
 alias ag="ag --pager less"
 
 
@@ -116,9 +98,9 @@ alias ag="ag --pager less"
 #alias l='ls -CF'
 
 
-# +----+
+# +-----+
 # | exa |
-# +----+
+# +-----+
 # list all non-hidden files in a grid
 alias xlg='exa -Glbgh@ --color=automatic --icons --group-directories-first'
 
@@ -183,14 +165,14 @@ alias stow='sudo STOW_DIR=/usr/local/stow /usr/bin/stow'
 ########################################
 
 # +-----------------+
-# |  OpenSSL       |
-# +---------------+
+# |  OpenSSL        |
+# +-----------------+
 alias genpass="openssl rand -base64 20";
 
 
 # +-----------------+
-# | gpg encryption |
-# +---------------+
+# | gpg encryption  |
+# +-----------------+
 alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify"     # verify signature for isos
 alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys"      # receive the key of a developer
 
@@ -215,8 +197,8 @@ alias pingg="hostname -I && curl ipinfo.io/ip && ping -c 5 -q google.com" # ping
 
 
 # +-------------------+
-# | Ip               |
-# +-----------------+
+# | Ip                |
+# +-------------------+
 alias ipc='ifconfig'      #Ip config
 alias ipm="curl https://ipinfo.io/what-is-my-ip; echo"      # My ip
 
@@ -309,6 +291,12 @@ alias mclssl=mongo --tls --tlsCAFile /home/mdlima/.certs/mongodb.pem --host loca
 # +----------+
 # Create React app
 alias cra='create-react-app'
+
+
+# +----------+
+# | Next.js  |
+# +----------+
+# Create Next app
 alias cna='create-next-app --use-npm'
 
 
