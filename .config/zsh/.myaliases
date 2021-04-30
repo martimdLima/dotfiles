@@ -16,18 +16,11 @@ alias jctl="journalctl -p 3 -xb"      # get error messages from journalctl
 # +---------------------+
 # | App Updates         |
 # +---------------------+
-#alias updt='sudo pacman -Syu' # System Update
-#alias updtf='sudo pacman -Syyu'   # Full System Update (includes mirror updates)
-#alias yaysua="yay -Sua --noconfirm"              # update only AUR pkgs
-#alias yaysyu="yay -Syu --noconfirm"              # update standard pkgs and AUR pkgs
-#alias unlock="sudo rm /var/lib/pacman/db.lck"    # remove pacman lock
-#alias cleanup='sudo pacman -Rns $(pacman -Qtdq)' # remove orphaned packages
-alias spac='sudo pacman -S'
 
 
 # +--------------------------+
 # | Process Managment        |
-# +-------------------------+
+# +--------------------------+
 # get top process consuming memory
 alias psmem='ps auxf | sort -nr -k 4'
 alias psmem10='ps auxf | sort -nr -k 4 | head -10'
@@ -65,6 +58,15 @@ alias tmuxl='tmux list-sessions'	# list tmux sessions
 alias vim="nvim"
 
 
+# +--------------------------+
+# | Shortcuts		     |
+# +--------------------------+
+alias prog='/home/mdlima/Documents/programming/'
+alias repos='/home/mdlima/Documents/programming/repositories'  
+alias work='/home/mdlima/Documents/programming/work' 
+alias conf='/home/mdlima/.config/'
+
+
 ########################################
 # [System Managment]                   #
 ########################################
@@ -78,8 +80,7 @@ alias rg="ranger"
 # +-------+
 # | Tree  |
 # +-------+
-alias tree="colorls -t"
-alias t="tree"
+#alias tls="colorls -t"
 
 
 # +----------------+
@@ -91,11 +92,11 @@ alias ag="ag --pager less"
 # +----+
 # | ls |
 # +----+
-#alias lsl='ls -l'
-#alias ll='ls -lahF --group-directories-first'
-#alias lls='ls -lahFtr'
-#alias la='ls -A'
-#alias l='ls -CF'
+alias lsl='ls -l'
+alias ll='ls -lahF --group-directories-first'
+alias lls='ls -lahFtr'
+alias la='ls -A'
+alias l='ls -CF'
 
 
 # +-----+
@@ -192,8 +193,8 @@ alias speed_test='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloa
 # +-------------------+
 # | ping             |
 # +-----------------+
-alias pg='ping 8.8.8.8' # ping
-alias pingg="hostname -I && curl ipinfo.io/ip && ping -c 5 -q google.com" # ping google
+alias pg='ping' $1 # ping
+alias pingg="hostname -i && curl ipinfo.io/ip && ping -c 5 -q $1" # ping google
 
 
 # +-------------------+
@@ -254,18 +255,23 @@ alias newtag='git tag -a' # Create a new Tag
 
 
 # +----------+
+# | IntelliJ |
+# +----------+
+alias intelli='/opt/idea-IU/bin/idea.sh'
+
+
+# +---------------+
+# | JasperReports |
+# +---------------+
+alias jreport='/opt/jaspersoftstudio_6.8.0/runjss.sh'
+
+
+# +----------+
 # | Nodejs   |
 # +----------+
 alias nis='npm install --save ' # install as a local production dependency
 alias nid='npm install --save-dev '     # install as a development dependency
 alias nig='npm install --global' #install as a global dependency
-
-
-# +----------+
-# | TomCat   |
-# +----------+
-#alias tc-start='/home/mdlima/apache-tomcat-9.0.38/bin/catalina.sh start'
-#alias tc-stop='/home/mdlima/apache-tomcat-9.0.38/bin/catalina.sh stop'
 
 
 # +----------+
@@ -283,7 +289,7 @@ alias mcl='mongo -u mdlima -p blackjack21 --authenticationDatabase admin'
 # ssl/tsl encrypted connection
 alias msvssl='mongod --tlsMode requireTLS --tlsCertificateKeyFile /home/mdlima/.certs/mongodb.pem --dbpath /home/mdlima/'
 
-alias mclssl=mongo --tls --tlsCAFile /home/mdlima/.certs/mongodb.pem --host localhost
+alias mclssl='mongo --tls --tlsCAFile /home/mdlima/.certs/mongodb.pem --host localhost'
 
 
 # +----------+
@@ -311,35 +317,9 @@ alias vca="vue create"
 # [Audio/Video]                        #
 ########################################
 
-# +----------------+
-# | youtube-viewer |
-# +----------------+
-alias yv='youtube-viewer'     # start
-alias yvt='killall youtube-viewer'      # youtube-viewer stop
-alias yvchls="tput setaf 1; cat .yt-channels"     # Channel List
-
-
-# +-------------------+
-# | youtube-download |
-# +-----------------+
-#alias yta-aac="youtube-dl --extract-audio --audio-format aac " # Download audio in aac format
-#alias yta-best="youtube-dl --extract-audio --audio-format best " # Download audio in the best format available
-#alias yta-flac="youtube-dl --extract-audio --audio-format flac " # Download audio in flac format
-#alias yta-m4a="youtube-dl --extract-audio --audio-format m4a " # Download audio in mp4 format
-#alias yta-mp3="youtube-dl --extract-audio --audio-format mp3 " # Download audio in mp3 format
-#alias yta-opus="youtube-dl --extract-audio --audio-format opus " # Download audio in opus format
-#alias yta-vorbis="youtube-dl --extract-audio --audio-format vorbis " # Download audio in vorbis format
-#alias yta-wav="youtube-dl --extract-audio --audio-format wav " # Download audio in wav format
-
-
-# +-------------------+
-# | dot-files         |
-# +-------------------+
-#alias config="/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME"     # bare git repo alias for dotfiles
-
 
 ########################################
-# [Just for fun]                       #
+# [lulz]	                       #
 ########################################
 alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'     # the terminal rickroll
 

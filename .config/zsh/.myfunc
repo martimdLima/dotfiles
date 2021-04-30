@@ -69,10 +69,6 @@ then
 fi
 }
 
-# Measures the speed of openning a new prompt
-#promptspeed() {
-#    for i in $(seq 1 10); do /usr/bin/time zsh -i -c exit; done
-#}
 
 # Generate SSH key
 ssh-create() {
@@ -82,6 +78,7 @@ then
     chmod 700 $HOME/.ssh/$1*
 fi
 }
+
 
 # Command History
 historystat() {
@@ -364,7 +361,7 @@ imgwebp() {
 # +----------------+
 # | Video Edition  |
 # +----------------+
-
+# turn a video into gif.
 gifify() {
   if [[ -n "$1" ]]; then
 	if [[ $2 == '--good' ]]; then
@@ -379,7 +376,7 @@ gifify() {
   fi
 }
 
-# turn that video into webm.
+# turn a video into webm.
 # brew reinstall ffmpeg --with-libvpx
 webmify(){
 	ffmpeg -i "$1" -vcodec libvpx -acodec libvorbis -isync -copyts -aq 80 -threads 3 -qmax 30 -y "$2" "$1.webm"
@@ -389,35 +386,14 @@ webmify(){
 # | youtube-viewer |
 # +---------------+
 
-# Channel Search
-#yv-ch() {
-#    cat .yt-channels | sed -n "${1},${1}p" | awk -F- '{print $2}' | xargs youtube-viewer -sc
-#}
-
-# Playlist Search
-#yv-pl() {
-#    cat .yt-channels | sed -n "${1},${1}p" | awk -F- '{print $3}' | xargs youtube-viewer -up
-#}
-
-# Get the designated number of recent videos from Subscriptions
-# (limited to 50, attention, this operation takes some time)
-#yv-rc() {
-#    youtube-viewer -SV -results=${1}
-#}
-
-#yv-chsc() {
-#	grep "${1}" .yt-channels 
-#}
-
 ytv() {
 ERROR=0
 case "$1" in
     sh)
-        #cat /home/mdlima/.config/zsh/.yt-channelsv2 | sed -n "${2},${2}p" | awk -F/ '{print $2}' | xargs youtube-viewer -sc
-	youtube-viewer -sc
+        cat /home/mdlima/.config/zsh/.yt-channelsv2 | sed -n "${2},${2}p" | awk -F/ '{print $2}' | xargs youtube-viewer -sc
         ;;
     ch)
-        cat /home/mdlima/.config/zsh/.yt-channelsv2 | sed -n "${2},${2}p" | awk -F/ '{print $2}' | xargs youtube-viewer -uv
+        cat /home/mdlima/.config/zsh/.yt-channelsv2 | sed -n "${2},${2}p" | awk -F/ '{print $3}' | xargs youtube-viewer -uv
         ;;
     pl)
         cat /home/mdlima/.config/zsh/.yt-channelsv2 | sed -n "${2},${2}p" | awk -F/ '{print $3}' | xargs youtube-viewer -up
@@ -426,14 +402,14 @@ case "$1" in
         youtube-viewer -SV -results="${2}"
         ;;  
     schls)
-        grep "${2}" /home/mdlima/.config/zsh/.yt-channelsv2
+        cat /home/mdlima/.config/zsh/.yt-channelsv2 | awk -F/ '{print NR " - " $2 " - " $3}' | grep "${2}" 
         ;;
     chls)
        tput setaf 1; cat /home/mdlima/.config/zsh/.yt-channelsv2 | awk -F/ '{print NR " - " $2 " - " $3}'
       ;;
  *)
     echo $"Usage: $0 {ch|pl|rc|schls|chls}"
-    echo $"Usage: $0 {Provide an int arg to the first three options}"
+    echo $"Usage: $0 {Provide an int arg to the first three options, use chls or schls to search through the args}"
     tput setaf 1; echo $ $0 "sh: {Search channels}"
     tput setaf 1; echo $ $0 "ch: {Display Videos from the choosen channel}"
     tput setaf 1; echo $ $0 "pl: {Display playlists from the choosen channel)}"
