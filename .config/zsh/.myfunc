@@ -18,7 +18,7 @@ case "$1" in
     echo $"Suspending System"
         systemctl suspend
         ;;
-            
+
  *)
     echo $"Usage: $0 {stop|reboot|suspend}"
  ;;
@@ -30,7 +30,48 @@ then
 fi
 }
 
-# Menu with various options to update the System
+# Menu with various options to manage wireless connections
+wcmanager() {
+ERROR=0
+case "$1" in
+    connect)
+        nmcli radio wifi on
+        ;;
+    disconnect)
+    nmcli radio wifi off
+    ;;
+    restart)
+    nmcli radio wifi off
+    nmcli radio wifi on
+    ;;
+    connectHome)
+        nmcli c up Vodafone-B1E257_RPT
+        ;;
+    disconnectHome)
+        nmcli c down Vodafone-B1E257_RPT
+        ;;
+    restartHome)
+        nmcli c down Vodafone-B1E257_RPT
+        nmcli c up Vodafone-B1E257_RPT
+        ;;
+ *)
+    echo $"Usage: $0 {system|full|pkgs|aur|unlock|cleanup}"
+    tput setaf 1; echo $"$0 connect: {Start wireless connections}"
+    tput setaf 1; echo $"$0 disconnect: {Disconnect wireless connections}"
+    tput setaf 1; echo $"$0 restart:  {Restart wireless connections}"
+    tput setaf 1; echo $"$0 connect: {Connect to Home Network}"
+    tput setaf 1; echo $"$0 disconnect: {Disconnect from Home Network}"
+    tput setaf 1; echo $"$0 restart:{Restart Home Network}"
+ ;;
+esac
+
+if [ $ERROR -gt 1 ]
+then
+    echo $ERROR
+fi
+}
+
+# Menu with various options to update System
 sysupdt() {
 ERROR=0
 case "$1" in
@@ -41,17 +82,17 @@ case "$1" in
         sudo pacman -Syyu
         ;;
     pkgs)
-        yay -Syu --noconfirm 
-        ;;  
+        yay -Syu --noconfirm
+        ;;
     aur)
         yay -Sua --noconfirm
-        ;;  
+        ;;
     unlock)
         sudo rm /var/lib/pacman/db.lck
-        ;;  
+        ;;
     cleanup)
         sudo pacman -Rns $(pacman -Qtdq)
-        ;;  
+        ;;
  *)
     echo $"Usage: $0 {system|full|pkgs|aur|unlock|cleanup}"
     tput setaf 1; echo $"$0 system: {System Update}"
@@ -257,7 +298,7 @@ function fs() {
 }
 
 # +-----------------------------+
-# | Image Edition 		|
+# | Image Edition 		        |
 # +-----------------------------+
 
 # Get the selected img size
@@ -317,12 +358,6 @@ Imgoptimize() {
 imgoptimizeall() {
     for f in *.${1}; do
         imgoptimize "$f"
-    done
-}
-
-Imgoptimizeall() {
-    for f in *.${1}; do
-        Imgoptimize "$f"
     done
 }
 
@@ -400,9 +435,9 @@ case "$1" in
         ;;
     rc)
         youtube-viewer -SV -results="${2}"
-        ;;  
+        ;;
     schls)
-        cat /home/mdlima/.config/zsh/.yt-channelsv2 | awk -F/ '{print NR " - " $2 " - " $3}' | grep "${2}" 
+        cat /home/mdlima/.config/zsh/.yt-channelsv2 | awk -F/ '{print NR " - " $2 " - " $3}' | grep "${2}"
         ;;
     chls)
        tput setaf 1; cat /home/mdlima/.config/zsh/.yt-channelsv2 | awk -F/ '{print NR " - " $2 " - " $3}'
@@ -456,22 +491,22 @@ case "$1" in
         ;;
     flac)
         youtube-dl --extract-audio --audio-format aac "$2"
-        ;;  
+        ;;
     m4a)
         youtube-dl --extract-audio --audio-format aac "$2"
-        ;;  
+        ;;
     mp3)
         youtube-dl --extract-audio --audio-format aac "$2"
-        ;;  
+        ;;
     opus)
         youtube-dl --extract-audio --audio-format aac "$2"
-        ;;  
+        ;;
     vorbis)
         youtube-dl --extract-audio --audio-format aac "$2"
-        ;;  
+        ;;
     wav)
         youtube-dl --extract-audio --audio-format aac "$2"
-        ;;      
+        ;;
  *)
     echo $"youtube-dl: $0 {best|aac|flac|m4a|mp3|opus|vorbis|wav}"
     echo $"Usage: $0 {Please provide a link after the choosen option}"
@@ -507,7 +542,7 @@ case "$1" in
     echo $"MariaDB Service Status"
     systemctl status mariadb
         ;;
-            
+
  *)
     echo $"MariaDB: $0 {start|stop|restarting|status}"
  ;;
@@ -538,7 +573,7 @@ case "$1" in
         sudo sh $CATALINA_HOME/bin/shutdown.sh
         sudo sh $CATALINA_HOME/bin/startup.sh
         ;;
-            
+
 	logs)
         sudo tail -f $CATALINA_HOME/logs/catalina.out
         ;;
@@ -689,43 +724,3 @@ then
     echo $ERROR
 fi
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
