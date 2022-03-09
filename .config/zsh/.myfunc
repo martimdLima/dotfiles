@@ -10,11 +10,11 @@ case "$1" in
         echo $"Shutting Down System"
         systemctl poweroff
         ;;
-	reboot)
+    reboot)
     echo $"Rebooting the System"
         systemctl reboot
         ;;
-	suspend)
+    suspend)
     echo $"Suspending System"
         systemctl suspend
         ;;
@@ -30,48 +30,7 @@ then
 fi
 }
 
-# Menu with various options to manage wireless connections
-wcmanager() {
-ERROR=0
-case "$1" in
-    connect)
-        nmcli radio wifi on
-        ;;
-    disconnect)
-    nmcli radio wifi off
-    ;;
-    restart)
-    nmcli radio wifi off
-    nmcli radio wifi on
-    ;;
-    connectHome)
-        nmcli c up Vodafone-B1E257_RPT
-        ;;
-    disconnectHome)
-        nmcli c down Vodafone-B1E257_RPT
-        ;;
-    restartHome)
-        nmcli c down Vodafone-B1E257_RPT
-        nmcli c up Vodafone-B1E257_RPT
-        ;;
- *)
-    echo $"Usage: $0 {system|full|pkgs|aur|unlock|cleanup}"
-    tput setaf 1; echo $"$0 connect: {Start wireless connections}"
-    tput setaf 1; echo $"$0 disconnect: {Disconnect wireless connections}"
-    tput setaf 1; echo $"$0 restart:  {Restart wireless connections}"
-    tput setaf 1; echo $"$0 connect: {Connect to Home Network}"
-    tput setaf 1; echo $"$0 disconnect: {Disconnect from Home Network}"
-    tput setaf 1; echo $"$0 restart:{Restart Home Network}"
- ;;
-esac
-
-if [ $ERROR -gt 1 ]
-then
-    echo $ERROR
-fi
-}
-
-# Menu with various options to update System
+# Menu with various options to update the System
 sysupdt() {
 ERROR=0
 case "$1" in
@@ -132,7 +91,37 @@ historystat() {
 
 # Get Screen Resolution
 screenres() {
-    [ ! -z $1 ] && xrandr --current | grep '*' | awk '{print $1}' | line $1
+    xrandr --current | grep '*' | awk '{print $1}'
+}
+
+# +----------------+
+# | Network        |
+# +----------------+
+
+prts() {
+ERROR=0
+case "$1" in
+    a)
+    sudo lsof -i -P -n | grep LISTEN
+        ;;
+    p)
+    sudo lsof -i:${2}
+    ;;
+    ip)
+    sudo nmap -sTU -O ${2}
+    ;;
+ *)
+    echo $"Usage: $0 {a|p|ip}"
+    tput setaf 1; echo $ $0 "a: {displays all ports that are in use}}"
+    tput setaf 1; echo $ $0 "p: {displays the services that are using the specified port}"
+    tput setaf 1; echo $ $0 "ip: {displays all ports that are in use for the specified ip address}"
+    ;;
+esac
+
+if [ $ERROR -gt 1 ]
+then
+    echo $ERROR
+fi
 }
 
 # Screenshot
@@ -233,7 +222,7 @@ mkmv() {
 
 # +-----------------------------+
 # | File Extraction/Compression |
-# +----------------------------+
+# +-----------------------------+
 
 # Extraction
 extract() {
@@ -285,20 +274,20 @@ compress() {
 }
 
 function fs() {
-	if du -b /dev/null > /dev/null 2>&1; then
-		local arg=-sbh;
-	else
-		local arg=-sh;
-	fi
-	if [[ -n "$@" ]]; then
-		du $arg -- "$@";
-	else
-		du $arg .[^.]* ./*;
-	fi;
+    if du -b /dev/null > /dev/null 2>&1; then
+        local arg=-sbh;
+    else
+        local arg=-sh;
+    fi
+    if [[ -n "$@" ]]; then
+        du $arg -- "$@";
+    else
+        du $arg .[^.]* ./*;
+    fi;
 }
 
 # +-----------------------------+
-# | Image Edition 		        |
+# | Image Edition               |
 # +-----------------------------+
 
 # Get the selected img size
@@ -361,6 +350,12 @@ imgoptimizeall() {
     done
 }
 
+Imgoptimizeall() {
+    for f in *.${1}; do
+        Imgoptimize "$f"
+    done
+}
+
 # Conver img to jpg
 imgconvjpg() {
     if [ ! -z "$1" ];
@@ -394,47 +389,54 @@ imgwebp() {
 }
 
 # +----------------+
-# | Video Edition  |
+# | Media          |
 # +----------------+
-# turn a video into gif.
+
+# This function turns a video into gif.
+## args - $1 - file path
+
 gifify() {
   if [[ -n "$1" ]]; then
-	if [[ $2 == '--good' ]]; then
-	  ffmpeg -i "$1" -r 10 -vcodec png out-static-%05d.png
-	  time convert -verbose +dither -layers Optimize -resize 900x900\> out-static*.png  GIF:- | gifsicle --colors 128 --delay=5 --loop --optimize=3 --multifile - > "$1.gif"
-	  rm out-static*.png
-	else
-	  ffmpeg -i "$1" -s 600x400 -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 > "$1.gif"
-	fi
+    if [[ $2 == '--good' ]]; then
+      ffmpeg -i "$1" -r 10 -vcodec png out-static-%05d.png
+      time convert -verbose +dither -layers Optimize -resize 900x900\> out-static*.png  GIF:- | gifsicle --colors 128 --delay=5 --loop --optimize=3 --multifile - > "$1.gif"
+      rm out-static*.png
+    else
+      ffmpeg -i "$1" -s 600x400 -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 > "$1.gif"
+    fi
   else
-	echo "proper usage: gifify <input_movie.mov>. You DO need to include extension."
+    echo "proper usage: gifify <input_movie.mov>. You DO need to include extension."
   fi
 }
 
-# turn a video into webm.
-# brew reinstall ffmpeg --with-libvpx
+# This function turns a video into webm.
+## args - $1 - file path
+
 webmify(){
-	ffmpeg -i "$1" -vcodec libvpx -acodec libvorbis -isync -copyts -aq 80 -threads 3 -qmax 30 -y "$2" "$1.webm"
+    ffmpeg -i "$1" -vcodec libvpx -acodec libvorbis -isync -copyts -aq 80 -threads 3 -qmax 30 -y "$2" "$1.webm"
 }
 
-# +----------------+
-# | youtube-viewer |
-# +---------------+
+# This function enables the user to open youtube links directly in the shell on the prefered media player
+
+## args - $1 - function option
+### sh) $2 - search term; 
+### ch), pl) $2 - selected channel from list; 
+### rc) $2 - number of recents videos to display
 
 ytv() {
 ERROR=0
 case "$1" in
     sh)
-        cat /home/mdlima/.config/zsh/.yt-channelsv2 | sed -n "${2},${2}p" | awk -F/ '{print $2}' | xargs youtube-viewer -sc
+        cat /home/mdlima/.config/zsh/.yt-channelsv2 | sed -n "${2},${2}p" | awk -F/ '{print $2}' | xargs youtube-viewer --login -sc
         ;;
     ch)
-        cat /home/mdlima/.config/zsh/.yt-channelsv2 | sed -n "${2},${2}p" | awk -F/ '{print $3}' | xargs youtube-viewer -uv
+        cat /home/mdlima/.config/zsh/.yt-channelsv2 | sed -n "${2},${2}p" | awk -F/ '{print $3}' | xargs youtube-viewer --login -uv
         ;;
     pl)
-        cat /home/mdlima/.config/zsh/.yt-channelsv2 | sed -n "${2},${2}p" | awk -F/ '{print $3}' | xargs youtube-viewer -up
+        cat /home/mdlima/.config/zsh/.yt-channelsv2 | sed -n "${2},${2}p" | awk -F/ '{print $3}' | xargs youtube-viewer --login -up
         ;;
     rc)
-        youtube-viewer -SV -results="${2}"
+        youtube-viewer --login -SV -results="${2}"
         ;;
     schls)
         cat /home/mdlima/.config/zsh/.yt-channelsv2 | awk -F/ '{print NR " - " $2 " - " $3}' | grep "${2}"
@@ -460,68 +462,89 @@ then
 fi
 }
 
-# Download single video
-ydl() {
-    if [ ! -z $1 ];
+
+# This function enables the user to download video, audio or playlists from youtube
+
+## video & playlist - $1 - function option; $2 - download link; $3 - 
+## audio - $1 - function option; $2 - audio quality option; $3 . download link
+
+ytdw() {
+    ERROR=0
+    case "$1" in
+        single)
+            if [ ! -z $2 ];
+            then
+                youtube-dl -f 22 "$2"
+            else
+                echo "You need to specify a video url as argument"
+            fi
+            ;;
+        playlist)
+            if [ ! -z $2 ];
+            then
+                youtube-dl -o "%(autonumber)s-%(title)s.%(ext)s" "$2"
+            else
+                echo "You need to specify a playlist url as argument"
+            fi
+            ;;
+        audio)
+            ERROR=0
+            case "$2" in
+                best)
+                    youtube-dl --extract-audio --audio-format aac "$3"
+                    ;;
+                aac)
+                    youtube-dl --extract-audio --audio-format aac "$3"
+                    ;;
+                flac)
+                    youtube-dl --extract-audio --audio-format aac "$3"
+                    ;;
+                m4a)
+                    youtube-dl --extract-audio --audio-format aac "$3"
+                    ;;
+                mp3)
+                    youtube-dl --extract-audio --audio-format aac "$3"
+                    ;;
+                opus)
+                    youtube-dl --extract-audio --audio-format aac "$3"
+                    ;;
+                vorbis)
+                    youtube-dl --extract-audio --audio-format aac "$3"
+                    ;;
+                wav)
+                    youtube-dl --extract-audio --audio-format aac "$3"
+                    ;;
+             *)
+                echo $"youtube-dl: $0 {best|aac|flac|m4a|mp3|opus|vorbis|wav}"
+                echo $"Usage: $0 {Please provide a link after the choosen option}"
+             ;;
+            esac
+
+            if [ $ERROR -gt 1 ]
+            then
+                echo $ERROR
+            fi
+            ;;
+     *)
+        echo $"Usage: $0 {ch|pl|rc|schls|chls}"
+        echo $"Usage: $0 {Provide an int arg to the first three options, use chls or schls to search through the args}"
+        tput setaf 1; echo $ $0 "single: {Search channels}"
+        tput setaf 1; echo $ $0 "playlist: {Display Videos from the choosen channel}"
+        tput setaf 1; echo $ $0 "audio: {Display playlists from the choosen channel)}"
+     ;;
+    esac
+
+    if [ $ERROR -gt 1 ]
     then
-        youtube-dl -f 22 "$1"
-    else
-        echo "You need to specify a video url as argument"
+        echo $ERROR
     fi
 }
 
-# Download playlist
-ydlp() {
-    if [ ! -z $1 ];
-    then
-        youtube-dl -o "%(autonumber)s-%(title)s.%(ext)s" "$1"
-    else
-        echo "You need to specify a playlist url as argument"
-    fi
-}
-
-ytaud() {
-ERROR=0
-case "$1" in
-    best)
-        youtube-dl --extract-audio --audio-format aac "$2"
-        ;;
-    aac)
-        youtube-dl --extract-audio --audio-format aac "$2"
-        ;;
-    flac)
-        youtube-dl --extract-audio --audio-format aac "$2"
-        ;;
-    m4a)
-        youtube-dl --extract-audio --audio-format aac "$2"
-        ;;
-    mp3)
-        youtube-dl --extract-audio --audio-format aac "$2"
-        ;;
-    opus)
-        youtube-dl --extract-audio --audio-format aac "$2"
-        ;;
-    vorbis)
-        youtube-dl --extract-audio --audio-format aac "$2"
-        ;;
-    wav)
-        youtube-dl --extract-audio --audio-format aac "$2"
-        ;;
- *)
-    echo $"youtube-dl: $0 {best|aac|flac|m4a|mp3|opus|vorbis|wav}"
-    echo $"Usage: $0 {Please provide a link after the choosen option}"
- ;;
-esac
-
-if [ $ERROR -gt 1 ]
-then
-    echo $ERROR
-fi
-}
-
 # +----------------+
-# | MariaDB        |
+# | Apps           |
 # +----------------+
+
+# MariaDB
 
 mdb() {
 ERROR=0
@@ -530,11 +553,11 @@ case "$1" in
         echo $"Maria DB service starting"
         systemctl start mariadb
         ;;
-	stop)
+    stop)
         echo $"Maria DB service stoping"
         systemctl stop mariadb
         ;;
-	restart)
+    restart)
     echo $"MariaDB Service restarting"
     systemctl restart mariadb
         ;;
@@ -554,9 +577,7 @@ then
 fi
 }
 
-# +----------------+
-# | Tomcat         |
-# +----------------+
+# Tomcat
 
 tc() {
 ERROR=0
@@ -565,16 +586,16 @@ case "$1" in
         echo $"Starting Tomcat"
         sudo sh $CATALINA_HOME/bin/startup.sh
         ;;
-	stop)
+    stop)
         echo $"Stopping Tomcat"
         sudo sh $CATALINA_HOME/bin/shutdown.sh
         ;;
-	restart)
+    restart)
         sudo sh $CATALINA_HOME/bin/shutdown.sh
         sudo sh $CATALINA_HOME/bin/startup.sh
         ;;
 
-	logs)
+    logs)
         sudo tail -f $CATALINA_HOME/logs/catalina.out
         ;;
  *)
@@ -588,10 +609,7 @@ then
 fi
 }
 
-
-# +----------------+
-# | Doom Emacs     |
-# +----------------+
+# Doom Emacs
 
 doom() {
 ERROR=0
@@ -627,9 +645,8 @@ then
 fi
 }
 
-# +----------------+
-# | Docker         |
-# +----------------+
+# Docker
+
 dkr() {
 ERROR=0
 case "$1" in
@@ -693,34 +710,11 @@ then
 fi
 }
 
-# +----------------+
-# | Network        |
-# +----------------+
+# IntelliJ
 
-# Check ports in use
-
-prts() {
-ERROR=0
-case "$1" in
-    a)
-  	sudo lsof -i -P -n | grep LISTEN
-        ;;
-    p)
-	sudo lsof -i:${2}
-	;;
-    ip)
-    sudo nmap -sTU -O ${2}
-    ;;
- *)
-    echo $"Usage: $0 {a|p|ip}"
-    tput setaf 1; echo $ $0 "a: {displays all ports that are in use}}"
-    tput setaf 1; echo $ $0 "p: {displays the services that are using the specified port}"
-    tput setaf 1; echo $ $0 "ip: {displays all ports that are in use for the specified ip address}"
-    ;;
-esac
-
-if [ $ERROR -gt 1 ]
-then
-    echo $ERROR
-fi
+renewKey() {
+  rm -rf ~/.config/JetBrains/IntelliJIdea2021.1/eval
+  rm -rf ~/.config/JetBrains/IntelliJIdea2021.1/options/other.xml
+  rm -rf ~/.local/share/JetBrains/consentOptions
+  rm -rf ~/.java/.userPrefs
 }
