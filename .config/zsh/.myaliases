@@ -13,11 +13,6 @@ alias free='free -m'                      # show sizes in MB
 alias jctl="journalctl -p 3 -xb"      # get error messages from journalctl
 
 
-# +---------------------+
-# | App Updates         |
-# +---------------------+
-
-
 # +--------------------------+
 # | Process Managment        |
 # +--------------------------+
@@ -28,6 +23,13 @@ alias psmem10='ps auxf | sort -nr -k 4 | head -10'
 # get top process consuming CPU
 alias pscpu='ps auxf | sort -nr -k 3'
 alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
+
+# +-------+
+# | Chmod |
+# +------+
+alias x="chmod +x"
+alias own='sudo chown -R josh:josh '
+alias exe='sudo chmod +x '
 
 
 ########################################
@@ -52,23 +54,17 @@ alias tmuxa='tmux attach -t'		# attach tmux session
 alias tmuxl='tmux list-sessions'	# list tmux sessions
 
 
-# +------+
-# | Vim  |
-# +------+
-alias vim="nvim"
-
-
 # +--------------------------+
-# | Shortcuts		     |
+# | Shortcuts		         |
 # +--------------------------+
 alias prog='/home/mdlima/Documents/programming/'
-alias repos='/home/mdlima/Documents/programming/repositories'  
-alias work='/home/mdlima/Documents/programming/work' 
+alias repos='/home/mdlima/Documents/programming/repositories'
+alias work='/home/mdlima/Documents/programming/work'
 alias conf='/home/mdlima/.config/'
 
 
 ########################################
-# [System Managment]                   #
+# [Directory Management/File Search]   #
 ########################################
 
 # +---------+
@@ -111,9 +107,8 @@ alias xll='exa -lbgh@ --color=automatic --icons --group-directories-first'
 #list all non-hiden files across
 alias xla='exa -xbgh@ --color=automatic --icons --group-directories-first'
 
-
 #list all hiden files
-alias xlh='exa -labgh@ --color=automatic --sort=type --icons --group-directories-first' | egrep "^\."  
+alias xlh='exa -labgh@ --color=automatic --sort=type --icons --group-directories-first | egrep '^\.''
 
 # list all files in a grid
 alias xlag='exa -Glabgh@ --color=automatic --sort=type --icons --group-directories-first'
@@ -147,19 +142,22 @@ alias egrep='egrep --color=auto'
 # +------+
 alias xclip="xclip -selection clipboard"
 
+########################################
+# [File Editors/IDE's   ]              #
+########################################
 
-# +-------+
-# | Chmod |
 # +------+
-alias x="chmod +x"
-alias own='sudo chown -R josh:josh '
-alias exe='sudo chmod +x '
+# | Vim  |
+# +------+
+#alias vim="nvim"
 
-alias font='fc-cache -f -v'
+# +----------+
+# | IntelliJ |
+# +----------+
+alias intelli='/opt/idea-IU-211.7628.21/bin/idea.sh'
 
-alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
-alias stow='sudo STOW_DIR=/usr/local/stow /usr/bin/stow'
-
+#alias font='fc-cache -f -v'
+#alias stow='sudo STOW_DIR=/usr/local/stow /usr/bin/stow'
 
 ########################################
 # [Security]                           #
@@ -230,50 +228,6 @@ alias wget="wget --hsts-file="$XDG_CACHE_HOME/wget-hsts""
 #alias mdstart='systemctl start mariadb'     # Start
 #alias mdstop='systemctl stop mariadb'     # Stop
 
-
-########################################
-# [software Development]               #
-########################################
-
-# +----------+
-# | Git      |
-# +----------+
-alias addup='git add -u' # Updates the index
-alias addall='git add .' # Adds all
-alias branch='git branch' # Create a new Branch
-alias checkout='git checkout' # Checkout Branch
-alias clone='git clone' # Clone
-alias commit='git commit -m' # Commit new changes
-alias fetch='git fetch' # Fetch new changes
-alias pullorigin='git pull origin' # Pull changes from Origin 
-alias pushorigin='git push origin' # Push changes to Origin
-alias pull='git pull' # Pull changes to a certain  branch
-alias pushorigin='git push' # Push changes to a certain  branch
-alias stat='git status'  # 'status' is protected name so using 'stat' instead
-alias tag='git tag' # Tag a commit
-alias newtag='git tag -a' # Create a new Tag
-
-
-# +----------+
-# | IntelliJ |
-# +----------+
-alias intelli='/opt/idea-IU/bin/idea.sh'
-
-
-# +---------------+
-# | JasperReports |
-# +---------------+
-alias jreport='/opt/jaspersoftstudio_6.8.0/runjss.sh'
-
-
-# +----------+
-# | Nodejs   |
-# +----------+
-alias nis='npm install --save ' # install as a local production dependency
-alias nid='npm install --save-dev '     # install as a development dependency
-alias nig='npm install --global' #install as a global dependency
-
-
 # +----------+
 # | Mongo    |
 # +----------+
@@ -290,6 +244,43 @@ alias mcl='mongo -u mdlima -p blackjack21 --authenticationDatabase admin'
 alias msvssl='mongod --tlsMode requireTLS --tlsCertificateKeyFile /home/mdlima/.certs/mongodb.pem --dbpath /home/mdlima/'
 
 alias mclssl='mongo --tls --tlsCAFile /home/mdlima/.certs/mongodb.pem --host localhost'
+
+
+########################################
+# [software Development]               #
+########################################
+
+# +----------+
+# | Git      |
+# +----------+
+alias addup='git add -u' # Updates the index
+alias addall='git add .' # Adds all
+alias branch='git branch' # Create a new Branch
+alias checkout='git checkout' # Checkout Branch
+alias clone='git clone' # Clone
+alias commit='git commit -m' # Commit new changes
+alias fetch='git fetch' # Fetch new changes
+alias pullorigin='git pull origin' # Pull changes from Origin
+alias pushorigin='git push origin' # Push changes to Origin
+alias pull='git pull' # Pull changes to a certain  branch
+alias pushorigin='git push' # Push changes to a certain  branch
+alias stat='git status'  # 'status' is protected name so using 'stat' instead
+alias tag='git tag' # Tag a commit
+alias newtag='git tag -a' # Create a new Tag
+
+
+# +---------------+
+# | JasperReports |
+# +---------------+
+alias jreport='/opt/jaspersoftstudio_6.8.0/runjss.sh'
+
+
+# +----------+
+# | Nodejs   |
+# +----------+
+alias nis='npm install --save ' # install as a local production dependency
+alias nid='npm install --save-dev '     # install as a development dependency
+alias nig='npm install --global' #install as a global dependency
 
 
 # +----------+
@@ -310,12 +301,14 @@ alias cna='create-next-app --use-npm'
 # | Vue      |
 # +----------+
 # Create Vue app
-alias vca="vue create" 
+alias vca="vue create"
 
 
 ########################################
-# [Audio/Video]                        #
+# [DotFiles]                        #
 ########################################
+# alias for git operations on the dotfiles folder
+alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 
 
 ########################################
@@ -323,5 +316,4 @@ alias vca="vue create"
 ########################################
 alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'     # the terminal rickroll
 
-/opt/shell-color-scripts/colorscript.sh random    ### RANDOM COLOR SCRIPT ###
-
+colorscript random    ### RANDOM COLOR SCRIPT ###
