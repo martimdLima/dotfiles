@@ -34,17 +34,23 @@ fi
 sysupdt() {
 ERROR=0
 case "$1" in
-    system)
+    pacsyu)
         sudo pacman -Syu
         ;;
-    full)
+    pacsyyu)
         sudo pacman -Syyu
         ;;
-    pkgs)
+    yaysua)
+        yay -Sua --noconfirm
+        ;;
+    yaysyu)
         yay -Syu --noconfirm
         ;;
-    aur)
-        yay -Sua --noconfirm
+    parsua)
+        paru -Sua --noconfirm
+        ;;
+    parsyu)
+        paru -Syu --noconfirm
         ;;
     unlock)
         sudo rm /var/lib/pacman/db.lck
@@ -53,11 +59,13 @@ case "$1" in
         sudo pacman -Rns $(pacman -Qtdq)
         ;;
  *)
-    echo $"Usage: $0 {system|full|pkgs|aur|unlock|cleanup}"
-    tput setaf 1; echo $"$0 system: {System Update}"
-    tput setaf 1; echo $"$0 full: {Full System Update (includes mirror updates)}"
-    tput setaf 1; echo $"$0 pkgs:{update standard pkgs and AUR pkgs}"
-    tput setaf 1; echo $"$0 aur: {update only AUR pkgs}"
+    echo $"Usage: $0 {pacsyu|pacsyyu|yaysua|yaysyu|parsua|parsyu|unlock|cleanup}"
+    tput setaf 1; echo $"$0 pacsyu: {update only standard pkgs}"
+    tput setaf 1; echo $"$0 pacsyyu: {Refresh pkglist & update standard pkgs}"
+    tput setaf 1; echo $"$0 yaysua:{update only AUR pkgs (yay)}"
+    tput setaf 1; echo $"$0 yaysyu: {update standard pkgs and AUR pkgs (yay)}"
+    tput setaf 1; echo $"$0 parsua: {update only AUR pkgs (paru)}"
+    tput setaf 1; echo $"$0 parsyu: {update standard pkgs and AUR pkgs (paru)}"
     tput setaf 1; echo $"$0 unlock: {remove pacman lock}"
     tput setaf 1; echo $"$0 cleanup: {remove orphaned packages}"
  ;;
@@ -113,8 +121,8 @@ case "$1" in
  *)
     echo $"Usage: $0 {a|p|ip}"
     tput setaf 1; echo $ $0 "a: {displays all ports that are in use}}"
-    tput setaf 1; echo $ $0 "p: {displays the services that are using the specified port}"
-    tput setaf 1; echo $ $0 "ip: {displays all ports that are in use for the specified ip address}"
+    tput setaf 1; echo $ $0 "p: {displays the services that are using the port specified by the user}"
+    tput setaf 1; echo $ $0 "ip: {displays all ports that are in use for the specified ip address by the user}"
     ;;
 esac
 
@@ -123,6 +131,10 @@ then
     echo $ERROR
 fi
 }
+
+# +----------------+
+# | Utils          |
+# +----------------+
 
 # Screenshot
 screenshot () {
@@ -186,6 +198,58 @@ while :; do
     echo $lines $cols $(( $RANDOM % $cols)) $(( $RANDOM % 72 ))
     sleep 0.05
 done | awk "$awkscript"
+}
+
+# Generate a random alphabetic, numeric or alpha-numeric String
+
+genrand() {
+    LENGTH=48
+
+    if [ -n "$2" ]
+    then
+        LENGTH="${2}"
+    fi
+
+    ERROR=0
+    case "$1" in
+        aul)
+            cat /dev/urandom | tr -dc 'a-zA-Z' | fold -w ${LENGTH} | head -n 1
+            ;;
+        au)
+            cat /dev/urandom | tr -dc 'A-Z' | fold -w ${LENGTH} | head -n 1
+            ;;
+        al)
+            cat /dev/urandom | tr -dc 'a-z' | fold -w ${LENGTH} | head -n 1
+            ;;
+        n)
+            cat /dev/urandom | tr -dc '0-9' | fold -w ${LENGTH} | head -n 1
+            ;;           
+        anul)
+            cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${LENGTH} | head -n 1
+            ;;
+        anu)
+            cat /dev/urandom | tr -dc 'A-Z0-9' | fold -w ${LENGTH} | head -n 1
+            ;;
+        anl)
+            cat /dev/urandom | tr -dc 'a-z0-9' | fold -w ${LENGTH} | head -n 1
+            ;;
+     *)
+        echo $"Usage: $0 {au|al|n|anul|anu|anl}"
+        echo $"Usage: $0 {Length can be defined by providing aditional int arg}"
+        tput setaf 1; echo $ $0 "aul: {generates a random alphabetic string with upper and lower characters}"
+        tput setaf 1; echo $ $0 "au: {generates a random alphabetic string with upper characters}"
+        tput setaf 1; echo $ $0 "al: {generates a random alphabetic string with lower characters}"
+        tput setaf 1; echo $ $0 "n: {generates a random numeric string}"
+        tput setaf 1; echo $ $0 "anul: {generates a random alpha-numeric string with upper and lower characters}"
+        tput setaf 1; echo $ $0 "anu: {generates a random alpha-numeric string with upper characters}"
+        tput setaf 1; echo $ $0 "anl: {generates a random alpha-numeric string with lower characters}"
+        ;;
+    esac
+
+    if [ $ERROR -gt 1 ]
+    then
+        echo $ERROR
+    fi
 }
 
 # +--------------------+
