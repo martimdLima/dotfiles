@@ -1,0 +1,57 @@
+# lf Documentation - https://pkg.go.dev/github.com/gokcehan/lf
+# Note on Image Previews
+# 1. ueberzug must be installed.
+# 2. The scope file (~/.config/lf/scope for me), must have a command similar to
+#    mine to generate ueberzug images.
+# 3. A `set cleaner` line as below is a cleaner script.
+# 4. lf should be started through a wrapper script (~/.local/bin/lfup for me)
+#    that creates the environment for ueberzug. This command can be be aliased
+#    in your shellrc (`alias lf="lfub") or if set to a binding, should be
+#    called directly instead of normal lf.
+
+# +------------+
+# | Basic vars |
+# +------------+
+set shell sh
+set shellopts '-eu'
+set ifs "\n"
+set scrolloff 10
+set icons
+set hidden
+set period 10
+set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
+set cleaner '~/.config/lf/cleaner'
+set previewer '~/.config/lf/scope'
+
+# +----------------+
+# | Bindings       |
+# +----------------+
+map <c-y> move up the list
+map <c-e> move down the list
+map g top # move to the top of the list
+map D delete # delete file
+map E extract # Unzip file
+map C copyto # copy to path
+map M moveto # move to path
+map md mkdir # create directory
+map t shell # enter shell 
+map <enter> open # open file
+map <c-s> set hidden! # show/hide hidden files
+map I push A<c-a> # rename or append to after file extension
+map A rename # rename or append to after file extension
+map c push A<c-u> # rename file
+map B bulkrename # bulk renames files
+map V push :!vim<space> # Open file in Vim
+map Y $printf "%s" "$fx" | xclip -selection clipboard # Copy file path to the clipboard
+map <c-f> $lf -remote "send $id select '$(fzf)'" # Searches all the files in the current directory
+map <c-n> push :mkdir<space> # creates new folder in the current directory
+map <c-r> reload # reloads the preview for the selected file
+map x $$f # execute current file (must be executable)
+map X !$f # execute current file (must be executable)
+map o &mimeopen $f # dedicated keys for file opener actions
+map O $mimeopen --ask $f # dedicated keys for file opener actions
+
+# +----------------+
+# | cmds/functions |
+# +----------------+
+

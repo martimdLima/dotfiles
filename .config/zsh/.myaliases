@@ -78,12 +78,20 @@ alias rg="ranger"
 # +-------+
 #alias tls="colorls -t"
 
+# +-------+
+# | lf    |
+# +-------+
+alias lf="lfub"
+
+# +----------+
+# | lf-yt    |
+# +----------+
+alias lfyt="/home/mdlima/.config/lf-yt/lf-yt"
 
 # +----------------+
 # | Silver Surfer  |
 # +----------------+
 alias ag="ag --pager less"
-
 
 # +----+
 # | ls |

@@ -5,6 +5,7 @@ source $HOME/.zplug/init.zsh
 #--------------+
 source $XDG_CONFIG_HOME/zsh/.myaliases
 source $XDG_CONFIG_HOME/zsh/.myfunc
+#source $HOME/.local/share/lf/icons
 
 # +-------+
 # | Tmux |
@@ -25,14 +26,21 @@ fi
 # +-----+
 # | ZSH |
 #-------+
+# Zsh global options
 
-# Path to your oh-my-zsh installation.
-#export ZSH="/home/mdlima/.oh-my-zsh"
+setopt globdots             # tab-complete dotfiles
+setopt menucomplete         # tab-expand to first option immediately
+setopt autocd               # change dirs without 'cd'
+setopt hist_ignore_dups     # don't add duplicate cmd to hist
+setopt no_autoremoveslash   # keep trailing slash after dir completion
+setopt interactivecomments  # enable comments in shell commands
+ZLE_REMOVE_SUFFIX_CHARS=    # keep trailing space after completion
+disable r                   # remove irritating alias
+zle_highlight+=(paste:none) # Don't highlight pasted text
+
 
 # Set name of the theme to load
 ZSH_THEME="powerlevel10k/powerlevel10k"
-
-
 
 # +---------+
 # | Plugins |
@@ -42,15 +50,16 @@ plugins=(git
 	 autojump
 	 cp
 	 copyfile
-	 fzf
 	 zsh-autosuggestions
+	 fzf-zsh-plugin
 )
 
 source $ZSH/oh-my-zsh.sh
 
 # +----------------+
-# | PowerLevel10k |
-#----------------+
+# | PowerLevel10k  |
+#------------------+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
 

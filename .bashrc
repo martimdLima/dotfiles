@@ -98,8 +98,6 @@ alias more=less
 
 xhost +local:root > /dev/null 2>&1
 
-complete -cf sudo
-
 # Bash won't get SIGWINCH if another process is in the foreground.
 # Enable checkwinsize so that bash will check the terminal size when
 # it regains control.  #65623

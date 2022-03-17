@@ -1,0 +1,6 @@
+# Replace values for usage
+{
+    "key":           "[YOUTUBE_API_KEY]",
+    "client_id":     "[OATH2_CLIENT_ID]",
+    "client_secret": "[OATH2_CLIENT_SECRET]"
+}
