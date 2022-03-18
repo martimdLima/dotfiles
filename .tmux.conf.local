@@ -289,6 +289,9 @@ set -g mouse on
 # set -g prefix C-a
 # bind C-a send-prefix
 
+# set default shell
+set-option -g default-shell $SHELL
+
 # +----------------------+------------------------------------------------------
 # | Tmux Plugin Manager |
 # +---------------------+

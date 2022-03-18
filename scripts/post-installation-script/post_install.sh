@@ -20,36 +20,41 @@ INIT_PKGS=(
 	'git'
 	'wget'
 	'curl'
-    'cmake'                 # Cross-platform open-source make system
-    'galculator'            # Gnome calculator
-    'hunspell'              # Spellcheck libraries
-    'hunspell-en'           # Portuguese spellcheck library
+    	'cmake'                 # Cross-platform open-source make system
+    	'galculator'            # Gnome calculator
+    	'hunspell'              # Spellcheck libraries
+    	'hunspell-pt_PT'           # Portuguese spellcheck library
+    	'hunspell-en_US'           # Portuguese spellcheck library
 	'nomacs'                # Image viewer
-    'pngcrush'              # Tools for optimizing PNG images
-    'ristretto'             # Multi image viewer
-    'gparted'               # Disk utility
-    'neofetch'              # Shows system info when you launch terminal
-    'autojump'
-    'exa'
-    'htop'
-    'lf'
-    'ueberzug'
-    'arandr'
-    'blueman'
-    'bleachbit'
-    'stacer'
-    'catfish'
-    'flameshot'
-    'rsync'
-    'zenity'                # Display graphical dialog boxes via shell scripts
-    'speedtest-cli'         # Internet speed via terminal
+    	'pngcrush'              # Tools for optimizing PNG images
+    	'ristretto'             # Multi image viewer
+    	'gparted'               # Disk utility
+    	'neofetch'              # Shows system info when you launch terminal
+    	'autojump'
+    	'exa'
+    	'htop'
+    	'lf'
+    	'ueberzug'
+    	'arandr'
+    	'blueman'
+    	'bleachbit'
+    	'stacer'
+    	'catfish'
+    	'flameshot'
+    	'rsync'
+    	'zenity'                # Display graphical dialog boxes via shell scripts
+    	'speedtest-cli'         # Internet speed via terminal
 	'dialog'				# displays various kinds of dialog boxes that can be incorporate into shell scripts
 )
 
 echo -e "${LIGHT_GREEN}Post Installation Script Started ${NC}"
 
-# Update and Upgrade Packages
 echo -e "${LIGHT_GREEN}Updating and Upgrading Mirrors and Packages ${NC}"
+
+# Update Mirros List
+sudo pacman-mirrors -c all
+
+# Update and Upgrade Packages
 sudo pacman -Syyu --noconfirm
 
 # Checks if yay is installed, if it's not installed, install it and update Aur packages
@@ -65,17 +70,17 @@ pacman -Qs yay && echo "${GREEN}Yay already installed${NC}" || sudo pacman -S ya
 
 for PKG in "${INIT_PKGS[@]}"; do
     echo -e "${GREEN}Installing ${PKG} ${NC}"
+    pacman -Qs ${PKG} && echo "${GREEN}${PKG} already installed${NC}" || sudo pacman -S ${PKG} --noconfirm
+
     #if [ $(which ${PKG}) == "" ];
 	#then
 	#	yay -S "$PKG" --noconfirm --needed
 	#fi
-	tput setaf 1; echo $(pacman -Qs ${PKG}) && echo "${GREEN}${PKG} already installed${NC}" || sudo pacman -S ${PKG} --noconfirm
+	#tput setaf 1; echo $(pacman -Qs ${PKG}) && echo "${GREEN}${PKG} already installed${NC}" || sudo pacman -S ${PKG} --noconfirm
 done
 
 #Install System Utils
 echo -e "${GREEN}Installing System Utils ${NC}"
-
-
 
 # Initializes the dialog with the specifed measurements
 cmd=(dialog --separate-output --checklist "Please Select Software you want to install from the present list of choices. Use the UP/DOWN arrow keys to move through the list. Press SPACE to toggle an option on/off." 22 76 16)
@@ -116,17 +121,17 @@ for choice in $choices
     	1)	
 			#Install Alacrity
 			echo "Installing Alacrity"
-			yay -S alacritty
+			yay -S alacritty --noconfirm --needed
 			;;
 		2)
 			#Install Guake
 			echo "Installing Guake"
-			yay -S guake
+			yay -S guake --noconfirm --needed
 			;;
 		3)
 			#Install ZSH
 			echo "Installing ZSH"
-			yay -S zsh
+			yay -S zsh --noconfirm --needed
 
 			echo "Installing Oh My ZSH"
 			sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -138,22 +143,28 @@ for choice in $choices
 			git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
 			echo "Installing fzf-zsh-plugin Plugin"
-			git clone https://github.com/unixorn/fzf-zsh-plugin.git fzf-zsh-plugin ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/
+			git clone https://github.com/unixorn/fzf-zsh-plugin.git $HOME/.oh-my-zsh/custom/plugins/fzf-zsh-plugin
+
+			echo "Installing ZPlug"
+			$ curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 
 			echo "Installing zsh-completions"
 			git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions
+			
+			echo "Installing Shell Color Scripts"
+			yay -S shell-color-scripts
 
 			echo "Powerlevel10k Theme"
 			git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 			echo "Install patched powerline fonts for glyphs support"
-			yay -S noto-fonts
-			yay -S powerline-fonts
+			yay -S noto-fonts --noconfirm --needed
+			yay -S powerline-fonts --noconfirm --needed
 			. nerdfonts.sh
 			;;
 		4)
 			echo "Installing Tmux"
-			yay -S tmux
+			yay -S tmux --noconfirm --needed
 
 			echo "Installing Oh My Tmux"
 			git clone https://github.com/gpakosz/.tmux.git
@@ -162,11 +173,11 @@ for choice in $choices
 			;;
 		5)
 			echo "Installing Brave"
-			yay -S brave
+			yay -S brave --noconfirm --needed
 			;;
 		6)
 			echo "Installing Firefox"
-			yay -S firefox
+			yay -S firefox --noconfirm --needed
 			;;
 		7)
 			echo "Installing SpaceVim"
@@ -174,7 +185,7 @@ for choice in $choices
 			;;
 		8)
 			echo "Installing emacs"
-			yay -S emacs
+			yay -S emacs --noconfirm --needed
 			;;
 		9)
 			echo "Installing Doom emacs"
@@ -183,69 +194,69 @@ for choice in $choices
 			;;
 		10)
 			echo "Installing atom"
-			yay -S atom
+			yay -S atom --noconfirm --needed
 			;;
 		11)
 			echo "Installing Sublime Text 4"
-			yay -S sublime-text-4
+			yay -S sublime-text-4 --noconfirm --needed
 			;;
 		12)
 			echo "Installing Visual Studio Code"
-			yay -S visual-studio-code-bin
+			yay -S visual-studio-code-bin --noconfirm --needed
 			;;
 		13)
 			echo "Installing Python"
-			yay -S python
-			yay -S  python-pip
+			yay -S python --noconfirm --needed
+			yay -S  python-pip --noconfirm --needed
 			;;
 		14)
 			echo "Installing JDK 8 & 11"
 			echo "Installing JDK8"
-			yay -S  jre8-openjdk
+			yay -S  jre8-openjdk --noconfirm --needed
 
 			echo "Installing JDK11"
-			yay -S jre11-openjdk
+			yay -S jre11-openjdk --noconfirm --needed
 			;;
 		15)
 			#Install Nodejs, Npm and Yarn
 
 			# Cross-platform development using Javascript
 			echo "Installing electron"
-			yay -S electron
+			yay -S electron --noconfirm --needed
 
 			# Javascript runtime environment
 			echo "Installing Nodejs"
-			yay -S nodejs
+			yay -S nodejs --noconfirm --needed
 
 			 # Node package manager
 			echo "Installing Npm"
-			yay -S npm
+			yay -S npm --noconfirm --needed
 
 			# Dependency management 
 			echo "Installing Yarn"
-			yay -S yarn
+			yay -S yarn --noconfirm --needed
+ 
+			# JSON parsing library
+			echo "Installing Yarn"
+			yay -S jq --noconfirm --needed
 
 			# JSON parsing library
 			echo "Installing Yarn"
-			yay -S jq
-
-			# JSON parsing library
-			echo "Installing Yarn"
-			yay -S jshon         
+			yay -S jshon --noconfirm --needed         
 			;;
 		16)
 			# Rust
 			echo "Installing Rust"
-			yay -S rust
+			yay -S rust --noconfirm --needed
 			;;
 		17)
 			echo "Installing Ruby"
-			yay -S ruby
-			;;
+			yay -S ruby --noconfirm --needed
+			;; 
 		18)
 			#MariaDB
 			echo "Installing MariaDB"
-			yay -S mariadb
+			yay -S mariadb --noconfirm --needed
 
 			# Before starting the MariaDB service, initialize the database
 			mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
@@ -262,65 +273,65 @@ for choice in $choices
 		19)
 			# DBeaver
 			echo "Installing DBeaver"
-			yay -S dbeaver
+			yay -S dbeaver --noconfirm --needed
 			;;
 		20)
 			# MySQL Workbench
 			echo "Installing MySQL Workbench"
-			yay -S mysql-workbench
+			yay -S mysql-workbench --noconfirm --needed
 			;;
 		21)
 			# Office Support
 			echo "Installing wps-office"
-			yay -S wps-office
+			yay -S wps-office --noconfirm --needed
 			;;
 		22)
 			# PDF Support
 			echo "Installing qpdfview"
-			yay -S qpdfview
+			yay -S qpdfview --noconfirm --needed
 
 			echo "Installing zathura"
-			yay -S zathura
+			yay -S zathura --noconfirm --needed
 			;;
 		23)
 			# Media Support
 			echo "Installing ffmpeg"
-			yay -S ffmpeg
+			yay -S ffmpeg --noconfirm --needed
 
 			echo "Installing vlc"
-			yay -S vlc
+			yay -S vlc --noconfirm --needed
 
 			echo "Installing mpv"
-			yay -S mpv
+			yay -S mpv --noconfirm --needed
 
 			echo "Installing youtube-dl"
-			yay -S youtube-dl
+			yay -S youtube-dl --noconfirm --needed
 
 			echo "Installing youtube-viewer"
-			yay -S youtube-viewer
+			yay -S youtube-viewer --noconfirm --needed
 			;;
 		24)
 			# Torrent Support
 			echo "Installing transmission-gtk"
-			yay -S transmission-gtk
+			yay -S transmission-gtk --noconfirm --needed
 			;;
 		25)
 			# Image Processing
 			echo "Installing gimp"
-			yay -S gimp
+			yay -S gimp --noconfirm --needed
 
 			echo "Installing graphicsmagick"
-			yay -S graphicsmagick
+			yay -S graphicsmagick --noconfirm --needed
 			;;
 		26)
 			# Virtualization Support
 			echo "Installing virtualbox"
-			yay -S virtualbox
-			yay -S virtualbox-host-modules-arch
+			yay -S virtualbox --noconfirm --needed
+			yay -S virtualbox-host-modules-arch --noconfirm --needed
 
 			# Virt-manager
 			echo "Installing virt-manager"
-			yay -S virt-manager
+			yay -S virt-manager --noconfirm --needed
 			;;
 		27)
 			echo "Generating SSH keys"
