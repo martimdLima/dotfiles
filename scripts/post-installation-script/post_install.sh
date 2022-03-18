@@ -149,6 +149,7 @@ for choice in $choices
 			echo "Install patched powerline fonts for glyphs support"
 			yay -S noto-fonts
 			yay -S powerline-fonts
+			. nerdfonts.sh
 			;;
 		4)
 			echo "Installing Tmux"
