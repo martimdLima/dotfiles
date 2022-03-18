@@ -1,0 +1,104 @@
+# SYSTEM UTILS
+arandr 0.1.10-7 x
+autorandr 1.12.1-1 x
+blueman 2.2.4-1 x
+make 4.3-3 x
+wget 1.21.2-1 x
+autojump x
+
+noto-fonts 20201226-2 x
+powerline-fonts 2.8.2-4 x
+timeshift-autosnap-manjaro 0.10-1 x
+
+# SHELL
+guake 3.8.5-1 x
+tmux 3.2_a-1 x
+zsh 5.8.1-1 x
+
+# BROWSERS
+brave-browser 1.36.111-1 x
+firefox 98.0.1-1 x
+
+# IDE
+atom 1.58.0-1 x
+emacs 27.2-2 x
+sublime-text-4 4.4126-1 x
+visual-studio-code-bin 1.65.2-1 x
+vim 8.2.4464-1 x
+
+# Language Interpreters
+python 3.10.2-1 x
+python-pip 21.0-1 x
+jre11-openjdk 11.0.15.u3-1 x
+sbt 1:1.6.0-1 x
+nodejs 17.7.1-1 x
+npm 8.5.4-1 x
+yarn 1.22.17-1 x
+rust 1:1.59.0-1 x
+
+#DB
+dbeaver 22.0.0-1 x
+mysql-workbench 8.0.28-1 x
+
+# IMAGES
+gimp x
+graphicsmagick 1.3.37-1 x
+
+#MEDIA 
+ffmpeg 2:5.0- x
+vlc 3.0.16-8 x
+mpv 1:0.34.1-4 x
+youtube-dl 2021.12.17-1 x
+youtube-viewer 1:3.9.7-1 x
+
+# PDF
+qpdfview 0.4.18-2 x
+zathura 0.4.8-1 x
+
+# TORRENT
+transmission-gtk 3.00-3
+
+# OFFICE
+wps-office 11.1.0.10920-1
+
+# COMMUNICATIONS
+signal-desktop 5.35.0-1
+
+# UTILS
+bitwarden 1.31.3-2 x
+bleachbit 4.4.2-2 x
+catfish 4.16.3-2 x
+exa 0.10.1-5 x
+flameshot 11.0.0-4 x
+htop 3.1.2-1 x
+
+
+lf 26-1 x
+stacer 1.1.0-1 x
+ueberzug 18.1.9-3 x
+virt-manager 4.0.0-1
+virtualbox 6.1.32-2
+
+jq 1.6-4
+
+
+
+
+
+
+
+
+# [LINKS]
+
+## ZSH
+https://github.com/romkatv/powerlevel10k
+https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md
+https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md#oh-my-zsh
+https://github.com/unixorn/fzf-zsh-plugin#oh-my-zsh
+
+## TMUX
+https://github.com/gpakosz/.tmux
+
+https://github.com/hlissner/doom-emacs#install
+
+https://spacevim.org/
