@@ -20,30 +20,30 @@ INIT_PKGS=(
 	'git'
 	'wget'
 	'curl'
-    	'cmake'                 # Cross-platform open-source make system
-    	'galculator'            # Gnome calculator
-    	'hunspell'              # Spellcheck libraries
-    	'hunspell-pt_PT'           # Portuguese spellcheck library
-    	'hunspell-en_US'           # Portuguese spellcheck library
+	'cmake'                 # Cross-platform open-source make system
+	'galculator'            # Gnome calculator
+	'hunspell'              # Spellcheck libraries
+	'hunspell-pt_PT'           # Portuguese spellcheck library
+	'hunspell-en_US'           # Portuguese spellcheck library
 	'nomacs'                # Image viewer
-    	'pngcrush'              # Tools for optimizing PNG images
-    	'ristretto'             # Multi image viewer
-    	'gparted'               # Disk utility
-    	'neofetch'              # Shows system info when you launch terminal
-    	'autojump'
-    	'exa'
-    	'htop'
-    	'lf'
-    	'ueberzug'
-    	'arandr'
-    	'blueman'
-    	'bleachbit'
-    	'stacer'
-    	'catfish'
-    	'flameshot'
-    	'rsync'
-    	'zenity'                # Display graphical dialog boxes via shell scripts
-    	'speedtest-cli'         # Internet speed via terminal
+	'pngcrush'              # Tools for optimizing PNG images
+	'ristretto'             # Multi image viewer
+	'gparted'               # Disk utility
+	'neofetch'              # Shows system info when you launch terminal
+	'autojump'
+	'exa'
+	'htop'
+	'lf'
+	'ueberzug'
+	'arandr'
+	'blueman'
+	'bleachbit'
+	'stacer'
+	'catfish'
+	'flameshot'
+	'rsync'
+	'zenity'                # Display graphical dialog boxes via shell scripts
+	'speedtest-cli'         # Internet speed via terminal
 	'dialog'				# displays various kinds of dialog boxes that can be incorporate into shell scripts
 )
 
@@ -52,31 +52,18 @@ echo -e "${LIGHT_GREEN}Post Installation Script Started ${NC}"
 echo -e "${LIGHT_GREEN}Updating and Upgrading Mirrors and Packages ${NC}"
 
 # Update Mirros List
-sudo pacman-mirrors -c all
+#sudo pacman-mirrors -c all
 
 # Update and Upgrade Packages
-sudo pacman -Syyu --noconfirm
+#sudo pacman -Syyu --noconfirm
 
 # Checks if yay is installed, if it's not installed, install it and update Aur packages
 echo "Installing yay"
 pacman -Qs yay && echo "${GREEN}Yay already installed${NC}" || sudo pacman -S yay --noconfirm
 
-#if [ $(pacman -Qs yay) == "" ];
-#then
-#	echo "Installing yay"
-#	sudo pacman -S yay --noconfirm
-#	yay -Syu --noconfirm
-#fi
-
 for PKG in "${INIT_PKGS[@]}"; do
     echo -e "${GREEN}Installing ${PKG} ${NC}"
-    pacman -Qs ${PKG} && echo "${GREEN}${PKG} already installed${NC}" || sudo pacman -S ${PKG} --noconfirm
-
-    #if [ $(which ${PKG}) == "" ];
-	#then
-	#	yay -S "$PKG" --noconfirm --needed
-	#fi
-	#tput setaf 1; echo $(pacman -Qs ${PKG}) && echo "${GREEN}${PKG} already installed${NC}" || sudo pacman -S ${PKG} --noconfirm
+    pacman -Qs ${PKG} && tput setaf 1; echo $("${GREEN}${PKG} already installed${NC}") || sudo pacman -S ${PKG} --noconfirm
 done
 
 #Install System Utils

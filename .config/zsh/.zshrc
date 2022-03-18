@@ -11,9 +11,14 @@ source $XDG_CONFIG_HOME/zsh/.myfunc
 # | Tmux |
 #--------+
 
-if [ -z "$TMUX" ]
-then
-    tmux attach -t TMUX || tmux new -s TMUX
+#if [ -z "$TMUX" ]
+#then
+#    tmux attach -t TMUX || tmux new -s TMUX
+#fi
+if which tmux 2>&1 >/dev/null; then
+  if [ $TERM != "screen-256color" ] && [  $TERM != "screen" ]; then
+    tmux attach -t TMUX || tmux new -s TMUX; exit
+  fi
 fi
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.

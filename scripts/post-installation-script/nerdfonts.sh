@@ -35,6 +35,10 @@ echo "${GREEN}Started downloading fonts${EC}"
 #Droid Sans Mono
 curl -fLo "Droid Sans Mono for Powerline Nerd Font Complete.otf" "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf" --output-dir $OUTPUT_DIR
 
+#Fira Mono
+curl -fLo "Fira Mono Regular Nerd Font Complete Mono.otf" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/FiraMono/Regular/complete/Fura%20Mono%20Regular%20Nerd%20Font%20Complete%20Mono.otf"
+curl -fLo "Fira Mono Regular Nerd Font Complete.otf"  "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/FiraMono/Regular/complete/Fura%20Mono%20Regular%20Nerd%20Font%20Complete.otf"
+
 # 3270
 curl -fLo "3270 Medium for Powerline Nerd Font Complete.otf" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/3270/Medium/complete/3270-Medium%20Nerd%20Font%20Complete.otf" --output-dir $OUTPUT_DIR
 curl -fLo "3270 Narrow for Powerline Nerd Font Complete.otf" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/3270/Narrow/complete/3270%20Narrow%20Nerd%20Font%20Complete.otf" --output-dir $OUTPUT_DIR
