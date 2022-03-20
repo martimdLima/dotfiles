@@ -316,12 +316,10 @@ alias vca="vue create"
 # [DotFiles]                        #
 ########################################
 # alias for git operations on the dotfiles folder
-alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 
 ########################################
 # [lulz]	                       #
 ########################################
 alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'     # the terminal rickroll
-
-colorscript random    ### RANDOM COLOR SCRIPT ###

@@ -1,14 +1,11 @@
 #!/bin/bash
 
-RED=$'\e[0;31m'
-GREEN=$'\e[0;32m'
-LIGHT_GREEN='\e[1;32m'
-NC=$'\e[0m'
+source ./colors.sh
 
 echo
 echo 	'######################################'
 echo 	'##                           	    ##'
-echo -e "## ${LIGHT_GREEN}MDLima Post-Installation Script ${NC} ##"
+echo -e "## ${BOLD_GREEN}MDLima Post-Installation Script ${RESET} ##"
 echo 	'##                           	    ##'
 echo 	'######################################'
 echo
@@ -44,12 +41,15 @@ INIT_PKGS=(
 	'rsync'
 	'zenity'                # Display graphical dialog boxes via shell scripts
 	'speedtest-cli'         # Internet speed via terminal
+  	'xlayoutdisplay'		# Display Configuration Tool
+  	'the_silver_searcher'	# A code searching tool similar to ack
+  	'xclip'					# copy paste and clipboard access operations from the command line interface
 	'dialog'				# displays various kinds of dialog boxes that can be incorporate into shell scripts
 )
 
-echo -e "${LIGHT_GREEN}Post Installation Script Started ${NC}"
+echo -e "${BOLD_GREEN}Post Installation Script Started ${RESET}"
 
-echo -e "${LIGHT_GREEN}Updating and Upgrading Mirrors and Packages ${NC}"
+echo -e "${BOLD_GREEN}Updating and Upgrading Mirrors and Packages ${RESET}"
 
 # Update Mirros List
 #sudo pacman-mirrors -c all
@@ -59,15 +59,15 @@ echo -e "${LIGHT_GREEN}Updating and Upgrading Mirrors and Packages ${NC}"
 
 # Checks if yay is installed, if it's not installed, install it and update Aur packages
 echo "Installing yay"
-pacman -Qs yay && echo "${GREEN}Yay already installed${NC}" || sudo pacman -S yay --noconfirm
+pacman -Qs yay && echo "${GREEN}Yay already installed${RESET}" || sudo pacman -S yay --noconfirm
 
 for PKG in "${INIT_PKGS[@]}"; do
-    echo -e "${GREEN}Installing ${PKG} ${NC}"
-    pacman -Qs ${PKG} && tput setaf 1; echo $("${GREEN}${PKG} already installed${NC}") || sudo pacman -S ${PKG} --noconfirm
+    echo -e "${GREEN}Installing ${PKG} ${RESET}"
+    pacman -Qs ${PKG} && tput setaf 1; echo $("${GREEN}${PKG} already installed${RESET}") || sudo pacman -S ${PKG} --noconfirm
 done
 
 #Install System Utils
-echo -e "${GREEN}Installing System Utils ${NC}"
+echo -e "${GREEN}Installing System Utils ${RESET}"
 
 # Initializes the dialog with the specifed measurements
 cmd=(dialog --separate-output --checklist "Please Select Software you want to install from the present list of choices. Use the UP/DOWN arrow keys to move through the list. Press SPACE to toggle an option on/off." 22 76 16)
@@ -215,6 +215,10 @@ for choice in $choices
 			echo "Installing Nodejs"
 			yay -S nodejs --noconfirm --needed
 
+			# Node Version Manager
+			echo "Installing Nvm"
+			curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
 			 # Node package manager
 			echo "Installing Npm"
 			yay -S npm --noconfirm --needed
@@ -246,16 +250,17 @@ for choice in $choices
 			yay -S mariadb --noconfirm --needed
 
 			# Before starting the MariaDB service, initialize the database
-			mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+			sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 
 			# Finally, start and enable the MariaDB service
-			systemctl enable --now mariadb
+			sudo systemctl enable --now mariadb
+			sudo systemctl start mysqld
 
 			# Once the service is up, verify the status of the MariaDB service
 			systemctl status mariadb
 
 			# After installing MariaDB, run the mysql_secure_installation command to remove anonymous users, test databases, and disallow remote root login.
-			mysql_secure_installation
+			 sudo mysql_secure_installation
 			;;
 		19)
 			# DBeaver
@@ -327,7 +332,16 @@ for choice in $choices
     esac
 done
 
-echo -e "${LIGHT_GREEN}Post Installation Script Complete${NC}"
+echo "Cleaning up orphaned packages and cache"
+# remove orphaned packages
+sudo pacman -Rns $(pacman -Qtdq)
+sudo pacman -Sc
+yay -Sc
+
+# Installing and configuring dotfiles
+. dot_files_config.sh
+
+echo -e "${BOLD_GREEN}Post Installation Script Complete${RESET}"
 
 printf "Would you like to reboot? (y/N)"
 read -r reboot
