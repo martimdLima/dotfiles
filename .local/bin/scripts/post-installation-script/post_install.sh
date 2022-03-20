@@ -161,7 +161,8 @@ for choice in $choices
 			;;
 		5)
 			echo "Installing Brave"
-			yay -S brave --noconfirm --needed
+			#yay -S brave --noconfirm --needed
+			yay -S brave
 			;;
 		6)
 			echo "Installing Firefox"
