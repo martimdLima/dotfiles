@@ -20,8 +20,8 @@ INIT_PKGS=(
 	'cmake'                 # Cross-platform open-source make system
 	'galculator'            # Gnome calculator
 	'hunspell'              # Spellcheck libraries
-	'hunspell-pt_PT'           # Portuguese spellcheck library
-	'hunspell-en_US'           # Portuguese spellcheck library
+	'hunspell-pt_PT'        # Portuguese spellcheck library
+	'hunspell-en_US'        # Portuguese spellcheck library
 	'nomacs'                # Image viewer
 	'pngcrush'              # Tools for optimizing PNG images
 	'ristretto'             # Multi image viewer
@@ -52,15 +52,16 @@ echo -e "${BOLD_GREEN}Post Installation Script Started ${RESET}"
 echo -e "${BOLD_GREEN}Updating and Upgrading Mirrors and Packages ${RESET}"
 
 # Update Mirros List
-#sudo pacman-mirrors -c all
+sudo pacman-mirrors -c all
 
 # Update and Upgrade Packages
-#sudo pacman -Syyu --noconfirm
+sudo pacman -Syyu --noconfirm
 
 # Checks if yay is installed, if it's not installed, install it and update Aur packages
 echo "Installing yay"
 pacman -Qs yay && echo "${GREEN}Yay already installed${RESET}" || sudo pacman -S yay --noconfirm
 
+# Install packages
 for PKG in "${INIT_PKGS[@]}"; do
     echo -e "${GREEN}Installing ${PKG} ${RESET}"
     pacman -Qs ${PKG} && tput setaf 1; echo $("${GREEN}${PKG} already installed${RESET}") || sudo pacman -S ${PKG} --noconfirm
@@ -323,7 +324,16 @@ for choice in $choices
 
 			# Virt-manager
 			echo "Installing virt-manager"
-			yay -S virt-manager --noconfirm --needed
+			yay -S qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat --noconfirm --needed
+
+			sudo systemctl enable libvirtd.service
+			sudo systemctl start libvirtd.service
+
+			# Find some way to replace /etc/libvirt/libvirtd.conf with the edited version
+
+			sudo usermod -aG libvirt mdlima
+
+			sudo systemctl restart libvirtd.service
 			;;
 		27)
 			echo "Generating SSH keys"
