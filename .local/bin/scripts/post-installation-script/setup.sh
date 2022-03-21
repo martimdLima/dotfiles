@@ -2,31 +2,6 @@
 
 source <(curl -s https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/colors.sh)
 
-logo() {
-  # print dothelper logo
-  printf "${FG_SKYBLUE}%s\n" ""
-  printf "%s\n" "    ___      _   _          _       "
-  printf "%s\n" "   /   \___ | |_| |__   ___| |_ __   ___ _ __ "
-  printf "%s\n" "  / /\ / _ \| __| '_ \ / _ \ | '_ \ / _ \ '__|"
-  printf "%s\n" " / /_// (_) | |_| | | |  __/ | |_) |  __/ |   "
-  printf "%s\n" "/___,' \___/ \__|_| |_|\___|_| .__/ \___|_|   "
-  printf "%s\n" "                             |_|             "
-  printf "${RESETS}\n%s" ""
-}
-
-intro() {
-  logo
-  USERS_NAME=$LOGNAME
-  printf "\n\a%s" "Hi${FG_ORANGE} $USERS_NAME ${RESETS}"
-  echo
-}
-
-goodbye() {
-  printf "\a\n\n%s\n${BOLD}Thanks for using dothelper.${RESETS}"
-}
-
-intro
-
 # Updating Mirros and downloading dialog
 echo "${BOLD}Updating Mirrors${RESETS}"
 sudo pacman -Sy
@@ -36,9 +11,8 @@ sudo pacman -Sy
 # sudo pacman -S dialog
 #fi
 
-# check if git exists
-if ! command -v git &> /dev/null; then
-  printf "%s\n\n" "${BOLD}${FG_SKYBLUE}${DOTMAN_LOGO}${RESET}"
+# check if dialog exists
+if ! command -v dialog &> /dev/null; then
   echo "Can't work without Dialog. Please install dialog to continue 😞"
   exit 1
 fi
