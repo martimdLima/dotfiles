@@ -10,6 +10,7 @@ sudo pacman -Sy
 # echo "Installing Dialog"
 # sudo pacman -S dialog
 #fi
+
 createdialog() {
   # Initializes the dialog with the specifed measurements
   cmd=(dialog --separate-output --checklist "Welcome to DotHelper. Press SPACE to toggle an option on/off." 22 76 16)
