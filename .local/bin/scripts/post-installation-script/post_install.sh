@@ -183,6 +183,7 @@ for choice in $choices
 		5) 
 			#Install MongoDB
 			echo "Installing MongoDb"
+			yay -S patch --noconfirm --needed
 			yay -S mongodb --noconfirm --needed
 			sudo systemctl enable mongodb.service
 			sudo systemctl start mongodb.service
@@ -199,7 +200,7 @@ for choice in $choices
 			sudo systemctl start mysqld
 
 			# Once the service is up, verify the status of the MariaDB service
-			systemctl status mariadb
+			#systemctl status mariadb
 
 			# After installing MariaDB, run the mysql_secure_installation command to remove anonymous users, test databases, and disallow remote root login.
 			sudo mysql_secure_installation
