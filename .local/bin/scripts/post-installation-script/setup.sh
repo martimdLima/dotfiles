@@ -11,7 +11,7 @@ logo() {
   printf "%s\n" " / /_// (_) | |_| | | |  __/ | |_) |  __/ |   "
   printf "%s\n" "/___,' \___/ \__|_| |_|\___|_| .__/ \___|_|   "
   printf "%s\n" "                             |_|             "
-  printf "${RESET}\n%s" ""
+  printf "${RESETS}\n%s" ""
 }
 
 intro() {
