@@ -2,29 +2,16 @@
 
 source ./colors.sh
 
-echo
-echo 	'######################################'
-echo 	'##                           	    ##'
-echo -e "## ${BOLD_GREEN}MDLima Post-Installation Script ${RESET} ##"
-echo 	'##                           	    ##'
-echo 	'######################################'
-echo
-
 INIT_PKGS=(
-	'pkg-config'
-	'paru'
-	'vim'
 	'git'
+	'vim'
 	'wget'
 	'curl'
 	'cmake'                 # Cross-platform open-source make system
+	'make'
+	'paru'
+	'pkg-config'
 	'galculator'            # Gnome calculator
-	'hunspell'              # Spellcheck libraries
-	'hunspell-pt_PT'        # Portuguese spellcheck library
-	'hunspell-en_US'        # Portuguese spellcheck library
-	'nomacs'                # Image viewer
-	'pngcrush'              # Tools for optimizing PNG images
-	'ristretto'             # Multi image viewer
 	'gparted'               # Disk utility
 	'neofetch'              # Shows system info when you launch terminal
 	'autojump'
@@ -34,20 +21,29 @@ INIT_PKGS=(
 	'ueberzug'
 	'arandr'
 	'blueman'
-	'bleachbit'
-	'stacer'
-	'catfish'
-	'flameshot'
-	'rsync'
 	'zenity'                # Display graphical dialog boxes via shell scripts
 	'speedtest-cli'         # Internet speed via terminal
   	'xlayoutdisplay'		# Display Configuration Tool
   	'the_silver_searcher'	# A code searching tool similar to ack
   	'xclip'					# copy paste and clipboard access operations from the command line interface
+	'hunspell'              # Spellcheck libraries
+	'hunspell-pt_PT'        # Portuguese spellcheck library
+	'hunspell-en_US'        # Portuguese spellcheck library
+	'nomacs'                # Image viewer
+	'pngcrush'              # Tools for optimizing PNG images
+	'ristretto'             # Multi image viewer
+	'firefox'
+	'brave-bin'
+	'bleachbit'
+	'stacer'
+	'catfish'
+	'flameshot'
+	'rsync'
+	'alacritty'
+	'guake'
+
 	'dialog'				# displays various kinds of dialog boxes that can be incorporate into shell scripts
 )
-
-echo -e "${BOLD_GREEN}Post Installation Script Started ${RESET}"
 
 echo -e "${BOLD_GREEN}Updating and Upgrading Mirrors and Packages ${RESET}"
 
@@ -59,21 +55,21 @@ sudo pacman -Syyu --noconfirm
 
 # Checks if yay is installed, if it's not installed, install it and update Aur packages
 echo "Installing yay"
-pacman -Qs yay && echo "${GREEN}Yay already installed${RESET}" || sudo pacman -S yay --noconfirm
+pacman -Qs yay && echo "${GREEN} Yay already installed ${RESET}" || sudo pacman -S yay --noconfirm
+
+echo -e "${BOLD_GREEN}Installing Packages${RESET}"
 
 # Install packages
 for PKG in "${INIT_PKGS[@]}"; do
     echo -e "${GREEN}Installing ${PKG} ${RESET}"
-    pacman -Qs ${PKG} && tput setaf 1; echo $("${GREEN}${PKG} already installed${RESET}") || sudo pacman -S ${PKG} --noconfirm
+    pacman -Qs ${PKG} && echo "${RED} ${PKG} already installed ${RESET}" || sudo pacman -S ${PKG} --noconfirm
 done
 
-#Install System Utils
-echo -e "${GREEN}Installing System Utils ${RESET}"
-
 # Initializes the dialog with the specifed measurements
+# any option can be set to default to "on"
 cmd=(dialog --separate-output --checklist "Please Select Software you want to install from the present list of choices. Use the UP/DOWN arrow keys to move through the list. Press SPACE to toggle an option on/off." 22 76 16)
 options=(
-	1 "Alacrity" off    # any option can be set to default to "on"
+	1 "Alacrity" off    
 	2 "Guake" off
 	3 "ZSH" off
 	4 "Tmux" off
@@ -81,7 +77,7 @@ options=(
 	6 "Firefox" off
 	7 "SpaceVim" off
 	8 "Emacs" off
-	9 "Doom Emacs" off
+	9 "Steam" off
 	10 "Atom" off
 	11 "Sublime Text 4" off
 	12 "Visual Studio Code" off
@@ -108,8 +104,10 @@ for choice in $choices
 	case $choice in
     	1)	
 			#Install Alacrity
-			echo "Installing Alacrity"
-			yay -S alacritty --noconfirm --needed
+			echo "Installing MongoDb"
+			yay -S mongodb
+			sudo systemctl enable mongodb.service
+			sudo systemctl start mongodb.service
 			;;
 		2)
 			#Install Guake
@@ -134,7 +132,7 @@ for choice in $choices
 			git clone https://github.com/unixorn/fzf-zsh-plugin.git $HOME/.oh-my-zsh/custom/plugins/fzf-zsh-plugin
 
 			echo "Installing ZPlug"
-			$ curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+			curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 
 			echo "Installing zsh-completions"
 			git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions
@@ -155,18 +153,10 @@ for choice in $choices
 			yay -S tmux --noconfirm --needed
 
 			echo "Installing Oh My Tmux"
+			cd ~
 			git clone https://github.com/gpakosz/.tmux.git
 			ln -s -f .tmux/.tmux.conf
 			cp .tmux/.tmux.conf.local .
-			;;
-		5)
-			echo "Installing Brave"
-			#yay -S brave --noconfirm --needed
-			yay -S brave
-			;;
-		6)
-			echo "Installing Firefox"
-			yay -S firefox --noconfirm --needed
 			;;
 		7)
 			echo "Installing SpaceVim"
@@ -175,11 +165,14 @@ for choice in $choices
 		8)
 			echo "Installing emacs"
 			yay -S emacs --noconfirm --needed
-			;;
-		9)
+
 			echo "Installing Doom emacs"
 			git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
 			~/.emacs.d/bin/doom install
+			;;
+		9)
+			echo "Installing Steam"
+			yay -S steam --noconfirm --needed
 			;;
 		10)
 			echo "Installing atom"
@@ -219,7 +212,7 @@ for choice in $choices
 
 			# Node Version Manager
 			echo "Installing Nvm"
-			curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+			curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | zsh
 
 			 # Node package manager
 			echo "Installing Npm"
@@ -343,14 +336,11 @@ for choice in $choices
     esac
 done
 
-echo "Cleaning up orphaned packages and cache"
-# remove orphaned packages
+echo -e "${BOLD_GREEN}Cleaning up orphaned packages and cache${RESET}"
+remove orphaned packages
 sudo pacman -Rns $(pacman -Qtdq)
 sudo pacman -Sc
 yay -Sc
-
-# Installing and configuring dotfiles
-. dot_files_config.sh
 
 echo -e "${BOLD_GREEN}Post Installation Script Complete${RESET}"
 

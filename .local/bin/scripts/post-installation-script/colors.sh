@@ -1,6 +1,4 @@
 #!/bin/sh
-
-if ! command -v tput &> /dev/null; then
   # Regular Colors
   BLACK="\e[0;30m"
   RED="\e[0;31m"      
@@ -69,13 +67,12 @@ if ! command -v tput &> /dev/null; then
   HIGH_INTENSITY_BACKGROUND_BLUEk="\e[0;104m"  
   HIGH_INTENSITY_BACKGROUND_PURPLE="\e[0;105m"  
   HIGH_INTENSITY_BACKGROUND_CYAN=" \e[0;106m"  
-  HIGH_INTENSITY_BACKGROUND_WHITE="\e[0;107m"  
+  HIGH_INTENSITY_BACKGROUND_WHITE="\e[0;107m"
 
-  # Reset
   RESET='\e[0m'
-else
+
   BOLD=$(tput BOLD)
-  RESET=$(tput sgr0)
+  RESETS=$(tput sgr0)
   BG_BLACK=$(tput setab 0)
   FG_RED=$(tput setaf 1)
   FG_GREEN=$(tput setaf 2)
@@ -91,4 +88,6 @@ else
   FG_ORANGE=$(tput setaf 214)
   UL=$(tput smul)
   RUL=$(tput rmul)
-fi
+
+
+#if ! command -v tput &> /dev/null; then

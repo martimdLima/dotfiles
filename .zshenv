@@ -52,9 +52,3 @@ export CATALINA_HOME="/home/mdlima/apache-tomcat-9.0.38"
 # +-----------+
 export DOOM="/usr/bin/emacs"
 export DOOM_CONFIG="/home/mdlima/.config/doom"
-
-# +-----------+
-# | DotFiles  |
-# +-----------+
-export DOT_REPO=git@github.com:martimdLima/dotfiles.git
-export DOT_DIR=Documents/test

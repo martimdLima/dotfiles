@@ -7,9 +7,12 @@ source $XDG_CONFIG_HOME/zsh/.myaliases
 source $XDG_CONFIG_HOME/zsh/.myfunc
 #source $HOME/.local/share/lf/icons
 
+# Random Color Script
+colorscript random
+
 # +-------+
-# | Tmux |
-#--------+
+# | Tmux  |
+# +-------+
 
 #if [ -z "$TMUX" ]
 #then
@@ -90,9 +93,6 @@ setopt HIST_FIND_NO_DUPS         # Do not display a previously found event.
 setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
 setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
 setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
-
-# Random Color Script
-colorscript random
 
 # Set name of the theme to load
 ZSH_THEME="powerlevel10k/powerlevel10k"
