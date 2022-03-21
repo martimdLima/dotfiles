@@ -71,7 +71,7 @@
 
   RESET='\e[0m'
 
-  BOLD=$(tput BOLD)
+  BOLD=$(tput bold)
   RESETS=$(tput sgr0)
   BG_BLACK=$(tput setab 0)
   FG_RED=$(tput setaf 1)
