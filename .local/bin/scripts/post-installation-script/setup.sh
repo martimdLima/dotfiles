@@ -10,15 +10,6 @@ sudo pacman -Sy
 # echo "Installing Dialog"
 # sudo pacman -S dialog
 #fi
-
-# check if dialog exists
-if ! command -v dialog &> /dev/null; then
-  sudo pacman -S dialog
-  createdialog
-else
-  createdialog
-fi
-
 createdialog() {
   # Initializes the dialog with the specifed measurements
   cmd=(dialog --separate-output --checklist "Welcome to DotHelper. Press SPACE to toggle an option on/off." 22 76 16)
@@ -40,3 +31,11 @@ createdialog() {
       esac
   done
 }
+
+# check if dialog exists
+if ! command -v dialog &> /dev/null; then
+  sudo pacman -S dialog
+  createdialog
+else
+  createdialog
+fi
