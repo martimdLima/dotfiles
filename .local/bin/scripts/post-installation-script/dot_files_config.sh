@@ -2,7 +2,7 @@
 
 CWD=`pwd`
 NAME=$USER
-HOME_DIR="/home/mdlima"
+
 DOT_REPO_HTTPS="https://github.com/martimdLima/dotfiles.git"
 DOT_REPO_SSH="git@github.com:martimdLima/dotfiles.git"
 REPO_BRANCH="master"
@@ -70,16 +70,16 @@ fi
 
 trap catchctrlplusc SIGINT
 
-cd $HOME_DIR
+cd $HOME
 
 # Download dotFiles
-putgitrepo "$DOT_REPO_SSH" "$HOME_DIR" "$REPO_BRANCH"
+putgitrepo "$DOT_REPO_SSH" "$HOME" "$REPO_BRANCH"
 
 # Remove README.md
 rm -f "/home/mdlima/Documents/test/README.md"
 
 # make git ignore deleted README.md file
-git update-index --assume-unchanged "$HOME_DIR/README.md"
+git update-index --assume-unchanged "$HOME/README.md"
 
 goodbye
 

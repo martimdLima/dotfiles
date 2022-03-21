@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ./colors.sh
+source <(curl -s https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/colors.sh)
 
 logo() {
   # print dothelper logo
@@ -26,6 +26,12 @@ goodbye() {
 }
 
 intro
+
+# check if dialog exists
+if ! command -v dialog &> /dev/null; then
+  sudo pacman -Sy
+  sudo pacman -S dialog
+fi
 
 # Initializes the dialog with the specifed measurements
 cmd=(dialog --separate-output --checklist "Welcome to DotHelper. Press SPACE to toggle an option on/off." 22 76 16)
