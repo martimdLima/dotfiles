@@ -4,7 +4,7 @@ source <(curl -s https://raw.githubusercontent.com/martimdLima/dotfiles/master/.
 
 logo() {
   # print dothelper logo
-  printf "${BOLD}${FG_SKYBLUE}%s\n" ""
+  printf "${FG_SKYBLUE}%s\n" ""
   printf "%s\n" "    ___      _   _          _       "
   printf "%s\n" "   /   \___ | |_| |__   ___| |_ __   ___ _ __ "
   printf "%s\n" "  / /\ / _ \| __| '_ \ / _ \ | '_ \ / _ \ '__|"
@@ -17,20 +17,21 @@ logo() {
 intro() {
   logo
   USERS_NAME=$LOGNAME
-  printf "\n\a%s" "Hi${BOLD}${FG_ORANGE} $USERS_NAME ${RESET}"
+  printf "\n\a%s" "Hi${FG_ORANGE} $USERS_NAME ${RESETS}"
   echo
 }
 
 goodbye() {
-  printf "\a\n\n%s\n" "${BOLD}Thanks for using dothelper. ${RESET}"
+  printf "\a\n\n%s\n" "Thanks for using dothelper. }"
 }
 
 intro
 
 # check if dialog exists
-if ! command -v dialog &> /dev/null; then
+if ! command -v dialog; then
   sudo pacman -Sy
   sudo pacman -S dialog
+  echo "test"
 fi
 
 # Initializes the dialog with the specifed measurements
