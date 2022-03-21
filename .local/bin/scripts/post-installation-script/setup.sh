@@ -13,8 +13,11 @@ sudo pacman -Sy
 
 # check if dialog exists
 if ! command -v dialog &> /dev/null; then
-  echo "Can't work without Dialog. Please install dialog to continue 😞"
-  exit 1
+  echo "Can't work without Dialog. Dialog must be installed to procceed."
+  printf "Would you like to install Dialog? (y/N)"
+  read -r install
+  [ "$(tr '[:upper:]' '[:lower:]' <<< "$install")" = "y" ] && sudo pacman -S dialog
+ # exit 1
 fi
 
 # Initializes the dialog with the specifed measurements
