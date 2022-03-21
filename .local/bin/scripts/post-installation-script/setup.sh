@@ -31,13 +31,17 @@ intro
 echo "${BOLD}Updating Mirrors${RESETS}"
 sudo pacman -Sy
 
-echo "${BOLD}Installing Dialog"${RESETS}
-sudo pacman -S dialog
-
 #if ! which dialog &> /dev/null; then
 # echo "Installing Dialog"
 # sudo pacman -S dialog
 #fi
+
+# check if git exists
+if ! command -v git &> /dev/null; then
+  printf "%s\n\n" "${BOLD}${FG_SKYBLUE}${DOTMAN_LOGO}${RESET}"
+  echo "Can't work without Dialog. Please install dialog to continue 😞"
+  exit 1
+fi
 
 # Initializes the dialog with the specifed measurements
 cmd=(dialog --separate-output --checklist "Welcome to DotHelper. Press SPACE to toggle an option on/off." 22 76 16)
