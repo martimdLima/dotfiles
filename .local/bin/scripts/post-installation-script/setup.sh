@@ -22,19 +22,22 @@ intro() {
 }
 
 goodbye() {
-  printf "\a\n\n%s\n" "Thanks for using dothelper."
+  printf "\a\n\n%s\n${BOLD}Thanks for using dothelper.${RESETS}"
 }
 
 intro
 
 # Updating Mirros and downloading dialog
-echo "Updating Mirrors"
+echo "${BOLD}Updating Mirrors${RESETS}"
 sudo pacman -Sy
 
-if ! which dialog &> /dev/null; then
-  echo "Installing Dialog"
-  sudo pacman -S dialog
-fi
+echo "${BOLD}Installing Dialog"${RESETS}
+sudo pacman -S dialog
+
+#if ! which dialog &> /dev/null; then
+# echo "Installing Dialog"
+# sudo pacman -S dialog
+#fi
 
 # Initializes the dialog with the specifed measurements
 cmd=(dialog --separate-output --checklist "Welcome to DotHelper. Press SPACE to toggle an option on/off." 22 76 16)
@@ -48,7 +51,6 @@ for choice in $choices
   do
   case $choice in
       1)  
-
       curl -Lks https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/post_install.sh | /bin/bash
       ;;
     2)

@@ -4,15 +4,43 @@ source <(curl -s https://raw.githubusercontent.com/martimdLima/dotfiles/master/.
 
 INIT_PKGS=(
 	'git'
-	'vim'
 	'wget'
 	'curl'
 	'cmake'                 # Cross-platform open-source make system
 	'make'
 	'paru'
 	'pkg-config'
+	'galculator'            # Gnome calculator
+	'gparted'               # Disk utility
+	'neofetch'              # Shows system info when you launch terminal
 	'autojump'
-	'dialog'			# displays various kinds of dialog boxes that can be incorporate into shell scripts
+	'exa'
+	'htop'
+	'lf'
+	'ueberzug'
+	'arandr'
+	'blueman'
+	'zenity'                # Display graphical dialog boxes via shell scripts
+	'speedtest-cli'         # Internet speed via terminal
+  	'xlayoutdisplay'		# Display Configuration Tool
+  	'the_silver_searcher'	# A code searching tool similar to ack
+  	'xclip'					# copy paste and clipboard access operations from the command line interface
+	'hunspell'              # Spellcheck libraries
+	'hunspell-pt_PT'        # Portuguese spellcheck library
+	'hunspell-en_US'        # Portuguese spellcheck library
+	'nomacs'                # Image viewer
+	'pngcrush'              # Tools for optimizing PNG images
+	'ristretto'             # Multi image viewer
+	'firefox'
+	'brave-bin'
+	'bleachbit'
+	'stacer'
+	'catfish'
+	'flameshot'
+	'rsync'
+	'alacritty'
+	'guake'
+	'dialog'				# displays various kinds of dialog boxes that can be incorporate into shell scripts
 )
 
 echo -e "${BOLD_GREEN}Updating and Upgrading Mirrors and Packages ${RESET}"
@@ -39,19 +67,22 @@ done
 # any option can be set to default to "on"
 cmd=(dialog --separate-output --checklist "Please Select Software you want to install from the present list of choices. Use the UP/DOWN arrow keys to move through the list. Press SPACE to toggle an option on/off." 22 76 16)
 options=(
-	1 "Shell" off    
-	2 "Browsers" off
-	3 "IDEs" off
-	4 "Dev Env" off
-	5 "Dbs" off
-	6 "Virtualization" off
-	7 "Media" off
-	8 "Office" off
-	9 "Torrents" off
-	10 "Media Manipulation" off
-	11 "Games" off
-	12 "System Utils" off
-	13 "Generate SSH Keys" off)
+	1 "ZSH" off
+	2 "Tmux" off
+	3 "Vim" off
+	4 "Emacs" off
+	5 "IDEs" off
+	6 "Dev Env" off
+	7 "MongoDB" off
+	8 "MariaDB" off
+	9 "Virtualization" off
+	10 "Media" off
+	11 "Office" off
+	12 "Torrents" off
+	13 "Media Manipulation" off
+	14 "Games" off
+	15 "System Utils" off
+	16 "Generate SSH Keys" off)
 	choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 	clear
 
@@ -59,13 +90,6 @@ for choice in $choices
 	do
 	case $choice in
     	1)	
-			#Install Alacrity
-			yay -S alacritty --noconfirm --needed
-
-			#Install Guake
-			echo "Installing Guake"
-			yay -S guake --noconfirm --needed
-
 			#Install ZSH
 			echo "Installing ZSH"
 			yay -S zsh --noconfirm --needed
@@ -98,7 +122,8 @@ for choice in $choices
 			yay -S noto-fonts --noconfirm --needed
 			yay -S powerline-fonts --noconfirm --needed
 			. nerdfonts.sh
-
+			;;
+		2)
 			echo "Installing Tmux"
 			yay -S tmux --noconfirm --needed
 
@@ -109,35 +134,34 @@ for choice in $choices
 			cp .tmux/.tmux.conf.local .
 
 			;;
-		2)
-			echo "Installing Brave"
-			yay -S brave-bin --noconfirm --needed
-
-			echo "Installing Firefox"
-			yay -S firefox --noconfirm --needed
-
-			;;
 		3)
+			echo "Installing Vim"
+			yay -S vim --noconfirm --needed
+
 			echo "Installing SpaceVim"
 			curl -sLf https://spacevim.org/install.sh | zsh
 
+
+			;;
+		4)
 			echo "Installing emacs"
 			yay -S emacs --noconfirm --needed
 
 			echo "Installing Doom emacs"
 			git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
 			~/.emacs.d/bin/doom install
-
+			;;
+		5)
 			echo "Installing atom"
 			yay -S atom --noconfirm --needed
-
+			
 			echo "Installing Sublime Text 4"
 			yay -S sublime-text-4 --noconfirm --needed
 
 			echo "Installing Visual Studio Code"
 			yay -S visual-studio-code-bin --noconfirm --needed
 			;;
-		4)
+		6)
 			echo "Installing Python"
 			yay -S python --noconfirm --needed
 			yay -S  python-pip --noconfirm --needed
@@ -180,14 +204,15 @@ for choice in $choices
 			echo "Installing Ruby"
 			yay -S ruby --noconfirm --needed 
 			;;
-		5) 
+		7) 
 			#Install MongoDB
 			echo "Installing MongoDb"
 			yay -S patch --noconfirm --needed
-			yay -S mongodb --noconfirm --needed
+			yay -S mongodb-bin --noconfirm --needed
 			sudo systemctl enable mongodb.service
 			sudo systemctl start mongodb.service
-
+			;;
+		8)
 			#MariaDB
 			echo "Installing MariaDB"
 			yay -S mariadb --noconfirm --needed
@@ -200,7 +225,7 @@ for choice in $choices
 			sudo systemctl start mysqld
 
 			# Once the service is up, verify the status of the MariaDB service
-			#systemctl status mariadb
+			systemctl status mariadb
 
 			# After installing MariaDB, run the mysql_secure_installation command to remove anonymous users, test databases, and disallow remote root login.
 			sudo mysql_secure_installation
@@ -213,7 +238,8 @@ for choice in $choices
 			echo "Installing MySQL Workbench"
 			yay -S mysql-workbench --noconfirm --needed
 			;;
-		6)
+
+		9)
 			# Virtualization Support
 			echo "Installing virtualbox"
 			yay -S virtualbox --noconfirm --needed
@@ -232,7 +258,7 @@ for choice in $choices
 
 			sudo systemctl restart libvirtd.service
 			;;
-		7)
+		10)
 			# Media Support
 
 			echo "Installing ffmpeg"
@@ -259,7 +285,7 @@ for choice in $choices
 			echo "Installing youtube-viewer"
 			yay -S youtube-viewer --noconfirm --needed
 			;;
-		8)
+		11)
 			# Office Support
 			echo "Installing wps-office"
 			yay -S wps-office --noconfirm --needed
@@ -271,11 +297,11 @@ for choice in $choices
 			echo "Installing zathura"
 			yay -S zathura --noconfirm --needed
 			;;
-		9)
+		12)
 			echo "Installing transmission-gtk"
 			yay -S transmission-gtk --noconfirm --needed
 			;;
-		10)
+		13)
 			# Image Processing
 			echo "Installing gimp"
 			yay -S gimp --noconfirm --needed
@@ -283,79 +309,78 @@ for choice in $choices
 			echo "Installing graphicsmagick"
 			yay -S graphicsmagick --noconfirm --needed
 			;;
-		11)
+		14)
 			echo "Installing Steam"
 			yay -S steam --noconfirm --needed
 			;;
-		12)
+		15)
 			
-			echo "Installing Steam"
+			echo "Installing galculator"
 			yay -S galculator --noconfirm --needed           # Gnome calculator
 
-			echo "Installing Steam"
+			echo "Installing gparted"
 			yay -S gparted --noconfirm --needed               # Disk utility
 
-			echo "Installing Steam"
+			echo "Installing neoFetch"
 			yay -S neofetch --noconfirm --needed              # Shows system info when you launch terminal
 
-			echo "Installing Steam"
+			echo "Installing exa"
 			yay -S exa --noconfirm --needed
 
-			echo "Installing Steam"
+			echo "Installing htop"
 			yay -S htop --noconfirm --needed
 
-			echo "Installing Steam"
+			echo "Installing lf"
 			yay -S lf --noconfirm --needed
 
-			echo "Installing Steam"
+			echo "Installing ueberzug"
 			yay -S ueberzug --noconfirm --needed
 
-			echo "Installing Steam"
+			echo "Installing arandr"
 			yay -S arandr --noconfirm --needed
 
-			echo "Installing Steam"
+			echo "Installing blueman"
 			yay -S blueman --noconfirm --needed
 
-			echo "Installing Steam"
+			echo "Installing zenity"
 			yay -S zenity --noconfirm --needed                # Display graphical dialog boxes via shell scripts
 
-			echo "Installing Steam"
+			echo "Installing Sspeedtest-cli"
 			yay -Sspeedtest-cli --noconfirm --needed        # Internet speed via terminal
 
-			echo "Installing Steam"
+			echo "Installing xlayoutdisplay"
 		  	yay -S xlayoutdisplay --noconfirm --needed		# Display Configuration Tool
 
-		  	echo "Installing Steam"
+		  	echo "Installing the_silver_searcher"
 		  	yay -S the_silver_searcher --noconfirm --needed	# A code searching tool similar to ack
 
-		  	echo "Installing Steam"
+		  	echo "Installing xclip"
 		  	yay -S xclip --noconfirm --needed					# copy paste and clipboard access operations from the command line interface
 
-		  	echo "Installing Steam"
-			yay -Shunspell --noconfirm --needed              # Spellcheck libraries
+		  	echo "Installing hunspell"
+			yay -S hunspell --noconfirm --needed              # Spellcheck libraries
 
-			echo "Installing Steam"
-			yay -Shunspell-pt_PT --noconfirm --needed        # Portuguese spellcheck library
+			echo "Installing hunspell-pt_PT"
+			yay -S hunspell-pt_PT --noconfirm --needed        # Portuguese spellcheck library
 
-			echo "Installing Steam"
+			echo "Installing hunspell-en_US"
 			yay -S hunspell-en_US --noconfirm --needed        # Portuguese spellcheck library
 
-			echo "Installing Steam"
+			echo "Installing bleachbit"
 			yay -S bleachbit --noconfirm --needed
 
-			echo "Installing Steam"
+			echo "Installing stacer"
 			yay -S stacer --noconfirm --needed
 
-			echo "Installing Steam"
+			echo "Installing catfish"
 			yay -S catfish --noconfirm --needed
 
 			echo "Installing Steam"
 			yay -S flameshot --noconfirm --needed
 
-			echo "Installing Steam"
+			echo "Installing rsync"
 			yay -S rsync --noconfirm --needed
 			;;
-		
 		13)
 			echo "Generating SSH keys"
 			ssh-keygen -t rsa -b 4096
