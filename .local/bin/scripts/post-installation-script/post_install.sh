@@ -27,15 +27,16 @@ sudo pacman -Syyu --noconfirm
 
 # Checks if yay is installed, if it's not installed, install it and update Aur packages
 echo "Installing yay"
-pacman -Qs yay && echo "${FG_GREEN} Yay already installed ${RESETS}" || sudo pacman -S yay --noconfirm --needed
+#pacman -Qs yay && echo "${FG_GREEN} Yay already installed ${RESETS}" || sudo pacman -S yay --noconfirm
+sudo pacman -S yay --noconfirm --needed
 
 echo -e "${BOLD}${FG_GREEN}Installing Packages${RESETS}"
 
 # Install packages
 for PKG in "${INIT_PKGS[@]}"; do
     echo -e "${FG_GREEN}Installing ${PKG} ${RESETS}"
-    pacman -Qs ${PKG} && echo "${RED} ${PKG} already installed ${RESETS}" || yay -S ${PKG} --noconfirm --needed
-    #yay -S ${PKG} --noconfirm
+    #pacman -Qs ${PKG} && echo "${RED} ${PKG} already installed ${RESETS}" || yay -S ${PKG} --noconfirm
+    yay -S ${PKG} --noconfirm --needed
 done
 
 # Initializes the dialog with the specifed measurements
