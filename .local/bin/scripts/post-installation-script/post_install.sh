@@ -20,10 +20,10 @@ INIT_PKGS=(
 echo -e "${BOLD}${FG_GREEN}Updating and Upgrading Mirrors and Packages ${RESETS}"
 
 # Update Mirros List
-#sudo pacman-mirrors -c all
+sudo pacman-mirrors -c all
 
 # Update and Upgrade Packages
-#sudo pacman -Syyu --noconfirm
+sudo pacman -Syyu --noconfirm
 
 # Checks if yay is installed, if it's not installed, install it and update Aur packages
 echo "Installing yay"
