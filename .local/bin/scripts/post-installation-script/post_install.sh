@@ -193,6 +193,12 @@ for choice in $choices
 			echo "Installing Npm"
 			yay -S npm --needed --noconfirm
 
+			echo "Installing create-react-app"
+			npm i --global create-react-app 
+
+			echo "Installing vue"
+			npm i --global vue
+
 			# Dependency management 
 			echo "Installing Yarn"
 			yay -S yarn --needed --noconfirm
@@ -287,14 +293,17 @@ for choice in $choices
 			yay -S steam --noconfirm --needed
 			;;
 		15)
+			echo "lInstalling lscolors"
+			yay -S lscolors --noconfirm --needed           # Gnome calculator
+
 			echo "Installing galculator"
-			yay -S galculator --noconfirm --needed           # Gnome calculator
+			yay -S galculator --noconfirm --needed         # A Rust library to colorize paths using LS_COLORS
 
 			echo "Installing gparted"
-			yay -S gparted --noconfirm --needed               # Disk utility
+			yay -S gparted --noconfirm --needed            # Disk utility
 
 			echo "Installing neoFetch"
-			yay -S neofetch --noconfirm --needed              # Shows system info when you launch terminal
+			yay -S neofetch --noconfirm --needed           # Shows system info when you launch terminal
 
 			echo "Installing exa"
 			yay -S exa --noconfirm --needed
