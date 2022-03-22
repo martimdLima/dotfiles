@@ -34,8 +34,8 @@ echo -e "${BOLD}${FG_GREEN}Installing Packages${RESETS}"
 # Install packages
 for PKG in "${INIT_PKGS[@]}"; do
     echo -e "${FG_GREEN}Installing ${PKG} ${RESETS}"
-    #pacman -Qs ${PKG} && echo "${RED} ${PKG} already installed ${RESETS}" || yay -S ${PKG} --noconfirm
-    yay -S ${PKG} --noconfirm
+    pacman -Qs ${PKG} && echo "${RED} ${PKG} already installed ${RESETS}" || yay -S ${PKG} --noconfirm
+    #yay -S ${PKG} --noconfirm
 done
 
 # Initializes the dialog with the specifed measurements
