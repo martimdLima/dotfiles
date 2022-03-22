@@ -33,11 +33,13 @@ sudo pacman -Sy
 
 # Checks if yay is installed, if it's not installed, install it and update Aur packages
 echo "Installing yay"
-pacman -Qs yay && echo "${GREEN} Yay already installed ${RESET}" || sudo pacman -S yay --noconfirm
+#pacman -Qs yay && echo "${GREEN} Yay already installed ${RESET}" || sudo pacman -S yay --noconfirm
+sudo pacman -S yay --noconfirm
 
-# Checks if yay is installed, if it's not installed, install it and update Aur packages
-echo "Installing yay"
-pacman -Qs dialog && echo "${GREEN} Dialog already installed ${RESET}" || yay -S dialog --noconfirm
+# Checks if dialog is installed, if it's not installed, install it and update Aur packages
+echo "Installing dialog"
+yay -S dialog --noconfirm
+#pacman -Qs dialog && echo "${GREEN} Dialog already installed ${RESET}" || yay -S dialog --noconfirm
 
 # check if git exists
 #if ! command -v git &> /dev/null; then
