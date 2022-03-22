@@ -8,8 +8,8 @@ INIT_PKGS=(
 	'curl'
 	'cmake'                 # Cross-platform open-source make system
 	'make'
-	'paru'
 	'pkg-config'
+	'paru'
 	'dialog'				# displays various kinds of dialog boxes that can be incorporate into shell scripts
 	'neofetch'              # Shows system info when you launch terminal
 	'autojump'
@@ -27,14 +27,14 @@ sudo pacman -Syyu --noconfirm
 
 # Checks if yay is installed, if it's not installed, install it and update Aur packages
 echo "Installing yay"
-pacman -Qs yay && echo "${FG_GREEN} Yay already installed ${RESETS}" || sudo pacman -S yay --noconfirm
+pacman -Qs yay && echo "${FG_GREEN} Yay already installed ${RESETS}" || sudo pacman -S yay --noconfirm --needed
 
 echo -e "${BOLD}${FG_GREEN}Installing Packages${RESETS}"
 
 # Install packages
 for PKG in "${INIT_PKGS[@]}"; do
     echo -e "${FG_GREEN}Installing ${PKG} ${RESETS}"
-    pacman -Qs ${PKG} && echo "${RED} ${PKG} already installed ${RESETS}" || yay -S ${PKG} --noconfirm
+    pacman -Qs ${PKG} && echo "${RED} ${PKG} already installed ${RESETS}" || yay -S ${PKG} --noconfirm --needed
     #yay -S ${PKG} --noconfirm
 done
 
