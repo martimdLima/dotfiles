@@ -10,57 +10,32 @@ INIT_PKGS=(
 	'make'
 	'paru'
 	'pkg-config'
-	'galculator'            # Gnome calculator
-	'gparted'               # Disk utility
+	'dialog'				# displays various kinds of dialog boxes that can be incorporate into shell scripts
 	'neofetch'              # Shows system info when you launch terminal
 	'autojump'
-	'exa'
-	'htop'
-	'lf'
-	'ueberzug'
-	'arandr'
-	'blueman'
 	'zenity'                # Display graphical dialog boxes via shell scripts
-	'speedtest-cli'         # Internet speed via terminal
-  	'xlayoutdisplay'		# Display Configuration Tool
-  	'the_silver_searcher'	# A code searching tool similar to ack
   	'xclip'					# copy paste and clipboard access operations from the command line interface
-	'hunspell'              # Spellcheck libraries
-	'hunspell-pt_PT'        # Portuguese spellcheck library
-	'hunspell-en_US'        # Portuguese spellcheck library
-	'nomacs'                # Image viewer
-	'pngcrush'              # Tools for optimizing PNG images
-	'ristretto'             # Multi image viewer
-	'firefox'
-	'brave-bin'
-	'bleachbit'
-	'stacer'
-	'catfish'
-	'flameshot'
-	'rsync'
-	'alacritty'
-	'guake'
-	'dialog'				# displays various kinds of dialog boxes that can be incorporate into shell scripts
 )
 
-echo -e "${BOLD_GREEN}Updating and Upgrading Mirrors and Packages ${RESET}"
+echo -e "${BOLD}${FG_GREEN}Updating and Upgrading Mirrors and Packages ${RESETS}"
 
 # Update Mirros List
-sudo pacman-mirrors -c all
+#sudo pacman-mirrors -c all
 
 # Update and Upgrade Packages
-sudo pacman -Syyu --noconfirm
+#sudo pacman -Syyu --noconfirm
 
 # Checks if yay is installed, if it's not installed, install it and update Aur packages
 echo "Installing yay"
-pacman -Qs yay && echo "${GREEN} Yay already installed ${RESET}" || sudo pacman -S yay --noconfirm
+pacman -Qs yay && echo "${FG_GREEN} Yay already installed ${RESETS}" || sudo pacman -S yay --noconfirm
 
-echo -e "${BOLD_GREEN}Installing Packages${RESET}"
+echo -e "${BOLD}${FG_GREEN}Installing Packages${RESETS}"
 
 # Install packages
 for PKG in "${INIT_PKGS[@]}"; do
-    echo -e "${GREEN}Installing ${PKG} ${RESET}"
-    pacman -Qs ${PKG} && echo "${RED} ${PKG} already installed ${RESET}" || sudo pacman -S ${PKG} --noconfirm
+    echo -e "${FG_GREEN}Installing ${PKG} ${RESETS}"
+    #pacman -Qs ${PKG} && echo "${RED} ${PKG} already installed ${RESETS}" || yay -S ${PKG} --noconfirm
+    yay -S ${PKG} --noconfirm
 done
 
 # Initializes the dialog with the specifed measurements
@@ -72,9 +47,9 @@ options=(
 	3 "Vim" off
 	4 "Emacs" off
 	5 "IDEs" off
-	6 "Dev Env" off
-	7 "MongoDB" off
-	8 "MariaDB" off
+	6 "MongoDB" off
+	7 "MariaDB" off
+	8 "Dev Env" off
 	9 "Virtualization" off
 	10 "Media" off
 	11 "Office" off
@@ -92,7 +67,9 @@ for choice in $choices
     	1)	
 			#Install ZSH
 			echo "Installing ZSH"
-			yay -S zsh --noconfirm --needed
+			#Install ZSH
+			echo "Installing ZSH"
+			yay -S zsh --needed
 
 			echo "Installing Oh My ZSH"
 			sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -119,33 +96,30 @@ for choice in $choices
 			git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 			echo "Install patched powerline fonts for glyphs support"
-			yay -S noto-fonts --noconfirm --needed
-			yay -S powerline-fonts --noconfirm --needed
+			yay -S noto-fonts --needed
+			yay -S powerline-fonts --needed
 			. nerdfonts.sh
 			;;
 		2)
 			echo "Installing Tmux"
-			yay -S tmux --noconfirm --needed
+			yay -S tmux --needed
 
 			echo "Installing Oh My Tmux"
 			cd ~
 			git clone https://github.com/gpakosz/.tmux.git
 			ln -s -f .tmux/.tmux.conf
 			cp .tmux/.tmux.conf.local .
-
 			;;
 		3)
 			echo "Installing Vim"
-			yay -S vim --noconfirm --needed
+			yay -S vim --needed
 
 			echo "Installing SpaceVim"
 			curl -sLf https://spacevim.org/install.sh | zsh
-
-
 			;;
 		4)
 			echo "Installing emacs"
-			yay -S emacs --noconfirm --needed
+			yay -S emacs --needed
 
 			echo "Installing Doom emacs"
 			git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
@@ -153,69 +127,26 @@ for choice in $choices
 			;;
 		5)
 			echo "Installing atom"
-			yay -S atom --noconfirm --needed
-			
+			yay -S atom --needed
+
 			echo "Installing Sublime Text 4"
-			yay -S sublime-text-4 --noconfirm --needed
+			yay -S sublime-text-4 --needed
 
 			echo "Installing Visual Studio Code"
-			yay -S visual-studio-code-bin --noconfirm --needed
+			yay -S visual-studio-code-bin --needed
 			;;
-		6)
-			echo "Installing Python"
-			yay -S python --noconfirm --needed
-			yay -S  python-pip --noconfirm --needed
-
-			echo "Installing JDK 8 & 11"
-			echo "Installing JDK8"
-			yay -S  jre8-openjdk --noconfirm --needed
-
-			echo "Installing JDK11"
-			yay -S jre11-openjdk --noconfirm --needed
-
-			# Javascript runtime environment
-			echo "Installing Nodejs"
-			yay -S nodejs --noconfirm --needed
-
-			# Node Version Manager
-			echo "Installing Nvm"
-			curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | zsh
-
-			 # Node package manager
-			echo "Installing Npm"
-			yay -S npm --noconfirm --needed
-
-			# Dependency management 
-			echo "Installing Yarn"
-			yay -S yarn --noconfirm --needed
-
-			# JSON parsing library
-			echo "Installing Yarn"
-			yay -S jq --noconfirm --needed
-
-			# JSON parsing library
-			echo "Installing Yarn"
-			yay -S jshon --noconfirm --needed  
-
-			# Rust
-			echo "Installing Rust"
-			yay -S rust --noconfirm --needed   
-
-			echo "Installing Ruby"
-			yay -S ruby --noconfirm --needed 
-			;;
-		7) 
+		6) 
 			#Install MongoDB
 			echo "Installing MongoDb"
-			yay -S patch --noconfirm --needed
-			yay -S mongodb-bin --noconfirm --needed
+			yay -S patch --needed
+			yay -S mongodb-bin --needed
 			sudo systemctl enable mongodb.service
 			sudo systemctl start mongodb.service
 			;;
-		8)
+		7)
 			#MariaDB
 			echo "Installing MariaDB"
-			yay -S mariadb --noconfirm --needed
+			yay -S mariadb --needed
 
 			# Before starting the MariaDB service, initialize the database
 			sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
@@ -232,13 +163,55 @@ for choice in $choices
 
 			# DBeaver
 			echo "Installing DBeaver"
-			yay -S dbeaver --noconfirm --needed
+			yay -S dbeaver --needed --noconfirm
 
 			# MySQL Workbench
 			echo "Installing MySQL Workbench"
-			yay -S mysql-workbench --noconfirm --needed
+			yay -S mysql-workbench --needed --noconfirm
 			;;
+		8)
+			echo "Installing Python"
+			yay -S python --needed --noconfirm
+			yay -S  python-pip --needed --noconfirm
 
+			echo "Installing JDK 8 & 11"
+			echo "Installing JDK8"
+			yay -S  jre8-openjdk --needed --noconfirm
+
+			echo "Installing JDK11"
+			yay -S jre11-openjdk --needed --noconfirm
+
+			# Javascript runtime environment
+			echo "Installing Nodejs"
+			yay -S nodejs --needed --noconfirm
+
+			# Node Version Manager
+			echo "Installing Nvm"
+			curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | zsh
+
+			 # Node package manager
+			echo "Installing Npm"
+			yay -S npm --needed --noconfirm
+
+			# Dependency management 
+			echo "Installing Yarn"
+			yay -S yarn --needed --noconfirm
+
+			# JSON parsing library
+			echo "Installing Yarn"
+			yay -S jq --needed --noconfirm
+
+			# JSON parsing library
+			echo "Installing Yarn"
+			yay -S jshon --needed --noconfirm
+
+			# Rust
+			echo "Installing Rust"
+			yay -S rust --needed --noconfirm  
+
+			echo "Installing Ruby"
+			yay -S ruby --needed --noconfirm
+			;;
 		9)
 			# Virtualization Support
 			echo "Installing virtualbox"
@@ -314,7 +287,6 @@ for choice in $choices
 			yay -S steam --noconfirm --needed
 			;;
 		15)
-			
 			echo "Installing galculator"
 			yay -S galculator --noconfirm --needed           # Gnome calculator
 
@@ -388,12 +360,12 @@ for choice in $choices
     esac
 done
 
-echo -e "${BOLD_GREEN}Cleaning up orphaned packages and cache${RESET}"
+echo -e "${BOLD}${FG_GREEN}Cleaning up orphaned packages and cache${RESETS}"
 # remove orphaned packages
 sudo pacman -Sc
 yay -Sc
 
-echo -e "${BOLD_GREEN}Post Installation Script Complete${RESET}"
+echo -e "${BOLD}${FG_GREEN}Post Installation Script Complete${RESETS}"
 
 printf "Would you like to reboot? (y/N)"
 read -r reboot
