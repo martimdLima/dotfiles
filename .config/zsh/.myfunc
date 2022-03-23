@@ -34,32 +34,41 @@ fi
 sysupdt() {
 ERROR=0
 case "$1" in
+    mir)
+        sudo pacman-mirrors -c all
+    ;;
+    mirapp)
+        su -
+        pacman-mirrors -f 5 && pacman -Syyu
+    ;;
     pacsyu)
         sudo pacman -Syu
-        ;;
+    ;;
     pacsyyu)
         sudo pacman -Syyu
-        ;;
+    ;;
     yaysua)
         yay -Sua --noconfirm
-        ;;
+    ;;
     yaysyu)
         yay -Syu --noconfirm
-        ;;
+    ;;
     parsua)
         paru -Sua --noconfirm
-        ;;
+    ;;
     parsyu)
         paru -Syu --noconfirm
-        ;;
+    ;;
     unlock)
         sudo rm /var/lib/pacman/db.lck
-        ;;
+    ;;
     cleanup)
         sudo pacman -Rns $(pacman -Qtdq)
-        ;;
+    ;;
  *)
-    echo $"Usage: $0 {pacsyu|pacsyyu|yaysua|yaysyu|parsua|parsyu|unlock|cleanup}"
+    echo $"Usage: $0 {mir|mirapp|pacsyu|pacsyyu|yaysua|yaysyu|parsua|parsyu|unlock|cleanup}"
+    tput setaf 1; echo $"$0 mir: {update mirror list}"
+    tput setaf 1; echo $"$0 mirapp: {update mirror list and perform system update}"
     tput setaf 1; echo $"$0 pacsyu: {update only standard pkgs}"
     tput setaf 1; echo $"$0 pacsyyu: {Refresh pkglist & update standard pkgs}"
     tput setaf 1; echo $"$0 yaysua:{update only AUR pkgs (yay)}"
