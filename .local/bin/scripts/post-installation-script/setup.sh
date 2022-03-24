@@ -3,6 +3,8 @@
 #source <(curl -s https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/colors.sh)
 source colors.sh
 
+TMP_DIR="/tmp"
+
 logo() {
   # print dothelper logo
   printf "${BOLD}${FG_SKYBLUE}%s\n" ""
@@ -77,10 +79,10 @@ initDialog() {
     do
     case $choice in
         1)  
-        . post_install.sh
+        . $TMP_DIR/post_install.sh
         ;;
       2)
-        . dot_files_config.sh
+        . $TMP_DIR/dot_files_config.sh
         ;;
       esac
   done
