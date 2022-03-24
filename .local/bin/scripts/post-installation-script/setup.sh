@@ -84,10 +84,10 @@ initDialog() {
     do
     case $choice in
       1)  
-        . post_install.sh
+        . $SCRIPTS_DIR/post_install.sh
         ;;
       2)
-        . dot_files_config.sh
+        . $SCRIPTS_DIR/dot_files_config.sh
         ;;
       3)
         clean_up
