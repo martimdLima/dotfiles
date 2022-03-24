@@ -1,5 +1,7 @@
 #!/bin/bash
 
+su -
+
 TMP_DIR=$( mktemp -d -t dothelper.XXXXXXXXXX )
 trap "clean_up $tmp_dir" EXIT
 
@@ -8,5 +10,5 @@ curl -Lks https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/b
 curl -Lks https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/dot_files_config.sh > $TMP_DIR/dot_files_config.sh
 curl -Lks https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/colors.sh > $TMP_DIR/colors.sh
 
-sudo . setup.sh
+. setup.sh
 
