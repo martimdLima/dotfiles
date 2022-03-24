@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TMP_DIR=$( mktemp -d -t dothelper )
+TMP_DIR=$( mktemp -d -t dothelper.XXXXXXXXXX )
 trap "clean_up $tmp_dir" EXIT
 
 curl -Lks https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/setup.sh > $TMP_DIR/setup.sh
