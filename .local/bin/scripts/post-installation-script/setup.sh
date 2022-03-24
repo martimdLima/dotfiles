@@ -75,8 +75,7 @@ initDialog() {
   cmd=(dialog --separate-output --checklist "Welcome to DotHelper. Press SPACE to toggle an option on/off." 22 76 16)
   options=(
     1 "Update System & Install Software" off    # any option can be set to default to "on"
-    2 "Install dotfiles" off
-    3 "Clean up" off)
+    2 "Install dotfiles" off)
     choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
     clear
 

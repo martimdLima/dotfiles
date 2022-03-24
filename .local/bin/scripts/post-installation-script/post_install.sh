@@ -49,21 +49,21 @@ sysupdate() {
 # Searches the package in the system, if it's found skips the installation proccess, otherwise installs the package
 packexists() {
 	# silence non-error output, redirects stdout to /dev/null
-	if(($1 == "yay"))
-	then
-		pacman -Qs $1 > /dev/null
-	else
-		yay -Qs $1 > /dev/null
-	fi
+	pacman -Qs $1 > /dev/null
     
-    PKG_EXISTS=$?
+    	PKG_EXISTS=$?
     
     if((PKG_EXISTS == 0)) 
     then
         echo "${BOLD}${FG_RED}Skipping $1. $1 already installed in the system${RESETS}"
     else
         echo "${BOLD}Installing $1${RESETS}"
-        if(($1 == "yay"))
+
+	pacman -Ss $1
+
+	PACKAGE_MAN=$?
+
+        if((PACKAGE_MAN == 0))
         then
         	sudo pacman -S $1 --needed --noconfirm
         else
