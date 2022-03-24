@@ -1,8 +1,12 @@
 #!/bin/bash
 
-su -
+SCRIPTS_PATH="$HOME/Downloads/scripts"
+TMP_DIR=$( mkdir $SCRIPTS_PATH)
 
-TMP_DIR=$( mktemp -d -t dothelper.XXXXXXXXXX )
+clean_up() {
+  test -d "$SCRIPTS_PATH" && rm -fr "$SCRIPTS_PATH"
+}
+
 trap "clean_up $tmp_dir" EXIT
 
 curl -Lks https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/setup.sh > $TMP_DIR/setup.sh

@@ -79,10 +79,10 @@ initDialog() {
     do
     case $choice in
         1)  
-        . $TMP_DIR/post_install.sh
+        . post_install.sh
         ;;
       2)
-        . $TMP_DIR/dot_files_config.sh
+        . dot_files_config.sh
         ;;
       esac
   done
