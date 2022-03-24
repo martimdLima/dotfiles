@@ -1,9 +1,8 @@
 #!/bin/bash
 
-#source <(curl -s https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/colors.sh)
-source colors.sh
-
 SCRIPTS_DIR="$HOME/Downloads/scripts"
+
+source $SCRIPTS_DIR/colors.sh
 
 logo() {
   # print dothelper logo
@@ -76,7 +75,8 @@ initDialog() {
   cmd=(dialog --separate-output --checklist "Welcome to DotHelper. Press SPACE to toggle an option on/off." 22 76 16)
   options=(
     1 "Update System & Install Software" off    # any option can be set to default to "on"
-    2 "Install dotfiles" off)
+    2 "Install dotfiles" off
+    3 "Clean up" off)
     choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
     clear
 
