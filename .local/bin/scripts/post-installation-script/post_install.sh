@@ -1,7 +1,8 @@
 #!/bin/bash
 
-#source <(curl -s https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/colors.sh)
-source colors.sh
+SCRIPTS_DIR="$HOME/Downloads/scripts"
+
+source $SCRIPTS_DIR/colors.sh
 
 INIT_PKGS=(
 	'yay'
