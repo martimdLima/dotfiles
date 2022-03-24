@@ -22,7 +22,7 @@ INIT_PKGS=(
 )
 
 welcome() {
-   printf "${BOLD}${FG_SKYBLUE}%s\n" ""
+  printf "${BOLD}${FG_SKYBLUE}%s\n" ""
   printf "%s\n" "##############################################"
   printf "%s\n" "#                                            #"
   printf "%s\n" "#      Post Installation Packages Setup      #"     
@@ -63,7 +63,7 @@ packexists() {
         echo "${BOLD}Installing $1${RESETS}"
         if(($1 == "yay"))
         then
-        	pacman -S $1 --needed --noconfirm
+        	sudo pacman -S $1 --needed --noconfirm
         else
         	yay -S $1 --needed --noconfirm
         fi
@@ -154,11 +154,11 @@ initDialog() {
 				direxists $HOME/.oh-my-zsh/custom/themes/powerlevel10k "powerlevel10k" 'git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k'
 
 				# Plugins
-				direxists $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting "zsh-syntax-highlighting" 'git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting'
-				direxists $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions "zsh-autosuggestions" 'git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions'
-				direxists $HOME/.oh-my-zsh/custom/plugins/fzf-zsh-plugin "fzf-zsh-plugin" 'git clone https://github.com/unixorn/fzf-zsh-plugin.git $HOME/.oh-my-zsh/custom/plugins/fzf-zsh-plugin'
-				direxists $HOME/.zplug "zplug" 'curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh'
-				direxists $HOME/.oh-my-zsh/custom/plugins/zsh-completions  "zsh-completions" 'git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions'
+				direxists $HOME/.zplug/ "zplug" 'curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh'
+				direxists $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/ "zsh-syntax-highlighting" 'git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting'
+				direxists $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions/ "zsh-autosuggestions" 'git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions'
+				direxists $HOME/.oh-my-zsh/custom/plugins/fzf-zsh-plugin/ "fzf-zsh-plugin" 'git clone https://github.com/unixorn/fzf-zsh-plugin.git $HOME/.oh-my-zsh/custom/plugins/fzf-zsh-plugin'
+				direxists $HOME/.oh-my-zsh/custom/plugins/zsh-completions/  "zsh-completions" 'git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions'
 				
 				# Scripts
 				packexists shell-color-scripts
