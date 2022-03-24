@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source <(curl -s https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/colors.sh)
+#source <(curl -s https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/colors.sh)
+source colors.sh
 
 logo() {
   # print dothelper logo
@@ -19,6 +20,10 @@ intro() {
   USERS_NAME=$LOGNAME
   printf "\n\a%s" "Hi${FG_ORANGE} $USERS_NAME ${RESETS}"
   echo
+}
+
+clean_up() {
+  test -d "$TMP_DIR" && rm -fr "$TMP_DIR"
 }
 
 goodbye() {
@@ -72,10 +77,10 @@ initDialog() {
     do
     case $choice in
         1)  
-        sudo curl -Lks https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/post_install.sh | /bin/bash
+        . post_install.sh
         ;;
       2)
-        sudo curl -Lks https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/dot_files_config.sh | /bin/bash
+        . dot_files_config.sh
         ;;
       esac
   done

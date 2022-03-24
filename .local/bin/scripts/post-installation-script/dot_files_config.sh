@@ -1,6 +1,7 @@
 #!/bin/sh
 
-source <(curl -s https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/colors.sh)
+#source <(curl -s https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/colors.sh)
+source colors.sh
 
 DOT_REPO_GITHUB_HTTPS="https://github.com/martimdLima/dotfiles.git"
 DOT_REPO_GITHUB_SSH="git@github.com:martimdLima/dotfiles.git"
