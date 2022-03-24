@@ -3,7 +3,7 @@
 #source <(curl -s https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/colors.sh)
 source colors.sh
 
-TMP_DIR="/tmp"
+SCRIPTS_DIR="$HOME/Downloads/scripts"
 
 logo() {
   # print dothelper logo
@@ -28,8 +28,13 @@ clean_up() {
   test -d "$TMP_DIR" && rm -fr "$TMP_DIR"
 }
 
+clean_up() {
+  test -d "$SCRIPTS_DIR" && rm -fr "$SCRIPTS_DIR"
+}
+
 goodbye() {
   printf "\a\n\n%s\n${BOLD}Thanks for using dothelper.${RESETS}"
+  clean_up
   echo
 }
 
