@@ -1,6 +1,11 @@
 #!/bin/bash
 
 SCRIPTS_PATH="$HOME/Downloads/scripts"
+
+if [! -d "$SCRIPTS_PATH" ]; then
+	mkdir $SCRIPTS_PATH
+fi
+
 TMP_DIR=$( mkdir $SCRIPTS_PATH)
 
 clean_up() {
