@@ -34,7 +34,7 @@ clean_up() {
 
 goodbye() {
   printf "\a\n\n%s\n${BOLD}Thanks for using dothelper.${RESETS}"
-  clean_up
+  #clean_up
   echo
 }
 
@@ -83,12 +83,15 @@ initDialog() {
   for choice in $choices
     do
     case $choice in
-        1)  
+      1)  
         . post_install.sh
         ;;
       2)
         . dot_files_config.sh
         ;;
+      3)
+        clean_up
+      ;;
       esac
   done
 }
