@@ -2,7 +2,7 @@
 
 SCRIPTS_DIR="$HOME/Downloads/scripts"
 
-if [! -d "$SCRIPTS_DIR" ]; then
+if [ ! -d "$SCRIPTS_DIR" ]; then
 	mkdir $SCRIPTS_DIR
 fi
 
