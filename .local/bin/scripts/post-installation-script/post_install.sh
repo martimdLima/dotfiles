@@ -3,6 +3,7 @@
 source <(curl -s https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/colors.sh)
 
 INIT_PKGS=(
+	'yay'
 	'git'
 	'wget'
 	'curl'
@@ -24,7 +25,7 @@ welcome() {
    printf "${BOLD}${FG_SKYBLUE}%s\n" ""
   printf "%s\n" "##############################################"
   printf "%s\n" "#                                            #"
-  printf "%s\n" "# Post Installation Packages Setup           #"     
+  printf "%s\n" "#      Post Installation Packages Setup      #"     
   printf "%s\n" "#                                            #"
   printf "%s\n" "##############################################"
   printf "${RESETS}\n%s" ""
@@ -34,7 +35,7 @@ welcome() {
 }
 
 sysupdate() {
-	echo -e "${BOLD}${FG_GREEN}Updating and Upgrading Mirrors and Packages ${RESETS}"
+	echo -e "${BOLD}${FG_GREEN}==> Updating and Upgrading Mirrors and Packages ${RESETS}"
 
 	# Update Mirros List
 	sudo pacman-mirrors -c all
@@ -72,11 +73,10 @@ packexists() {
 
 instalPkgs() {
 	# Checks if yay is installed, if it's not installed, install it and update Aur packages
+	#echo
+	#packexists yay
 	echo
-	packexists yay
-	echo
-
-	echo -e "${BOLD}${FG_GREEN}Installing Packages${RESETS}"
+	echo -e "${BOLD}${FG_GREEN}==> Installing Packages${RESETS}"
 	echo
 
 	# Install packages
@@ -372,7 +372,7 @@ initDialog() {
 }
 
 cleanup() {
-	echo -e "${BOLD}${FG_GREEN}Cleaning up orphaned packages and cache${RESETS}"
+	echo -e "${BOLD}${FG_GREEN}==> Cleaning up orphaned packages and cache${RESETS}"
 	echo
 	# remove orphaned packages
 	sudo pacman -Rns $(pacman -Qtdq)

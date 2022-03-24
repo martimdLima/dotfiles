@@ -47,19 +47,16 @@ packexists() {
     fi
 }
 
-setup() {
-# Updating Mirros and downloading dialog
+# Updates mirros and downloads yay, git and dialog
+initsetup() {
+
 echo "${BOLD}${FG_GREEN}Updating Mirrors${RESETS}"
 sudo pacman -Sy
 
-# Checks if yay is installed, if it's not installed, install it
-packexists yay
-
-# Checks if git is installed, if it's not installed, install it
-packexists git
-
-# Checks if dialog is installed, if it's not installed, install it
-packexists dialog
+echo "${BOLD}${FG_GREEN}Installing Yay, Git and Dialog${RESETS}"
+sudo pacman -S yay --needed --noconfirm
+yay -S git --needed --noconfirm
+yay -S dialog --needed --noconfirm
 }
 
 initDialog() {
@@ -86,7 +83,7 @@ initDialog() {
 
 intro
 
-setup
+initsetup
 
 initDialog
 

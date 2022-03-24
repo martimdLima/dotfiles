@@ -1,24 +1,32 @@
 #!/bin/sh
 
-CWD=`pwd`
-NAME=$USER
-
-DOT_REPO_GITHUB_HTTPS="https://github.com/martimdLima/dotfiles.git"
-DOT_REPO_GITLAB_HTTPS="https://gitlab.com/mdLima0/dotfiles.git"
-
-#https://gitlab.com/mdLima0/dotfiles.git
-REPO_BRANCH="master"
-
 source <(curl -s https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/colors.sh)
 
-# function called by trap
-catchctrlplusc() {
-    goodbye
-    exit
+DOT_REPO_GITHUB_HTTPS="https://github.com/martimdLima/dotfiles.git"
+DOT_REPO_GITHUB_SSH="git@github.com:martimdLima/dotfiles.git"
+DOT_REPO_GITLAB_HTTPS="https://gitlab.com/mdLima0/dotfiles.git"
+DOT_REPO_GITLAB_SSH="git@gitlab.com:mdLima0/dotfiles.git"
+REPO_BRANCH="master"
+
+welcome() {
+   printf "${BOLD}${FG_SKYBLUE}%s\n" ""
+  printf "%s\n" "##############################################"
+  printf "%s\n" "#                                            #"
+  printf "%s\n" "#        Dotfiles Configuration Setup        #"     
+  printf "%s\n" "#                                            #"
+  printf "%s\n" "##############################################"
+  printf "${RESETS}\n%s" ""
+
+  printf "\n\a%s" "${BOLD}${FG_GREEN}Dotfiles configuration started${RESETS}"
+  echo
+}
+
+goodbye() {
+  echo "${BOLD}${FG_GREEN}Dotfiles configuration ended${RESETS}"
 }
 
 # Downloads a gitrepo $1 and places the files in $2 only overwriting conflicts
-putgitrepo() { 
+procrepo() { 
   
   cd $HOME
   
@@ -63,22 +71,9 @@ putgitrepo() {
 }
 
 
-echo "${BOLD}${FG_GREEN}Dotfiles configuration started${RESETS}"
-echo
+welcome
 
 # Download dotFiles
-putgitrepo "$DOT_REPO_GITHUB_HTTPS" "$HOME" "$REPO_BRANCH"
+procrepo "$DOT_REPO_GITHUB_HTTPS" "$HOME" "$REPO_BRANCH"
 
-echo "${FG_YELLOW}${RUL}Cleaning up${RESETS}"
-echo
-
-# Remove README.md
-rm -f "$HOME/README.md"
-rm -f "$HOME/.zshrc"
-rm -f "$HOME/.zsh_history"
-rm -rf "$HOME/.zcompdump-*"
-
-# make git ignore deleted README.md file
-git update-index --assume-unchanged "$HOME/README.md"
-
-echo "${BOLD}${FG_GREEN}Dotfiles configuration ended${RESETS}"
+goodbye
