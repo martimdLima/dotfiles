@@ -6,9 +6,11 @@ source $SCRIPTS_DIR/colors.sh
 
 INIT_PKGS=(
 	'yay'
+	'dialog'				# displays various kinds of dialog boxes that can be incorporate into shell scripts
 	'git'
 	'wget'
 	'curl'
+	'rust'
 	'cmake'                 # Cross-platform open-source make system
 	'make'
 	'pkg-config'
@@ -16,7 +18,6 @@ INIT_PKGS=(
 	'firefox'
 	'brave-bin'
 	'guake'
-	'dialog'				# displays various kinds of dialog boxes that can be incorporate into shell scripts
 	'neofetch'              # Shows system info when you launch terminal
 	'autojump'
 	'zenity'                # Display graphical dialog boxes via shell scripts
@@ -59,7 +60,7 @@ packexists() {
     else
         echo "${BOLD}Installing $1${RESETS}"
 
-	pacman -Ss $1
+	pacman -Ss $1 > /dev/null
 
 	PACKAGE_MAN=$?
 
@@ -96,7 +97,7 @@ direxists() {
         echo -e "${BOLD}${FG_RED}Skipping $2 installation. $2 directory was found in the system${RESETS}"
     else
         echo "${BOLD}Installing $2${RESETS}"
-        $3
+        exec $3
     fi
 }
 
@@ -193,7 +194,7 @@ initDialog() {
 				else
 					echo "${BOLD}Installing doom emacs${RESETS}"
 					git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
-					~/.emacs.d/bin/doom install
+					exec ~/.emacs.d/bin/doom install
 				fi
 				;;
 			5)
@@ -238,7 +239,7 @@ initDialog() {
 			    	systemctl status mariadb
 
 			    	# After installing MariaDB, run the mysql_secure_installation command to remove anonymous users, test databases, and disallow remote root login.
-			    	sudo mysql_secure_installation
+			    	exec sudo mysql_secure_installation
 			    else
 			    	echo "${BOLD}${FG_RED}mariaDB wasn't found in the system. Couldn't configure mariaDB.${RESETS}"
 			    fi
@@ -402,4 +403,4 @@ initDialog # Initializes the dialog with the specifed measurements. Any option c
 
 cleanup
 
-goodbye
+exec goodbye
