@@ -97,7 +97,7 @@ direxists() {
         echo -e "${BOLD}${FG_RED}Skipping $2 installation. $2 directory was found in the system${RESETS}"
     else
         echo "${BOLD}Installing $2${RESETS}"
-        exec $3
+        $3
     fi
 }
 
@@ -151,17 +151,24 @@ initDialog() {
 	    	1)	
 				packexists zsh
 
-				direxists $HOME/.oh-my-zsh "oh-my-zsh" 'sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
+				#direxists $HOME/.oh-my-zsh "oh-my-zsh" "sh -c $(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+				    if [ -d $HOME/.oh-my-zsh ]; then
+        # Take action if $DIR exists. #
+        echo -e "${BOLD}${FG_RED}Skipping oh-my-zsh  installation. oh-my-zsh directory was found in the system${RESETS}"
+    else
+        echo "${BOLD}Installing oh-my-zsh ${RESETS}"
+       sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    fi
 
 				# Themes
-				direxists $HOME/.oh-my-zsh/custom/themes/powerlevel10k "powerlevel10k" 'git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k'
+				direxists $HOME/.oh-my-zsh/custom/themes/powerlevel10k "powerlevel10k" "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
 
 				# Plugins
-				direxists $HOME/.zplug/ "zplug" 'curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh'
-				direxists $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/ "zsh-syntax-highlighting" 'git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting'
-				direxists $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions/ "zsh-autosuggestions" 'git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions'
-				direxists $HOME/.oh-my-zsh/custom/plugins/fzf-zsh-plugin/ "fzf-zsh-plugin" 'git clone https://github.com/unixorn/fzf-zsh-plugin.git $HOME/.oh-my-zsh/custom/plugins/fzf-zsh-plugin'
-				direxists $HOME/.oh-my-zsh/custom/plugins/zsh-completions/  "zsh-completions" 'git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions'
+				direxists $HOME/.zplug "zplug" 'curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh'
+				direxists $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting "zsh-syntax-highlighting" "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+				direxists $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions "zsh-autosuggestions" "git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+				direxists $HOME/.oh-my-zsh/custom/plugins/fzf-zsh-plugin "fzf-zsh-plugin" "git clone https://github.com/unixorn/fzf-zsh-plugin.git $HOME/.oh-my-zsh/custom/plugins/fzf-zsh-plugin"
+				direxists $HOME/.oh-my-zsh/custom/plugins/zsh-completions  "zsh-completions" "git clone https://github.com/zsh-users/zsh-completions $HOME/.oh-my-zsh/custom/plugins/zsh-completions"
 				
 				# Scripts
 				packexists shell-color-scripts
@@ -257,7 +264,7 @@ initDialog() {
 
 				packexists nodejs
 
-				direxists $HOME/.nvm "Node Version Manager" "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | zsh"
+				direxists $HOME/.nvm "Node Version Manager" "wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash"
 		
 				packexists npm
 
@@ -390,12 +397,12 @@ goodbye() {
 
 	printf "Would you like to reboot? (y/N)"
 	read -r reboot
-	[ "$(tr '[:upper:]' '[:lower:]' <<< "$reboot")" = "y" ] && reboot
+	exec [ "$(tr '[:upper:]' '[:lower:]' <<< "$reboot")" = "y" ] && reboot
 }
 
 welcome
 
-sysupdate # Initiates Mirrors and Packages update
+#sysupdate # Initiates Mirrors and Packages update
 
 instalPkgs
 
@@ -403,4 +410,4 @@ initDialog # Initializes the dialog with the specifed measurements. Any option c
 
 cleanup
 
-exec goodbye
+goodbye
