@@ -337,7 +337,7 @@ install_system_utils() {
     packexists xclip                                    # copy paste and clipboard access operations from the command line interface                    
     packexists hunspell                                 # Spellcheck libraries
     packexists hunspell-pt_pt                           # Portuguese spellcheck library
-    packexists hunspell-en_US                          # American English spellcheck library       
+    packexists hunspell-en_US                           # American English spellcheck library       
     packexists bleachbit
     packexists stacer
     packexists catfish
@@ -353,6 +353,7 @@ install_system_utils() {
     packexists pkg-config
     packexists paru
     packexists variety                                  # An automatic wallpaper changer, downloader and manager.
+    packexists csvkit                                   # csvkit is a suite of command-line tools for converting to and working with CSV
 }
 
 goodbye() {
