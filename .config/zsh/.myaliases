@@ -40,8 +40,7 @@ alias exe='sudo chmod +x '
 # | Zsh |
 # +-----+
 alias ec="nvim $XDG_CONFIG_HOME/zsh/.zshrc"      # open ~/.zshrc in using the default editor specified in $EDITOR
-alias sc="source $XDG_CONFIG_HOME/zsh/.zshrc"      # source ~/.zshrc
-alias scenv="source /home/mdlima/.zshenv"      # source ~/.zshenv
+alias sc="exec zsh"     						 # source ~/.zshrc
 
 
 # +------+

@@ -27,6 +27,8 @@ export VISUAL="nvim"
 # +----------+
 export GIT_CONFIG="$XDG_CONFIG_HOME/git/.gitconfig"
 
+export SSH_ENV="$HOME/.ssh/environment"
+
 # +----------+
 # | Zsh      |
 # +----------+
