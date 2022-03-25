@@ -13,4 +13,4 @@ wget -qO https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bi
 wget -qO https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/v2/dothelper_config.sh > $SCRIPTS_DIR/dothelper_config.sh
 wget -qO https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/colors.sh > $SCRIPTS_DIR/colors.sh
 
-bash <(wget -qO https://raw.githubusercontent.com/martimdLima/dotfiles/master/.local/bin/scripts/post-installation-script/v2/install.sh)
+source $SCRIPTS_DIR/dothelper_init.sh
