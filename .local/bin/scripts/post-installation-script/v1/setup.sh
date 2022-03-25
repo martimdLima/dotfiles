@@ -35,6 +35,7 @@ goodbye() {
   printf "\a\n\n%s\n${BOLD}Thanks for using dothelper.${RESETS}"
   #clean_up
   echo
+  exit 0
 }
 
 # Searches the package in the system, if it's found skips the installation proccess, otherwise installs the package
