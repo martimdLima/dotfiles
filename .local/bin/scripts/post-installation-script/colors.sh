@@ -92,18 +92,18 @@ else
   UL=$(tput smul)
   RUL=$(tput rmul)
 
-green_print() { printf "${FG_GREEN}%s${RESETS}\n" "$1"; }
-blue_print() { printf "${FG_BLUE}%s${RESETS}\n" "$1"; }
-red_print() { printf "${FG_RED}%s${RESETS}\n" "$1"; }
-yellow_print() { printf "${FG_YELLOW}%s${RESETS}\n" "$1"; }
-magenta_print() { printf "${FG_MAGENTA}%s${RESETS}\n" "$1"; }
-cyanp_rint() { printf "${FG_CYAN}%s${RESETS}\n" "$1"; }
+  green_print() { printf "${FG_GREEN}%s${RESETS}\n" "$1"; }
+  blue_print() { printf "${FG_BLUE}%s${RESETS}\n" "$1"; }
+  red_print() { printf "${FG_RED}%s${RESETS}\n" "$1"; }
+  yellow_print() { printf "${FG_YELLOW}%s${RESETS}\n" "$1"; }
+  magenta_print() { printf "${FG_MAGENTA}%s${RESETS}\n" "$1"; }
+  cyanp_rint() { printf "${FG_CYAN}%s${RESETS}\n" "$1"; }
 
-bold_green_print() { printf "${BOLD}${FG_GREEN}%s${RESETS}\n" "$1"; }
-bold_blue_print() { printf "${BOLD}${FG_BLUE}%s${RESETS}\n" "$1"; }
-bold_red_print() { printf "${BOLD}${FG_RED}%s${RESETS}\n" "$1"; }
-bold_yellow_print() { printf "${BOLD}${FG_YELLOW}%s${RESETS}\n" "$1"; }
-bold_magenta_print() { printf "${BOLD}${FG_MAGENTA}%s${RESETS}\n" "$1"; }
-bold_cyanp_rint() { printf "${BOLD}${FG_CYAN}%s${RESETS}\n" "$1"; }
+  bold_green_print() { printf "${BOLD}${FG_GREEN}%s${RESETS}\n" "$1"; }
+  bold_blue_print() { printf "${BOLD}${FG_BLUE}%s${RESETS}\n" "$1"; }
+  bold_red_print() { printf "${BOLD}${FG_RED}%s${RESETS}\n" "$1"; }
+  bold_yellow_print() { printf "${BOLD}${FG_YELLOW}%s${RESETS}\n" "$1"; }
+  bold_magenta_print() { printf "${BOLD}${FG_MAGENTA}%s${RESETS}\n" "$1"; }
+  bold_cyan_print() { printf "${BOLD}${FG_CYAN}%s${RESETS}\n" "$1"; }
 fi
 
