@@ -3,19 +3,68 @@ source $XDG_CONFIG_HOME/zsh/.myfunc
 colorscript random
 
 # -> SSH Initialization
-init_ssh_agent
+# check for running ssh-agent with proper $SSH_AGENT_PID
+if [ -n "$SSH_AGENT_PID" ]; then
+    ps -ef | grep "$SSH_AGENT_PID" | grep ssh-agent > /dev/null
+    if [ $? -eq 0 ]; then
+      test_identities
+    fi
+# if $SSH_AGENT_PID is not properly set, we might be able to load one from
+# $SSH_ENV
+else
+    if [ -f "$SSH_ENV" ]; then
+      . "$SSH_ENV" > /dev/null
+    fi
+    ps -ef | grep "$SSH_AGENT_PID" | grep ssh-agent > /dev/null
+    if [ $? -eq 0 ]; then
+        test_identities
+    else
+        start_agent
+    fi
+fi
 
 # -> Tmux Initialization
-init_tmux
+if which tmux 2>&1 >/dev/null; then
+  if [ $TERM != "screen-256color" ] && [  $TERM != "screen" ]; then
+    tmux attach -t TMUX || tmux new -s TMUX; exit
+  fi
+fi
 
 # -> Powerline10K
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-init_p10k
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Silences console output during initialization if detected
+#typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 # -> Node Version Manager  Initialization
-init_nvm
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+autoload -U add-zsh-hook
+load-nvmrc() {
+  local node_version="$(nvm version)"
+  local nvmrc_path="$(nvm_find_nvmrc)"
+
+  if [ -n "$nvmrc_path" ]; then
+    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+    if [ "$nvmrc_node_version" = "N/A" ]; then
+      nvm install
+    elif [ "$nvmrc_node_version" != "$node_version" ]; then
+      nvm use
+    fi
+  elif [ "$node_version" != "$(nvm version default)" ]; then
+    echo "Reverting to nvm default version"
+    nvm use default
+  fi
+}
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
 
 # -> Zsh global options
 # Navigation

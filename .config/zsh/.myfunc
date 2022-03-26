@@ -513,6 +513,15 @@ imgwebp() {
     for F in *.$IMG_EXT; do cwebp -q 100 $F -o `basename ${F%.$IMG_EXT}`.webp; done
 }
 
+sort_by_aspect_ratio() {
+    for image in *.jpg *.png;
+    do res=$(identify -format "%wx%h\\n" $image)
+        mkdir -p $res;
+        mv $image $res;
+        #echo $res
+    done
+}
+
 # +----------------+
 # | Media          |
 # +----------------+

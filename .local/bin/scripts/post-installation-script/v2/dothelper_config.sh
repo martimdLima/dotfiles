@@ -72,10 +72,36 @@ procrepo() {
   fi
 }
 
+config_dotrepo() {
+  echo alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' >> $HOME/.bashrc
+
+  config checkout $1 > /dev/null
+    
+  DOT_REPO_EXISTS=$?
+    
+  if((DOT_REPO_EXISTS == 0)) 
+  then
+    # if there aren't any previous config files, then simply run the checkout and set the flag showUntrackedFiles to no on this specific (local) repository 
+    config checkout
+    config config --local status.showUntrackedFiles no
+  else
+    mkdir -p .config-backup && \
+    config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | \
+    xargs -I{} mv {} .config-backup/{}
+
+    # Re-run the check out if any problems arise
+    config checkout
+
+    # Set the flag showUntrackedFiles to no on this specific (local) repository
+    config config --local status.showUntrackedFiles no
+  fi
+}
+
 
 welcome
 
 # Download dotFiles
-procrepo "$DOT_REPO_GITHUB_HTTPS" "$HOME" "$REPO_BRANCH"
+#procrepo "$DOT_REPO_GITHUB_HTTPS" "$HOME" "$REPO_BRANCH"
+config_dotrepo
 
 goodbye
