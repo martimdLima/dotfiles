@@ -11,10 +11,10 @@ DOT_REPO_GITLAB_SSH="git@gitlab.com:mdLima0/dotfiles.git"
 REPO_BRANCH="master"
 
 welcome() {
-   printf "${BOLD}${FG_SKYBLUE}%s\n" ""
+  printf "${BOLD}${FG_SKYBLUE}%s\n" ""
   printf "%s\n" "##############################################"
   printf "%s\n" "#                                            #"
-  printf "%s\n" "#        Dotfiles Configuration Setup        #"     
+  printf "%s\n" "#      DotHelper Dotfiles Configuration      #"     
   printf "%s\n" "#                                            #"
   printf "%s\n" "##############################################"
   printf "${RESETS}\n%s" ""
@@ -73,40 +73,30 @@ procrepo() {
 }
 
 config_dotrepo() {
-  echo alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' >> $HOME/.bashrc
-
-  source $HOME/.bashrc
-
-  echo ".dotfiles" >> .gitignore
-
   git clone --bare $DOT_REPO_GITHUB_HTTPS $HOME/.dotfiles
+  
+  function config {
+     /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@
+  }
 
-  config checkout $1 > /dev/null
-    
-  DOT_REPO_EXISTS=$?
-    
-  if((DOT_REPO_EXISTS == 0)) 
-  then
-    # if there aren't any previous config files, then simply run the checkout and set the flag showUntrackedFiles to no on this specific (local) repository 
-    config checkout
-    config config --local status.showUntrackedFiles no
+  mkdir -p .config-backup
+  config checkout
+
+  if [ $? = 0 ]; then
+    echo "Checked out config.";
   else
-    mkdir -p .config-backup && \
-    config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | \
-    xargs -I{} mv {} .config-backup/{}
+    echo "Backing up pre-existing dot files.";
+    config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
+  fi;
 
-    # Re-run the check out if any problems arise
-    config checkout
-
-    # Set the flag showUntrackedFiles to no on this specific (local) repository
-    config config --local status.showUntrackedFiles no
-  fi
+  config checkout
+  config config status.showUntrackedFiles no  
 }
 
 
 welcome
 
-# Download dotFiles
+# Download and setup dotfiles
 #procrepo "$DOT_REPO_GITHUB_HTTPS" "$HOME" "$REPO_BRANCH"
 config_dotrepo
 

@@ -6,17 +6,13 @@ installer_welcome() {
 printf "${BOLD}${FG_SKYBLUE}%s\n" ""
   printf "%s\n" "##############################################"
   printf "%s\n" "#                                            #"
-  printf "%s\n" "#        Dotfiles Configuration Setup        #"     
+  printf "%s\n" "#      DotHelper System And Pkgs Setup       #"     
   printf "%s\n" "#                                            #"
   printf "%s\n" "##############################################"
   printf "${RESETS}\n%s" ""
 
-  printf "\n\a%s" "${BOLD}${FG_GREEN}Dotfiles configuration started${RESETS}"
+  printf "\n\a%s" "${BOLD}${FG_GREEN}System And Pkgs setup started${RESETS}"
   echo
-}
-
-installer_goodbye() {
-  echo "${BOLD}${FG_GREEN}Dotfiles configuration ended${RESETS}"
 }
 
 # Searches the package in the system, if it's found skips the installation proccess, otherwise installs the package
@@ -357,6 +353,7 @@ install_system_utils() {
 }
 
 goodbye() {
+    printf "\n\a%s" "${BOLD}${FG_GREEN}System And Pkgs setup ended\n\n${RESETS}"
     printf "\n${BOLD}${FG_GREEN}==> Perform Clean up Routine\n${RESETS}"
     printf "${BOLD}\nCleaning up orphaned packages and cache\n\n${RESETS}"
     # remove orphaned packages
