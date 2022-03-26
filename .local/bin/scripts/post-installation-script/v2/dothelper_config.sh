@@ -75,6 +75,12 @@ procrepo() {
 config_dotrepo() {
   echo alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' >> $HOME/.bashrc
 
+  source $HOME/.bashrc
+
+  echo ".dotfiles" >> .gitignore
+
+  git clone --bare $DOT_REPO_GITHUB_HTTPS $HOME/.dotfiles
+
   config checkout $1 > /dev/null
     
   DOT_REPO_EXISTS=$?
