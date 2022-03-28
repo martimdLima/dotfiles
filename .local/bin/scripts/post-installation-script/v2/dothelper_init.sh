@@ -23,12 +23,9 @@ intro() {
   echo
 }
 
-clean_up() {
-  test -d "$SCRIPTS_DIR" && rm -fr "$SCRIPTS_DIR"
-}
 
 system_pkgs_config() {
-    system_pkgs_update_and_install
+    system_pkgs_update_and_install_menu
 }
 
 dot_files_config() {
@@ -45,7 +42,7 @@ Choose an option:  "
     read -r ans
     case $ans in
     1)
-        system_pkgs_update_and_install
+        system_pkgs_update_and_install_menu
         mainmenu
         ;;
     2)
