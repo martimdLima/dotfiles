@@ -350,6 +350,7 @@ install_system_utils() {
     packexists paru
     packexists variety                                  # An automatic wallpaper changer, downloader and manager.
     packexists csvkit                                   # csvkit is a suite of command-line tools for converting to and working with CSV
+    packexists ungit                                    # brings user friendliness to git without sacrificing the versatility of git
 }
 
 goodbye() {
