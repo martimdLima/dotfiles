@@ -153,10 +153,10 @@ alias xclip="xclip -selection clipboard"
 # [File Editors/IDE's   ]              #
 ########################################
 
-# +------+
-# | Vim  |
-# +------+
-#alias vim="nvim"
+# +-------+
+# | Atom  |
+# +-------+
+alias atom='atom --no-sandbox'
 
 # +----------+
 # | IntelliJ |
