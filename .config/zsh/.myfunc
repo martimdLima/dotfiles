@@ -514,11 +514,45 @@ imgwebp() {
 }
 
 sort_by_aspect_ratio() {
+    setopt -s nullglob
     for image in *.jpg *.png;
     do res=$(identify -format "%wx%h\\n" $image)
-        mkdir -p $res;
-        mv $image $res;
-        #echo $res
+    case $res in
+        1280x720)
+            # 720p
+            #mkdir -p 1280x720_720p
+            mkdir -p 1280x720_720p;
+            mv $image 1280x720_720p;
+            ;;
+        1920x1080)
+             # 1080p
+            #mkdir -p 1920x1080_1080p
+            mkdir -p 1920x1080_1080p;
+            mv $image 1920x1080_1080p;
+            ;;
+        2560x1440)
+             # 1440p
+            #mkdir -p 2560x1440_1440p
+            mkdir -p 2560x1440_1440p;
+            mv $image 2560x1440_1440p;
+            ;;
+        3840x2160)
+            # 4k
+            #mkdir -p 3840x2160_4k
+            mkdir -p 3840x2160_4k;
+            mv $image 3840x2160_4k;
+            ;;
+        7680x4320)
+            #8k
+            #mkdir -p 7680x4320_8k
+            mkdir -p 7680x4320_8k;
+            mv $image 7680x4320_8k;
+            ;;
+        *)
+            #mkdir -p other
+            mkdir -p other;
+            mv $image other;
+        esac
     done
 }
 
