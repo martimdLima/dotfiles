@@ -14,7 +14,7 @@ printf "${BOLD}${FG_SKYBLUE}%s\n" ""
 # Searches the package in the system, if it's found skips the installation proccess, otherwise installs the package
 packexists() {
     # silence non-error output, redirects stdout to /dev/null
-    pacman -Qs $1 > /dev/null
+    pacman -Qs "$1" > /dev/null
     
         PKG_EXISTS=$?
     
@@ -24,15 +24,15 @@ packexists() {
     else
         echo "${GREEN}Installing $1${RESET}"
 
-    pacman -Ss $1 > /dev/null
+    pacman -Ss "$1" > /dev/null
 
     PACKAGE_MAN=$?
 
         if((PACKAGE_MAN == 0))
         then
-            sudo pacman -S $1 --needed --noconfirm
+            sudo pacman -S "$1" --needed --noconfirm
         else
-            yay -S $1 --needed --noconfirm
+            yay -S "$1" --needed --noconfirm
         fi
     fi
 }
@@ -47,7 +47,7 @@ instalPkgs() {
 
     # Install packages
     for PKG in "${INIT_PKGS[@]}"; do
-        packexists ${PKG}
+        packexists "${PKG}"
     done
 
     echo
@@ -81,9 +81,9 @@ fontsdl() {
 }
 
 update() {
-    printf "Would you like to update $1? (y/N)"
+    printf "Would you like to update %s? (y/N)" "$1"
     read -r package
-    [ "$(tr '[:upper:]' '[:lower:]' <<< "$package")" = "y" ] && sudo $2
+    [ "$(tr '[:upper:]' '[:lower:]' <<< "$package")" = "y" ] && sudo "$2"
 }
 
 install_terminals() {
@@ -100,7 +100,7 @@ install_zsh() {
     packexists zsh
 
     #direxists $HOME/.oh-my-zsh "oh-my-zsh" "sh -c $(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    if [ -d $HOME/.oh-my-zsh ]; then
+    if [ -d "$HOME"/.oh-my-zsh ]; then
         # Take action if $DIR exists. #
         echo -e "${BOLD}${FG_RED}Skipping oh-my-zsh  installation. oh-my-zsh directory was found in the system${RESETS}"
     else
@@ -109,19 +109,23 @@ install_zsh() {
     fi
 
     # Themes
-    direxists $HOME/.oh-my-zsh/custom/themes/powerlevel10k "powerlevel10k" "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+    direxists "$HOME"/.oh-my-zsh/custom/themes/powerlevel10k "powerlevel10k" "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
 
     # Plugins
-    direxists $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting "zsh-syntax-highlighting" "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
-    direxists $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions "zsh-autosuggestions" "git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-    direxists $HOME/.oh-my-zsh/custom/plugins/fzf-zsh-plugin "fzf-zsh-plugin" "git clone https://github.com/unixorn/fzf-zsh-plugin.git $HOME/.oh-my-zsh/custom/plugins/fzf-zsh-plugin"
-    direxists $HOME/.oh-my-zsh/custom/plugins/zsh-completions  "zsh-completions" "git clone https://github.com/zsh-users/zsh-completions $HOME/.oh-my-zsh/custom/plugins/zsh-completions"
+    direxists "$HOME"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting "zsh-syntax-highlighting" "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+    direxists "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions "zsh-autosuggestions" "git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    direxists "$HOME"/.oh-my-zsh/custom/plugins/fzf-zsh-plugin "fzf-zsh-plugin" "git clone https://github.com/unixorn/fzf-zsh-plugin.git $HOME/.oh-my-zsh/custom/plugins/fzf-zsh-plugin"
+    direxists "$HOME"/.oh-my-zsh/custom/plugins/zsh-completions  "zsh-completions" "git clone https://github.com/zsh-users/zsh-completions $HOME/.oh-my-zsh/custom/plugins/zsh-completions"
     
     # Scripts
     packexists shell-color-scripts
 
     # Fonts
     fontsdl
+}
+
+install_git() {
+    packexists git
 }
 
 install_tmux() {
@@ -131,16 +135,16 @@ install_tmux() {
         echo "${BOLD}${FG_RED}Skipping oh-my-tmux. oh-my-tmux already installed in the system${RESETS}"
     else
         echo "${BOLD}Installing $2${RESETS}"
-        cd ~
+        cd ~ || exit
         git clone https://github.com/gpakosz/.tmux.git
-        ln -s -f .tmux/.tmux.conf
+        ln -s -f .tmux/.tmux.conf .
         cp .tmux/.tmux.conf.local .
     fi
 }
 
 install_vim() {
     packexists vim
-    direxists $HOME/.SpaceVim "SpaceVim" 'curl -sLf https://spacevim.org/install.sh | zsh'
+    direxists "$HOME"/.SpaceVim "SpaceVim" 'curl -sLf https://spacevim.org/install.sh | zsh'
 }
 
 install_emacs() {
@@ -263,7 +267,7 @@ install_virtualization_support() {
     packexists bridge-utils
     packexists openbsd-netcat
 
-    yay -Qs $1 > /dev/null
+    yay -Qs "$1" > /dev/null
     
     PKG_EXISTS=$?
     
@@ -294,6 +298,7 @@ install_media_support() {
 }
 
 install_office_support() {
+    packexists libreoffice-fresh
     packexists wps-office
     packexists qpdfview
     packexists zathura
@@ -374,6 +379,7 @@ install_all() {
     install_tmux
     install_vim
     install_emacs
+    install_browser_support
     install_ides
     install_mongodb
     install_mariadb
@@ -385,7 +391,7 @@ install_all() {
     install_media_manipulation_support
     install_games_support
     install_system_utils
-    install_browser_support
+
     printf "\n\a%s" "${BOLD}${FG_GREEN}System And Pkgs setup ended\n${RESETS}"
 }
 
@@ -394,11 +400,12 @@ scripts_cleanup() {
 }
 
 system_cleanup()  {
-    printf "\n\a%s" "${BOLD}${FG_GREEN}System And Pkgs setup ended\n\n${RESETS}"
-    printf "\n${BOLD}${FG_GREEN}==> Perform Clean up Routine\n${RESETS}"
-    printf "${BOLD}\nCleaning up orphaned packages and cache\n\n${RESETS}"
+    printf "\n\a%s" "${BOLD}${FG_GREEN}System And Pkgs setup ended${RESETS}"
+    printf "\n\a%s" "${BOLD}${FG_GREEN}==> Perform Clean up Routine${RESETS}"
+    printf "\n\a%s" "${BOLD}Cleaning up orphaned packages and cache${RESETS}"
+    printf "\n\a%s"
     # remove orphaned packages
-    sudo pacman -Rns $(pacman -Qtdq)
+    sudo pacman -Rns "$(pacman -Qtdq)"
     sudo pacman -Sc --noconfirm
     yay -Sc --noconfirm
 }
@@ -406,8 +413,8 @@ system_cleanup()  {
 goodbye() {
     system_cleanup
 
-    printf "\nRemove Scripts?\n${BOLD}This action will delete all the scripts used. ${RESETS}"
-    printf "Do you want to continue$1? ${BOLD}(y/N)${RESETS}"
+    printf "\n\a%s" "Remove Scripts?\n${BOLD}This action will delete all the scripts used. ${RESETS}"
+    printf "\n\a%s" "Do you want to continue$1? ${BOLD}(y/N)${RESETS}"
     read -r package
     [ "$(tr '[:upper:]' '[:lower:]' <<< "$package")" = "y" ] && scripts_cleanup
 
@@ -435,7 +442,7 @@ terminal_utils_menu() {
     read -r ans
     case $ans in
     1)
-        install_terminals
+        install_terminals 
         terminal_utils_menu
         ;;
     2)
@@ -443,33 +450,33 @@ terminal_utils_menu() {
         terminal_utils_menu
         ;;
     3)
-        install_tmux
+        install_tmux "$@"
         terminal_utils_menu
         ;;
     4)
         install_vim
-        system_pkgs_update_and_install_menu
+        terminal_utils_menu 
         ;;
     5)
         install_emacs
-        system_pkgs_update_and_install_menu
+        terminal_utils_menu 
         ;;
     6)
         install_term_essencials
-        system_pkgs_update_and_install_menu
+        terminal_utils_menu 
         ;;
     7)
         install_git
-        system_pkgs_update_and_install_menu
+        terminal_utils_menu 
         ;;
     8)
-        system_pkgs_update_and_install_menu
+        system_pkgs_update_and_install_menu 
         ;;
     9)
         mainmenu
         ;;
     0)
-        goodbye
+        goodbye 
         ;;
     *)
         opt_fail
@@ -489,12 +496,12 @@ db_menu() {
     read -r ans
     case $ans in
     1)
-        install_zsh
-        db_menu
+        install_mongodb
+        db_menu 
         ;;
     2)
-        install_tmux
-        db_menu
+        install_mariadb
+        db_menu 
         ;; 
     3)
         system_pkgs_update_and_install_menu
@@ -518,36 +525,36 @@ ide_menu() {
         $(bold_yellow_print '2)') Sublime Text 4
         $(bold_yellow_print '3)') Visual Studio Code
         $(bold_yellow_print '4)') All
-        $(blue_print '3)') Go Back to Update System & Install Software
-        $(magenta_print '4)') Go Back to Main Menu
+        $(blue_print '5)') Go Back to Update System & Install Software
+        $(magenta_print '6)') Go Back to Main Menu
         $(red_print '0)') Exit
         Choose an option:  "
     read -r ans
     case $ans in
     1)
         packexists atom
-        ide_menu
+        ide_menu 
         ;;
     2)
         packexists sublime-text-4
-        ide_menu
+        ide_menu 
         ;; 
     3)
         packexists visual-studio-code-bin
-        ide_menu
+        ide_menu 
         ;;
     4)
         install_ides
-        ide_menu
+        ide_menu 
         ;;
-    3)
-        system_pkgs_update_and_install_menu
+    5)
+        system_pkgs_update_and_install_menu 
         ;;
-    4)
+    6)
         mainmenu
         ;;
     0)
-        goodbye
+        goodbye 
         ;;
     *)
         opt_fail
@@ -574,45 +581,45 @@ media_menu() {
     1)
         packexists vlc
         packexists ffmpeg
-        media_menu
+        media_menu 
         ;;
     2)
         packexists mpv
-        media_menu
+        media_menu 
         ;; 
     3)
         packexists youtube-dl
         packexists youtube-viewer
-        media_menu
+        media_menu 
         ;;
     4)
         packexists nomacs                               # Image viewer
         packexists ristretto                            # Multi image viewer
-        media_menu
+        media_menu 
         ;;
     5)
         packexists gimp
         packexists graphicsmagick
         packexists pngcrush                             # Tools for optimizing PNG images
-        media_menu                             
+        media_menu                            
         ;;
     6)
         packexists obs-studio                           #  video recording and live streaming
-        media_menu
+        media_menu 
         ;;
     7)
         install_media_support
         install_media_manipulation_support
-        media_menu  
+        media_menu 
         ;;
     8)
-        system_pkgs_update_and_install_menu
+        system_pkgs_update_and_install_menu 
         ;;
     9)
         mainmenu
         ;;
     0)
-        goodbye
+        goodbye 
         ;;
     *)
         opt_fail
@@ -679,10 +686,11 @@ development_menu() {
         ;;
     4)
         packexists rust
+        development_menu
         ;;
     5)
         packexists ruby
-        development_menu
+        development_menu 
         ;;
     6)
         system_pkgs_update_and_install_menu
@@ -692,7 +700,7 @@ development_menu() {
         ;;
     0)
         goodbye
-        ;;
+        ;; 
     *)
         opt_fail
         ;;
@@ -715,22 +723,22 @@ office_menu() {
     case $ans in
     1)
         packexists wps-office
-        media_menu
+        office_menu
         ;;
     2)
         packexists libreoffice-fresh
-        media_menu
+        office_menu
         ;; 
     3)
         packexists qpdfview
         packexists zathura
-        ide_menu
+        office_menu 
         ;;
     4)
         packexists hunspell                                 # Spellcheck libraries
         packexists hunspell-pt_pt                           # Portuguese spellcheck library
         packexists hunspell-en_US                           # American English spellcheck library
-        ide_menu
+        office_menu 
         ;;
     5)
         packexists wps-office
@@ -740,6 +748,7 @@ office_menu() {
         packexists hunspell                                 # Spellcheck libraries
         packexists hunspell-pt_pt                           # Portuguese spellcheck library
         packexists hunspell-en_US                           # American English spellcheck library
+        office_menu 
         ;;
     6)
         system_pkgs_update_and_install_menu
@@ -763,31 +772,34 @@ torrent_menu() {
         $(bold_yellow_print '2)') Transmission
         $(bold_yellow_print '3)') Deluge
         $(bold_yellow_print '4)') All
-        $(blue_print '3)') Go Back to Update System & Install Software
-        $(magenta_print '4)') Go Back to Main Menu
+        $(blue_print '5)') Go Back to Update System & Install Software
+        $(magenta_print '6)') Go Back to Main Menu
         $(red_print '0)') Exit
         Choose an option:  "
     read -r ans
     case $ans in
     1)
         packexists qbittorrent-qt5
-        ide_menu
+        torrent_menu
         ;;
     2)
         packexists transmission-gtk
-        ide_menu
+        torrent_menu
         ;; 
     3)
         packexists deluge
-        ide_menu
+        torrent_menu
         ;;
     4)
         packexists qbittorrent-qt5
         packexists transmission-gtk
         packexists deluge
-        ide_menu
+        torrent_menu
         ;;
     5)
+        system_pkgs_update_and_install_menu
+        ;;
+    6)
         mainmenu
         ;;
     0)
@@ -806,30 +818,33 @@ games_menu() {
         $(bold_yellow_print '2)') Legendary
         $(bold_yellow_print '3)') Lutris
         $(bold_yellow_print '4)') All
-        $(blue_print '3)') Go Back to Update System & Install Software
-        $(magenta_print '4)') Go Back to Main Menu
+        $(blue_print '5)') Go Back to Update System & Install Software
+        $(magenta_print '6)') Go Back to Main Menu
         $(red_print '0)') Exit
         Choose an option:  "
     read -r ans
     case $ans in
     1)
         packexists steam
-        ide_menu
+        games_menu
         ;;
     2)
         # open-source replacement for the Epic Games Launcher
         packexists legenday
-        ide_menu
+        games_menu
         ;; 
     3)
         packexists lutris
-        ide_menu
+        games_menu
         ;;
     4)
         install_games_support
-        ide_menu
+        games_menu
         ;;
     5)
+        system_pkgs_update_and_install_menu
+        ;;
+    6)
         mainmenu
         ;;
     0)
@@ -856,21 +871,25 @@ browser_menu() {
     case $ans in
     1)
         packexists brave-bin
-        ide_menu
+        browser_menu 
         ;;
     2)
         packexists firefox
-        ide_menu
+        browser_menu 
         ;; 
     3)
         packexists ungoogled-chromium
-        ide_menu
+        browser_menu 
         ;;
     4)
         install_browser_support
-        ide_menu
+        browser_menu 
         ;;
     5)
+        system_pkgs_update_and_install_menu
+        ;;
+
+    6)
         mainmenu
         ;;
     0)
@@ -897,7 +916,7 @@ virtualization_menu() {
     1)
         packexists virtualbox
         packexists virtualbox-host-modules
-        ide_menu
+        virtualization_menu
         ;;
     2)
         packexists qemu
@@ -908,7 +927,7 @@ virtualization_menu() {
         packexists bridge-utils
         packexists openbsd-netcat
 
-        yay -Qs $1 > /dev/null
+        yay -Qs "$1" > /dev/null
         
         PKG_EXISTS=$?
         
@@ -925,11 +944,11 @@ virtualization_menu() {
             echo "${BOLD}${FG_RED}virt-manager wasn't found in the system. Couldn't configure virt-manager.${RESETS}"
         fi
 
-        ide_menu
+        virtualization_menu
         ;; 
     3)
-        install_virtualization_support
-        ide_menu
+        install_virtualization_support "$@"
+        virtualization_menu
         ;;
     5)
         mainmenu
@@ -1125,6 +1144,9 @@ system_utils_menu() {
         ide_menu
         ;;
     35)
+        system_pkgs_update_and_install_menu
+        ;;
+    36)
         mainmenu
         ;;
     0)
@@ -1161,32 +1183,32 @@ Choose an option:  "
     case $ans in
     1)
         #install_zsh
-        terminal_utils_menu
+        terminal_utils_menu "$@"
         system_pkgs_update_and_install_menu
         ;;
     2)
         #install_browser_support
-        browser_menu
+        browser_menu 
         system_pkgs_update_and_install_menu
         ;;
 
     3)
-        db_menu
+        db_menu 
         system_pkgs_update_and_install_menu
         ;;
     4)
         #install_ides
-        ide_menu
+        ide_menu 
         system_pkgs_update_and_install_menu
         ;;
     5)
         #install_dev_env
-        development_menu
+        development_menu 
         system_pkgs_update_and_install_menu
         ;;
     6)
         #install_virtualization_support
-        virtualization_menu
+        virtualization_menu "$@"
         system_pkgs_update_and_install_menu
         ;;
     7)
@@ -1216,13 +1238,13 @@ Choose an option:  "
         ;;
     12)
         install_all
-        system_pkgs_update_and_install_menu
+        system_pkgs_update_and_install_menu "$@"
         ;;
     13)
         mainmenu
         ;;
     0)
-        goodbye
+        goodbye "$@"
         ;;
     *)
         opt_fail

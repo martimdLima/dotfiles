@@ -1,13 +1,13 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 SCRIPTS_DIR="$HOME/Downloads/scripts"
 
-source $SCRIPTS_DIR/colors.sh
+source "$SCRIPTS_DIR"/colors.sh
 
 DOT_REPO_GITHUB_HTTPS="https://github.com/martimdLima/dotfiles.git"
-DOT_REPO_GITHUB_SSH="git@github.com:martimdLima/dotfiles.git"
-DOT_REPO_GITLAB_HTTPS="https://gitlab.com/mdLima0/dotfiles.git"
-DOT_REPO_GITLAB_SSH="git@gitlab.com:mdLima0/dotfiles.git"
+#DOT_REPO_GITHUB_SSH="git@github.com:martimdLima/dotfiles.git"
+#DOT_REPO_GITLAB_HTTPS="https://gitlab.com/mdLima0/dotfiles.git"
+#DOT_REPO_GITLAB_SSH="git@gitlab.com:mdLima0/dotfiles.git"
 REPO_BRANCH="master"
 
 welcome() {
@@ -27,8 +27,7 @@ goodbye() {
 
 # Downloads a gitrepo $1 and places the files in $2 only overwriting conflicts
 procrepo() { 
-  
-  cd $HOME
+  cd "$HOME" || exit 
   
   #dialog --infobox "Downloading and installing config files..." 4 60
   [ -z "$3" ] && branch="master" || branch="$REPO_BRANCH"
@@ -49,46 +48,30 @@ procrepo() {
   echo
 
   exec zsh
-
-  # if $HOME folder might already have some stock configuration files which would be overwritten by Git, config checkout will fail
-  # Backup the files and remove them or simply remove them if they aren't important
-  if (! config checkout)
-  then 
-    mkdir -p .config-backup && \
-    config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | \
-    xargs -I{} mv {} .config-backup/{}
-
-    # Re-run the check out if any problems arise
-    config checkout
-
-    # Set the flag showUntrackedFiles to no on this specific (local) repository
-    config config --local status.showUntrackedFiles no
-  else
-    # if there aren't any previous config files, then simply run the checkout and set the flag showUntrackedFiles to no on this specific (local) repository 
-    config checkout
-    config config --local status.showUntrackedFiles no
-  fi
 }
 
 config_dotrepo() {
-  git clone --bare $DOT_REPO_GITHUB_HTTPS $HOME/.dotfiles
+  git clone --bare $DOT_REPO_GITHUB_HTTPS "$HOME"/.dotfiles
   
   function config {
-     /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@
+     /usr/bin/git --git-dir="$HOME"/.dotfiles/ --work-tree="$HOME" "$@"
   }
 
   mkdir -p .config-backup
-  config checkout
 
-  if [ $? = 0 ]; then
+  config checkout >/dev/null 2>&1
+
+  CHECKS_OUT=$?
+
+  if [[ $CHECKS_OUT == 0 ]]; then
     echo "Checked out config.";
   else
     echo "Backing up pre-existing dot files.";
-    config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
+    config checkout 2>&1 | grep -E "\s+\." | awk '{print $1}' | xargs -I{} mv {} .config-backup/{}
   fi;
 
-  config checkout
-  config config status.showUntrackedFiles no  
+  config checkout | zsh
+  config config status.showUntrackedFiles no | zsh
 }
 
 

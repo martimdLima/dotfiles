@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 SCRIPTS_DIR="$HOME/Downloads/scripts"
-source $SCRIPTS_DIR/colors.sh
-source $SCRIPTS_DIR/dothelper_install.sh
+source "$SCRIPTS_DIR"/colors.sh
+source "$SCRIPTS_DIR"/dothelper_install.sh
 
 logo() {
   # print dothelper logo
@@ -29,7 +29,7 @@ system_pkgs_config() {
 }
 
 dot_files_config() {
-    . $SCRIPTS_DIR/dothelper_config.sh
+    source "$SCRIPTS_DIR"/dothelper_config.sh
 }
 
 mainmenu() {
@@ -43,14 +43,14 @@ Choose an option:  "
     case $ans in
     1)
         system_pkgs_update_and_install_menu
-        mainmenu
+        mainmenu "$@"
         ;;
     2)
         dot_files_config
-        mainmenu
+        mainmenu "$@"
         ;;
     0)
-        goodbye
+        goodbye "$@"
         ;;
     *)
         opt_fail
