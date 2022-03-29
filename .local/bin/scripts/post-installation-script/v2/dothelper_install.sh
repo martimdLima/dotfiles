@@ -2,6 +2,10 @@
 
 SCRIPTS_DIR="$HOME/Downloads/scripts"
 
+
+
+### => Helper installation functions
+
 installer_welcome() {
 printf "${BOLD}${FG_SKYBLUE}%s\n" ""
   printf "%s\n" "##############################################"
@@ -11,8 +15,15 @@ printf "${BOLD}${FG_SKYBLUE}%s\n" ""
   echo
 }
 
+update_pkg() {
+    echo -e "\n${BOLD}$1 already installed in the system. Would you like to update $1?${RESETS} ${BOLD}(Y/N)${RESETS}"
+    read -r package
+    echo
+    [ "$(tr '[:upper:]' '[:lower:]' <<< "$package")" = "y" ] && yay -S "$1"
+}
+
 # Searches the package in the system, if it's found skips the installation proccess, otherwise installs the package
-packexists() {
+pkg_exists() {
     # silence non-error output, redirects stdout to /dev/null
     pacman -Qs "$1" > /dev/null
     
@@ -20,7 +31,8 @@ packexists() {
     
     if((PKG_EXISTS == 0)) 
     then
-        echo "${RED}Skipping $1. $1 already installed in the system${RESET}"
+        #echo "${RED}Skipping $1. $1 already installed in the system${RESET}"
+        update_pkg "$1"
     else
         echo "${GREEN}Installing $1${RESET}"
 
@@ -37,24 +49,8 @@ packexists() {
     fi
 }
 
-instalPkgs() {
-    # Checks if yay is installed, if it's not installed, install it and update Aur packages
-    #echo
-    #packexists yay
-    echo
-    echo -e "${BOLD}${FG_GREEN}==> Installing Packages${RESETS}"
-    echo
-
-    # Install packages
-    for PKG in "${INIT_PKGS[@]}"; do
-        packexists "${PKG}"
-    done
-
-    echo
-}
-
 # Searches the directory in the system, if it's found skips the installation proccess, otherwise installs the package
-direxists() {
+dir_exists() {
     if [ -d "$1" ]; then
         # Take action if $DIR exists. #
         echo -e "${RED}Skipping $2 installation. $2 directory was found in the system${RESET}"
@@ -64,42 +60,69 @@ direxists() {
     fi
 }
 
-fontsdl() {
+fonts_dll() {
     echo
     echo "${BOLD}${FG_GREEN}Installing Powerline Fonts for glyphs support${RESETS}"
     echo
-    packexists noto-fonts
-    packexists nerd-fonts-dejavu-complete
-    packexists nerd-fonts-source-code-pro
-    packexists nerd-fonts-fira-code
-    packexists nerd-fonts-terminus
-    packexists nerd-fonts-liberation-mono
-    packexists nerd-fonts-go-mono
-    packexists nerd-fonts-anonymous-pro
-    packexists nerd-fonts-inconsolata
-    packexists powerline-fonts
+    pkg_exists noto-fonts
+    pkg_exists nerd-fonts-dejavu-complete
+    pkg_exists nerd-fonts-source-code-pro
+    pkg_exists nerd-fonts-fira-code
+    pkg_exists nerd-fonts-terminus
+    pkg_exists nerd-fonts-liberation-mono
+    pkg_exists nerd-fonts-go-mono
+    pkg_exists nerd-fonts-anonymous-pro
+    pkg_exists nerd-fonts-inconsolata
+    pkg_exists powerline-fonts
 }
 
-update() {
-    printf "Would you like to update %s? (y/N)" "$1"
+scripts_cleanup() {
+  test -d "$SCRIPTS_DIR" && rm -fr "$SCRIPTS_DIR"
+}
+
+system_cleanup()  {
+    printf "\n\a%s" "${BOLD}${FG_GREEN}System And Pkgs setup ended${RESETS}"
+    printf "\n\a%s" "${BOLD}${FG_GREEN}==> Perform Clean up Routine${RESETS}"
+    printf "\n\a%s" "${BOLD}Cleaning up orphaned packages and cache${RESETS}"
+    printf "\n\a"
+    # remove orphaned packages
+    sudo pacman -Rns "$(pacman -Qtdq)"
+    sudo pacman -Sc --noconfirm
+    yay -Sc --noconfirm
+}
+
+goodbye() {
+    system_cleanup
+
+    printf "\n\a%s" "Remove Scripts?\n${BOLD}This action will delete all the scripts used. ${RESETS}"
+    printf "\n\a%s" "Do you want to continue$1? ${BOLD}(y/N)${RESETS}"
     read -r package
-    [ "$(tr '[:upper:]' '[:lower:]' <<< "$package")" = "y" ] && sudo "$2"
+    [ "$(tr '[:upper:]' '[:lower:]' <<< "$package")" = "y" ] && scripts_cleanup
+
+    printf "\a\n%s\n${BOLD}Thanks for using dothelper.${RESETS}"
+    echo
+    exit 0
 }
 
+opt_fail() { echo "Wrong option." exit 1; }
+
+
+### => => Package installation functions
 install_terminals() {
-    packexists guake
-    packexists alacritty
+    pkg_exists guake
+    pkg_exists alacritty
 }
 
 install_term_essencials() {
-    packexists curl
-    packexists wget
+    pkg_exists yay
+    pkg_exists curl
+    pkg_exists wget
 }
 
 install_zsh() {
-    packexists zsh
+    pkg_exists zsh
 
-    #direxists $HOME/.oh-my-zsh "oh-my-zsh" "sh -c $(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    #dir_exists $HOME/.oh-my-zsh "oh-my-zsh" "sh -c $(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     if [ -d "$HOME"/.oh-my-zsh ]; then
         # Take action if $DIR exists. #
         echo -e "${BOLD}${FG_RED}Skipping oh-my-zsh  installation. oh-my-zsh directory was found in the system${RESETS}"
@@ -109,27 +132,27 @@ install_zsh() {
     fi
 
     # Themes
-    direxists "$HOME"/.oh-my-zsh/custom/themes/powerlevel10k "powerlevel10k" "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+    dir_exists "$HOME"/.oh-my-zsh/custom/themes/powerlevel10k "powerlevel10k" "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
 
     # Plugins
-    direxists "$HOME"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting "zsh-syntax-highlighting" "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
-    direxists "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions "zsh-autosuggestions" "git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-    direxists "$HOME"/.oh-my-zsh/custom/plugins/fzf-zsh-plugin "fzf-zsh-plugin" "git clone https://github.com/unixorn/fzf-zsh-plugin.git $HOME/.oh-my-zsh/custom/plugins/fzf-zsh-plugin"
-    direxists "$HOME"/.oh-my-zsh/custom/plugins/zsh-completions  "zsh-completions" "git clone https://github.com/zsh-users/zsh-completions $HOME/.oh-my-zsh/custom/plugins/zsh-completions"
+    dir_exists "$HOME"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting "zsh-syntax-highlighting" "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+    dir_exists "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions "zsh-autosuggestions" "git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    dir_exists "$HOME"/.oh-my-zsh/custom/plugins/fzf-zsh-plugin "fzf-zsh-plugin" "git clone https://github.com/unixorn/fzf-zsh-plugin.git $HOME/.oh-my-zsh/custom/plugins/fzf-zsh-plugin"
+    dir_exists "$HOME"/.oh-my-zsh/custom/plugins/zsh-completions  "zsh-completions" "git clone https://github.com/zsh-users/zsh-completions $HOME/.oh-my-zsh/custom/plugins/zsh-completions"
     
     # Scripts
-    packexists shell-color-scripts
+    pkg_exists shell-color-scripts
 
     # Fonts
-    fontsdl
+    fonts_dll
 }
 
 install_git() {
-    packexists git
+    pkg_exists git
 }
 
 install_tmux() {
-    packexists tmux
+    pkg_exists tmux
 
     if [ -f "$HOME/.tmux.conf" ]; then 
         echo "${BOLD}${FG_RED}Skipping oh-my-tmux. oh-my-tmux already installed in the system${RESETS}"
@@ -143,12 +166,12 @@ install_tmux() {
 }
 
 install_vim() {
-    packexists vim
-    direxists "$HOME"/.SpaceVim "SpaceVim" 'curl -sLf https://spacevim.org/install.sh | zsh'
+    pkg_exists vim
+    dir_exists "$HOME"/.SpaceVim "SpaceVim" 'curl -sLf https://spacevim.org/install.sh | zsh'
 }
 
 install_emacs() {
-    packexists emacs
+    pkg_exists emacs
 
     if [ -d "$HOME/.emacs.d" ]; then
         echo "${BOLD}${FG_RED}Skipping doom emacs. Doom emacs already installed in the system${RESETS}"
@@ -160,14 +183,14 @@ install_emacs() {
 }
 
 install_ides() {
-    packexists atom
-    packexists sublime-text-4 
-    packexists visual-studio-code-bin
+    pkg_exists atom
+    pkg_exists sublime-text-4 
+    pkg_exists visual-studio-code-bin
 }
 
 install_mongodb() {
-    packexists patch
-    packexists mongodb-bin
+    pkg_exists patch
+    pkg_exists mongodb-bin
 
     yay -Qs mongodb > /dev/null
     PKG_EXISTS=$?
@@ -183,7 +206,7 @@ install_mongodb() {
 }
 
 install_mariadb() {
-    packexists mariadb
+    pkg_exists mariadb
 
     yay -Qs mariadb > /dev/null
     PKG_EXISTS=$?
@@ -208,25 +231,25 @@ install_mariadb() {
         echo "${BOLD}${FG_RED}mariaDB wasn't found in the system. Couldn't configure mariaDB.${RESETS}"
     fi
 
-    packexists dbeaver
+    pkg_exists dbeaver
 
-    packexists mysql-workbench
+    pkg_exists mysql-workbench
 }
 
 install_dev_env() {
-    packexists python
-    packexists python-pip
+    pkg_exists python
+    pkg_exists python-pip
 
-    packexists jre8-openjdk
-    packexists jre11-openjdk
+    pkg_exists jre8-openjdk
+    pkg_exists jre11-openjdk
 
-    packexists nodejs
+    pkg_exists nodejs
 
-    packexists nvm
+    pkg_exists nvm
 
     nvm install v17
 
-    packexists npm
+    pkg_exists npm
 
     yay -Qs npm > /dev/null
 
@@ -247,25 +270,25 @@ install_dev_env() {
         echo "${BOLD}${FG_RED}Couldn't install create-react-app or vue, because npm is not present in the system. Please install npm to install these packages.${RESETS}"
     fi
 
-    packexists yarn
-    packexists jq
-    packexists jshon
-    packexists rust
-    packexists ruby
-    packexists cmake
+    pkg_exists yarn
+    pkg_exists jq
+    pkg_exists jshon
+    pkg_exists rust
+    pkg_exists ruby
+    pkg_exists cmake
 }
 
 install_virtualization_support() {
-    packexists virtualbox
-    packexists virtualbox-host-modules
+    pkg_exists virtualbox
+    pkg_exists virtualbox-host-modules
 
-    packexists qemu
-    packexists virt-manager
-    packexists virt-viewer
-    packexists dnsmasq
-    packexists vde2
-    packexists bridge-utils
-    packexists openbsd-netcat
+    pkg_exists qemu
+    pkg_exists virt-manager
+    pkg_exists virt-viewer
+    pkg_exists dnsmasq
+    pkg_exists vde2
+    pkg_exists bridge-utils
+    pkg_exists openbsd-netcat
 
     yay -Qs "$1" > /dev/null
     
@@ -286,41 +309,41 @@ install_virtualization_support() {
 }
 
 install_media_support() {
-    packexists nomacs                                 # Image viewer
-    packexists pngcrush                               # Tools for optimizing PNG images
-    packexists ristretto                              # Multi image viewer
-    packexists ffmpeg
-    packexists vlc
-    packexists mpv
-    packexists youtube-dl
-    packexists youtube-viewer
-    packexists obs
+    pkg_exists nomacs                                 # Image viewer
+    pkg_exists pngcrush                               # Tools for optimizing PNG images
+    pkg_exists ristretto                              # Multi image viewer
+    pkg_exists ffmpeg
+    pkg_exists vlc
+    pkg_exists mpv
+    pkg_exists youtube-dl
+    pkg_exists youtube-viewer
+    pkg_exists obs
 }
 
 install_office_support() {
-    packexists libreoffice-fresh
-    packexists wps-office
-    packexists qpdfview
-    packexists zathura
+    pkg_exists libreoffice-fresh
+    pkg_exists wps-office
+    pkg_exists qpdfview
+    pkg_exists zathura
 
-    packexists hunspell                                 # Spellcheck libraries
-    packexists hunspell-pt_pt                           # Portuguese spellcheck library
-    packexists hunspell-en_US                           # American English spellcheck library  
+    pkg_exists hunspell                                 # Spellcheck libraries
+    pkg_exists hunspell-pt_pt                           # Portuguese spellcheck library
+    pkg_exists hunspell-en_US                           # American English spellcheck library  
 }
 
 install_torrent_support() {
-    packexists transmission-gtk
+    pkg_exists transmission-gtk
 }
 
 install_media_manipulation_support() {
-    packexists gimp
-    packexists graphicsmagick
+    pkg_exists gimp
+    pkg_exists graphicsmagick
 }
 
 install_games_support() {
-    packexists steam
-    packexists legenday
-    packexists lutris
+    pkg_exists steam
+    pkg_exists legenday
+    pkg_exists lutris
 }
 
 generate_ssh_keys() {
@@ -329,45 +352,46 @@ generate_ssh_keys() {
 }
 
 install_browser_support() {
-    packexists brave-bin
-    packexists firefox
-    packexists ungoogled-chromium
+    pkg_exists brave-bin
+    pkg_exists firefox
+    pkg_exists ungoogled-chromium
 }
 
 install_system_utils() {
-    packexists lscolors                                 # A Rust library to colorize paths using LS_COLORS 
-    packexists galculator                               # Gnome calculator  
-    packexists gparted                                  # Disk utility
-    packexists neofetch                                 # Shows system info when you launch terminal          
-    packexists exa                                      # A modern replacement for ls
-    packexists htop                                     # Interactive system-monitor process-viewer and process-manager
-    packexists lf                                       # Terminal file manager written in Go with a heavy inspiration from ranger file manager.
-    packexists ueberzug                                 # command line util which allows to draw images on terminals by using child windows
-    packexists arandr                                   # designed to provide a simple visual front end for XRandR
-    packexists blueman                                  # designed to provide a simple yet effective means for controlling the BlueZ API and simplifying Bluetooth tasks
-    packexists zenity                                   # Display graphical dialog boxes via shell scripts       
-    packexists xlayoutdisplay                           # Display Configuration Tool    
-    packexists the_silver_searcher                      # A code searching tool similar to ack
-    packexists xclip                                    # copy paste and clipboard access operations from the command line interface                    
-    packexists bleachbit                                # BleachBit cleans files to free disk space and to maintain privacy.
-    packexists install_office_support                   # open source system optimizer and application monitor that helps users to manage entire system with different aspects
-    packexists catfish                                  # simple graphical file searching front-end for either slocate or GNU locate on
-    packexists flameshot                                # Powerful yet simple to use screenshot software
-    packexists rsync                                    # rsync is a fast and versatile command-line utility for synchronizing files and directories between two locations over a remote shell, or from/to a remote Rsync daemon
-    packexists timeshift                                # takes incremental snapshots of the file system at regular intervals      
-    packexists xclip                                    # provides an interface to X selections ("the clipboard") from the command line
-    packexists zenity                                   # allows the execution of GTK dialog boxes in command-line and shell scripts.
-    packexists autojump                                 # a faster way to navigate your filesystem
-    packexists neofetch                                 # displays information about your operating system, software and hardware in an aesthetic and visually pleasing way
-    packexists make                                     # utility for building and maintaining groups of programs
-    packexists jq                                       # Used to slice, filter, map and transform structured data
-    packexists jshon                                    # parses, reads and creates JSON
-    packexists cmake                                    # utility for building and maintaining groups of programs
-    packexists pkg-config                               # pkg-config program is used to retrieve information about installed libraries in the system  
-    packexists paru                                     # Feature packed AUR helper
-    packexists variety                                  # An automatic wallpaper changer, downloader and manager.
-    packexists csvkit                                   # csvkit is a suite of command-line tools for converting to and working with CSV
-    packexists ungit                                    # brings user friendliness to git without sacrificing the versatility of git
+    pkg_exists lscolors                                 # A Rust library to colorize paths using LS_COLORS 
+    pkg_exists galculator                               # Gnome calculator  
+    pkg_exists gparted                                  # Disk utility
+    pkg_exists neofetch                                 # Shows system info when you launch terminal          
+    pkg_exists exa                                      # A modern replacement for ls
+    pkg_exists htop                                     # Interactive system-monitor process-viewer and process-manager
+    pkg_exists lf                                       # Terminal file manager written in Go with a heavy inspiration from ranger file manager.
+    pkg_exists ueberzug                                 # command line util which allows to draw images on terminals by using child windows
+    pkg_exists arandr                                   # designed to provide a simple visual front end for XRandR
+    pkg_exists blueman                                  # designed to provide a simple yet effective means for controlling the BlueZ API and simplifying Bluetooth tasks
+    pkg_exists zenity                                   # Display graphical dialog boxes via shell scripts       
+    pkg_exists xlayoutdisplay                           # Display Configuration Tool    
+    pkg_exists the_silver_searcher                      # A code searching tool similar to ack
+    pkg_exists xclip                                    # copy paste and clipboard access operations from the command line interface                    
+    pkg_exists bleachbit                                # BleachBit cleans files to free disk space and to maintain privacy.
+    pkg_exists install_office_support                   # open source system optimizer and application monitor that helps users to manage entire system with different aspects
+    pkg_exists catfish                                  # simple graphical file searching front-end for either slocate or GNU locate on
+    pkg_exists flameshot                                # Powerful yet simple to use screenshot software
+    pkg_exists rsync                                    # rsync is a fast and versatile command-line utility for synchronizing files and directories between two locations over a remote shell, or from/to a remote Rsync daemon
+    pkg_exists timeshift                                # takes incremental snapshots of the file system at regular intervals      
+    pkg_exists xclip                                    # provides an interface to X selections ("the clipboard") from the command line
+    pkg_exists zenity                                   # allows the execution of GTK dialog boxes in command-line and shell scripts.
+    pkg_exists autojump                                 # a faster way to navigate your filesystem
+    pkg_exists neofetch                                 # displays information about your operating system, software and hardware in an aesthetic and visually pleasing way
+    pkg_exists make                                     # utility for building and maintaining groups of programs
+    pkg_exists jq                                       # Used to slice, filter, map and transform structured data
+    pkg_exists jshon                                    # parses, reads and creates JSON
+    pkg_exists cmake                                    # utility for building and maintaining groups of programs
+    pkg_exists pkg-config                               # pkg-config program is used to retrieve information about installed libraries in the system  
+    pkg_exists paru                                     # Feature packed AUR helper
+    pkg_exists variety                                  # An automatic wallpaper changer, downloader and manager.
+    pkg_exists csvkit                                   # csvkit is a suite of command-line tools for converting to and working with CSV
+    pkg_exists ungit                                    # brings user friendliness to git without sacrificing the versatility of git
+    pkg_exists shellcheck                               # finds bugs in your shell scripts
 }
 
 install_all() {
@@ -395,35 +419,7 @@ install_all() {
     printf "\n\a%s" "${BOLD}${FG_GREEN}System And Pkgs setup ended\n${RESETS}"
 }
 
-scripts_cleanup() {
-  test -d "$SCRIPTS_DIR" && rm -fr "$SCRIPTS_DIR"
-}
-
-system_cleanup()  {
-    printf "\n\a%s" "${BOLD}${FG_GREEN}System And Pkgs setup ended${RESETS}"
-    printf "\n\a%s" "${BOLD}${FG_GREEN}==> Perform Clean up Routine${RESETS}"
-    printf "\n\a%s" "${BOLD}Cleaning up orphaned packages and cache${RESETS}"
-    printf "\n\a%s"
-    # remove orphaned packages
-    sudo pacman -Rns "$(pacman -Qtdq)"
-    sudo pacman -Sc --noconfirm
-    yay -Sc --noconfirm
-}
-
-goodbye() {
-    system_cleanup
-
-    printf "\n\a%s" "Remove Scripts?\n${BOLD}This action will delete all the scripts used. ${RESETS}"
-    printf "\n\a%s" "Do you want to continue$1? ${BOLD}(y/N)${RESETS}"
-    read -r package
-    [ "$(tr '[:upper:]' '[:lower:]' <<< "$package")" = "y" ] && scripts_cleanup
-
-    printf "\a\n%s\n${BOLD}Thanks for using dothelper.${RESETS}"
-    echo
-    exit 0
-}
-
-opt_fail() { echo "Wrong option." exit 1; }
+### => Menu Functions
 
 terminal_utils_menu() {
     echo -ne "
@@ -532,15 +528,15 @@ ide_menu() {
     read -r ans
     case $ans in
     1)
-        packexists atom
+        pkg_exists atom
         ide_menu 
         ;;
     2)
-        packexists sublime-text-4
+        pkg_exists sublime-text-4
         ide_menu 
         ;; 
     3)
-        packexists visual-studio-code-bin
+        pkg_exists visual-studio-code-bin
         ide_menu 
         ;;
     4)
@@ -579,32 +575,32 @@ media_menu() {
     read -r ans
     case $ans in
     1)
-        packexists vlc
-        packexists ffmpeg
+        pkg_exists vlc
+        pkg_exists ffmpeg
         media_menu 
         ;;
     2)
-        packexists mpv
+        pkg_exists mpv
         media_menu 
         ;; 
     3)
-        packexists youtube-dl
-        packexists youtube-viewer
+        pkg_exists youtube-dl
+        pkg_exists youtube-viewer
         media_menu 
         ;;
     4)
-        packexists nomacs                               # Image viewer
-        packexists ristretto                            # Multi image viewer
+        pkg_exists nomacs                               # Image viewer
+        pkg_exists ristretto                            # Multi image viewer
         media_menu 
         ;;
     5)
-        packexists gimp
-        packexists graphicsmagick
-        packexists pngcrush                             # Tools for optimizing PNG images
+        pkg_exists gimp
+        pkg_exists graphicsmagick
+        pkg_exists pngcrush                             # Tools for optimizing PNG images
         media_menu                            
         ;;
     6)
-        packexists obs-studio                           #  video recording and live streaming
+        pkg_exists obs-studio                           #  video recording and live streaming
         media_menu 
         ;;
     7)
@@ -643,23 +639,23 @@ development_menu() {
     read -r ans
     case $ans in
     1)
-        packexists python
-        packexists python-pip
+        pkg_exists python
+        pkg_exists python-pip
         development_menu
         ;;
     2)
-        packexists jre8-openjdk
-        packexists jre11-openjdk
+        pkg_exists jre8-openjdk
+        pkg_exists jre11-openjdk
         development_menu
         ;; 
     3)
-        packexists nodejs
+        pkg_exists nodejs
 
-        packexists nvm
+        pkg_exists nvm
 
         nvm install v17
 
-        packexists npm
+        pkg_exists npm
 
         yay -Qs npm > /dev/null
 
@@ -680,16 +676,16 @@ development_menu() {
             echo "${BOLD}${FG_RED}Couldn't install create-react-app or vue, because npm is not present in the system. Please install npm to install these packages.${RESETS}"
         fi
 
-        packexists yarn
+        pkg_exists yarn
 
         development_menu
         ;;
     4)
-        packexists rust
+        pkg_exists rust
         development_menu
         ;;
     5)
-        packexists ruby
+        pkg_exists ruby
         development_menu 
         ;;
     6)
@@ -722,32 +718,32 @@ office_menu() {
     read -r ans
     case $ans in
     1)
-        packexists wps-office
+        pkg_exists wps-office
         office_menu
         ;;
     2)
-        packexists libreoffice-fresh
+        pkg_exists libreoffice-fresh
         office_menu
         ;; 
     3)
-        packexists qpdfview
-        packexists zathura
+        pkg_exists qpdfview
+        pkg_exists zathura
         office_menu 
         ;;
     4)
-        packexists hunspell                                 # Spellcheck libraries
-        packexists hunspell-pt_pt                           # Portuguese spellcheck library
-        packexists hunspell-en_US                           # American English spellcheck library
+        pkg_exists hunspell                                 # Spellcheck libraries
+        pkg_exists hunspell-pt_pt                           # Portuguese spellcheck library
+        pkg_exists hunspell-en_US                           # American English spellcheck library
         office_menu 
         ;;
     5)
-        packexists wps-office
-        packexists libreoffice-fresh
-        packexists qpdfview
-        packexists zathura
-        packexists hunspell                                 # Spellcheck libraries
-        packexists hunspell-pt_pt                           # Portuguese spellcheck library
-        packexists hunspell-en_US                           # American English spellcheck library
+        pkg_exists wps-office
+        pkg_exists libreoffice-fresh
+        pkg_exists qpdfview
+        pkg_exists zathura
+        pkg_exists hunspell                                 # Spellcheck libraries
+        pkg_exists hunspell-pt_pt                           # Portuguese spellcheck library
+        pkg_exists hunspell-en_US                           # American English spellcheck library
         office_menu 
         ;;
     6)
@@ -779,21 +775,21 @@ torrent_menu() {
     read -r ans
     case $ans in
     1)
-        packexists qbittorrent-qt5
+        pkg_exists qbittorrent-qt5
         torrent_menu
         ;;
     2)
-        packexists transmission-gtk
+        pkg_exists transmission-gtk
         torrent_menu
         ;; 
     3)
-        packexists deluge
+        pkg_exists deluge
         torrent_menu
         ;;
     4)
-        packexists qbittorrent-qt5
-        packexists transmission-gtk
-        packexists deluge
+        pkg_exists qbittorrent-qt5
+        pkg_exists transmission-gtk
+        pkg_exists deluge
         torrent_menu
         ;;
     5)
@@ -825,16 +821,16 @@ games_menu() {
     read -r ans
     case $ans in
     1)
-        packexists steam
+        pkg_exists steam
         games_menu
         ;;
     2)
         # open-source replacement for the Epic Games Launcher
-        packexists legenday
+        pkg_exists legenday
         games_menu
         ;; 
     3)
-        packexists lutris
+        pkg_exists lutris
         games_menu
         ;;
     4)
@@ -870,15 +866,15 @@ browser_menu() {
     read -r ans
     case $ans in
     1)
-        packexists brave-bin
+        pkg_exists brave-bin
         browser_menu 
         ;;
     2)
-        packexists firefox
+        pkg_exists firefox
         browser_menu 
         ;; 
     3)
-        packexists ungoogled-chromium
+        pkg_exists ungoogled-chromium
         browser_menu 
         ;;
     4)
@@ -914,18 +910,18 @@ virtualization_menu() {
     read -r ans
     case $ans in
     1)
-        packexists virtualbox
-        packexists virtualbox-host-modules
+        pkg_exists virtualbox
+        pkg_exists virtualbox-host-modules
         virtualization_menu
         ;;
     2)
-        packexists qemu
-        packexists virt-manager
-        packexists virt-viewer
-        packexists dnsmasq
-        packexists vde2
-        packexists bridge-utils
-        packexists openbsd-netcat
+        pkg_exists qemu
+        pkg_exists virt-manager
+        pkg_exists virt-viewer
+        pkg_exists dnsmasq
+        pkg_exists vde2
+        pkg_exists bridge-utils
+        pkg_exists openbsd-netcat
 
         yay -Qs "$1" > /dev/null
         
@@ -999,154 +995,158 @@ system_utils_menu() {
         $(bold_yellow_print '31)') variety
         $(bold_yellow_print '32)') csvkit
         $(bold_yellow_print '33)') ungit
-        $(bold_yellow_print '34)') All
-        $(blue_print '35)') Go Back to Update System & Install Software
-        $(magenta_print '36)') Go Back to Main Menu
+        $(bold_yellow_print '34)') shellcheck
+        $(bold_yellow_print '35)') All
+        $(blue_print '36)') Go Back to Update System & Install Software
+        $(magenta_print '37)') Go Back to Main Menu
         $(red_print '0)') Exit
         Choose an option:  "
     read -r ans
     case $ans in
     1)
-        packexists lscolors                                 # A Rust library to colorize paths using LS_COLORS 
+        pkg_exists lscolors                                 # A Rust library to colorize paths using LS_COLORS 
         system_utils_menu
         ;;
     2)
-        packexists galculator                               # Gnome calculator  
+        pkg_exists galculator                               # Gnome calculator  
         system_utils_menu
         ;; 
     3)
-        packexists gparted                                  # Disk utility
+        pkg_exists gparted                                  # Disk utility
         system_utils_menu
         ;;
     4)
-        packexists neofetch                                 # Shows system info when you launch terminal
+        pkg_exists neofetch                                 # Shows system info when you launch terminal
         system_utils_menu
         ;;
     5)
-        packexists exa                                      # A modern replacement for ls
+        pkg_exists exa                                      # A modern replacement for ls
         system_utils_menu
         ;;
     6)
-        packexists htop                                     # Interactive system-monitor process-viewer and process-manager
+        pkg_exists htop                                     # Interactive system-monitor process-viewer and process-manager
         system_utils_menu
         ;;
     7)
-        packexists lf                                       # Terminal file manager written in Go with a heavy inspiration from ranger file manager.
+        pkg_exists lf                                       # Terminal file manager written in Go with a heavy inspiration from ranger file manager.
         system_utils_menu
         ;;
     8)    
-        packexists arandr                                   # designed to provide a simple visual front end for XRandR
+        pkg_exists arandr                                   # designed to provide a simple visual front end for XRandR
         system_utils_menu
         ;;
     9)
-        packexists blueman                                  # designed to provide a simple yet effective means for controlling the BlueZ API and simplifying Bluetooth tasks
+        pkg_exists blueman                                  # designed to provide a simple yet effective means for controlling the BlueZ API and simplifying Bluetooth tasks
         system_utils_menu
         ;;
     10)
-        packexists zenity                                   # Display graphical dialog boxes via shell scripts       
+        pkg_exists zenity                                   # Display graphical dialog boxes via shell scripts       
         system_utils_menu
         ;;
     11)
-        packexists xlayoutdisplay                           # Display Configuration Tool    
+        pkg_exists xlayoutdisplay                           # Display Configuration Tool    
         system_utils_menu
         ;;
     12)
-        packexists the_silver_searcher                      # A code searching tool similar to ack                              
+        pkg_exists the_silver_searcher                      # A code searching tool similar to ack                              
         system_utils_menu
         ;;
     13)
-        packexists ueberzug                                 # command line util which allows to draw images on terminals by using child windows
+        pkg_exists ueberzug                                 # command line util which allows to draw images on terminals by using child windows
         system_utils_menu
         ;;
     14)
-        packexists xclip                                    # copy paste and clipboard access operations from the command line interface                    
+        pkg_exists xclip                                    # copy paste and clipboard access operations from the command line interface                    
         system_utils_menu
         ;;
     15)
-        packexists bleachbit                                # BleachBit cleans files to free disk space and to maintain privacy.
+        pkg_exists bleachbit                                # BleachBit cleans files to free disk space and to maintain privacy.
         system_utils_menu
         ;;
     16)
-        packexists stacer                                   # open source system optimizer and application monitor that helps users to manage entire system with different aspects
+        pkg_exists stacer                                   # open source system optimizer and application monitor that helps users to manage entire system with different aspects
         system_utils_menu
         ;;
     17)
-        packexists catfish                                  # simple graphical file searching front-end for either slocate or GNU locate on
+        pkg_exists catfish                                  # simple graphical file searching front-end for either slocate or GNU locate on
         system_utils_menu
         ;;
     18)
-        packexists flameshot                                # Powerful yet simple to use screenshot software
+        pkg_exists flameshot                                # Powerful yet simple to use screenshot software
         system_utils_menu
         ;;
     19)
-        packexists rsync                                    # rsync is a fast and versatile command-line utility for synchronizing files and directories between two locations over a remote shell, or from/to a remote Rsync daemon
+        pkg_exists rsync                                    # rsync is a fast and versatile command-line utility for synchronizing files and directories between two locations over a remote shell, or from/to a remote Rsync daemon
         system_utils_menu
         ;;
     20)
-        packexists timeshift                                # takes incremental snapshots of the file system at regular intervals      
+        pkg_exists timeshift                                # takes incremental snapshots of the file system at regular intervals      
         system_utils_menu
         ;;
     21)
-        packexists xclip                                    # provides an interface to X selections ("the clipboard") from the command line
+        pkg_exists xclip                                    # provides an interface to X selections ("the clipboard") from the command line
         system_utils_menu
         ;;
     22)
-        packexists zenity                                   # allows the execution of GTK dialog boxes in command-line and shell scripts.
+        pkg_exists zenity                                   # allows the execution of GTK dialog boxes in command-line and shell scripts.
         system_utils_menu
         ;;
     23)
-        packexists autojump                                 # a faster way to navigate your filesystem
+        pkg_exists autojump                                 # a faster way to navigate your filesystem
         system_utils_menu
         ;;
     24)
-        packexists neofetch                                 # displays information about your operating system, software and hardware in an aesthetic and visually pleasing way
+        pkg_exists neofetch                                 # displays information about your operating system, software and hardware in an aesthetic and visually pleasing way
         system_utils_menu
         ;;
     25)
-        packexists make                                     # utility for building and maintaining groups of programs
+        pkg_exists make                                     # utility for building and maintaining groups of programs
         system_utils_menu
         ;;
     26)
-        packexists jq                                       # Used to slice, filter, map and transform structured data
+        pkg_exists jq                                       # Used to slice, filter, map and transform structured data
         system_utils_menu
         ;;
     27)
-        packexists jshon                                    # parses, reads and creates JSON
+        pkg_exists jshon                                    # parses, reads and creates JSON
         system_utils_menu
         ;;
     28)
-        packexists cmake                                    # utility for building and maintaining groups of programs
+        pkg_exists cmake                                    # utility for building and maintaining groups of programs
         system_utils_menu
         ;;
     29)
-        packexists pkg-config                               # pkg-config program is used to retrieve information about installed libraries in the system  
+        pkg_exists pkg-config                               # pkg-config program is used to retrieve information about installed libraries in the system  
         system_utils_menu
         ;;
     30)
-        packexists paru                                     # Feature packed AUR helper
+        pkg_exists paru                                     # Feature packed AUR helper
         system_utils_menu
         ;;
     31)
-        packexists variety                                  # An automatic wallpaper changer, downloader and manager.
+        pkg_exists variety                                  # An automatic wallpaper changer, downloader and manager.
         system_utils_menu
         ;;
     32)
-        packexists csvkit                                   # csvkit is a suite of command-line tools for converting to and working with CSV
+        pkg_exists csvkit                                   # csvkit is a suite of command-line tools for converting to and working with CSV
         system_utils_menu
         ;;
     33)
-        packexists ungit                                    # brings user friendliness to git without sacrificing the versatility of git
+        pkg_exists ungit                                    # brings user friendliness to git without sacrificing the versatility of git
         system_utils_menu
         ;;
-
     34)
+        pkg_exists shellcheck                                    # brings user friendliness to git without sacrificing the versatility of git
+        system_utils_menu
+        ;;
+    35)
         install_system_utils
         ide_menu
         ;;
-    35)
+    36)
         system_pkgs_update_and_install_menu
         ;;
-    36)
+    37)
         mainmenu
         ;;
     0)
@@ -1157,7 +1157,6 @@ system_utils_menu() {
         ;;
     esac
 }
-
 
 system_pkgs_update_and_install_menu() {
     installer_welcome
