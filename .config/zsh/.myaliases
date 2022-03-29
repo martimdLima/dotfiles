@@ -163,7 +163,7 @@ alias atom='atom --no-sandbox'
 # +----------+
 # | IntelliJ |
 # +----------+
-alias intelli='/opt/idea-IU-211.7628.21/bin/idea.sh'
+alias intelli="$HOME/.local/share/intellij/idea-IU-211.7628.21/bin/idea.sh"
 
 #alias font='fc-cache -f -v'
 #alias stow='sudo STOW_DIR=/usr/local/stow /usr/bin/stow'

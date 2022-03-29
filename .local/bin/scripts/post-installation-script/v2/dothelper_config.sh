@@ -13,9 +13,7 @@ REPO_BRANCH="master"
 welcome() {
   printf "${BOLD}${FG_SKYBLUE}%s\n" ""
   printf "%s\n" "##############################################"
-  printf "%s\n" "#                                            #"
   printf "%s\n" "#      DotHelper Dotfiles Configuration      #"     
-  printf "%s\n" "#                                            #"
   printf "%s\n" "##############################################"
   printf "${RESETS}\n%s" ""
 
