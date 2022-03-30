@@ -392,6 +392,14 @@ install_system_utils() {
     pkg_exists csvkit                                   # csvkit is a suite of command-line tools for converting to and working with CSV
     pkg_exists ungit                                    # brings user friendliness to git without sacrificing the versatility of git
     pkg_exists shellcheck                               # finds bugs in your shell scripts
+    pkg_exists plank                                    # lightweight and minimal dock
+    pkg_exists plank-theme-arc                          # Arc theme for Plank
+    pkg_exists plank-theme-tokyo-night                  # Tokyo Night theme for Plank
+    pkg_exists plank-theme-sirius-deep-light            # Sirius Deep Light theme for Plank
+    pkg_exists plank-theme-mohave                       # Mohave theme for Plank
+    pkg_exists plank-theme-monterey                     # Monterey theme for Plank
+    pkg_exists plank-theme-nordic-night-git             # Nordic Night theme for Plank
+
 }
 
 install_all() {
@@ -996,9 +1004,10 @@ system_utils_menu() {
         $(bold_yellow_print '32)') csvkit
         $(bold_yellow_print '33)') ungit
         $(bold_yellow_print '34)') shellcheck
-        $(bold_yellow_print '35)') All
-        $(blue_print '36)') Go Back to Update System & Install Software
-        $(magenta_print '37)') Go Back to Main Menu
+        $(bold_yellow_print '35)') plank
+        $(bold_yellow_print '36)') All
+        $(blue_print '37)') Go Back to Update System & Install Software
+        $(magenta_print '38)') Go Back to Main Menu
         $(red_print '0)') Exit
         Choose an option:  "
     read -r ans
@@ -1140,13 +1149,22 @@ system_utils_menu() {
         system_utils_menu
         ;;
     35)
+        pkg_exists plank                                    # lightweight and minimal dock
+        pkg_exists plank-theme-arc                          # Arc theme for Plank
+        pkg_exists plank-theme-tokyo-night                  # Tokyo Night theme for Plank
+        pkg_exists plank-theme-sirius-deep-light            # Sirius Deep Light theme for Plank
+        pkg_exists plank-theme-mohave                       # Mohave theme for Plank
+        pkg_exists plank-theme-monterey                     # Monterey theme for Plank
+        pkg_exists plank-theme-nordic-night-git             # Nordic Night theme for Plank
+        ;;
+    36)
         install_system_utils
         ide_menu
         ;;
-    36)
+    37)
         system_pkgs_update_and_install_menu
         ;;
-    37)
+    38)
         mainmenu
         ;;
     0)
