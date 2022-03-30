@@ -39,6 +39,12 @@ MinSize=8
 MaxSize=192
 Type=Scalable
 
+[actions/scalable]
+Context=Status
+Size=22
+MinSize=8
+MaxSize=192
+Type=Scalable
 
 [apps/scalable]
 Size=96
