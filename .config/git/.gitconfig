@@ -26,3 +26,18 @@
     
 [rebase]
 	autosquash = true
+[core]
+	eol = lf
+	autocrlf = false
+[fsck]
+	zeroPaddedFilemode = ignore
+[fetch "fsck"]
+	zeroPaddedFilemode = ignore
+[receive "fsck"]
+	zeroPaddedFilemode = ignore
+[oh-my-zsh]
+	lastVersion = 53863e7b3ff0c2e2816e90dab3d870adebdf49c7
+[lfs]
+	repositoryformatversion = 0
+[lfs "origin.git/info/lfs"]
+	locksverify = false
